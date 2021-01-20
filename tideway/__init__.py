@@ -6,31 +6,58 @@ import requests
 # Disable Insecure SSL warning
 requests.packages.urllib3.disable_warnings()
 
-def discoRequest(ip, token, apirequest, params=None):
-    url = "https://" + str(ip) + "/api/v1.1" + apirequest
-    heads = {"Accept": "application/json", "Authorization":"bearer " + str(token) }
+def url_and_headers(target,apiendpoint,token,response):
+    url = "https://" + str(target) + "/api/v1.1" + apiendpoint
+    headers = {"Accept": response, "Authorization":"bearer " + str(token) }
+    return url, headers
+
+def discoRequest(ip, token, apirequest, params=None,response="application/json"):
+    url, heads = url_and_headers(ip,apirequest,token,response)
     if params:
         req = requests.get(url, headers=heads, params=params, verify=False)
     else:
         req = requests.get(url, headers=heads, verify=False)
     return req
 
-def discoPost(ip, token, apipost, jsoncode, params=None):
-    url = "https://" + str(ip) + "/api/v1.1" + apipost
-    heads = {"Accept": "application/json", "Authorization":"bearer " + str(token) }
+def discoPost(ip, token, apipost, jsoncode, params=None, response="application/json"):
+    url, heads = url_and_headers(ip,apipost,token,response)
     if params:
         req = requests.post(url, json=jsoncode, headers=heads, params=params, verify=False)
     else:
         req = requests.post(url, json=jsoncode, headers=heads, verify=False)
     return req
 
-def discoPatch(ip, token, apipatch, jsoncode, params=None):
-    url = "https://" + str(ip) + "/api/v1.1" + apipatch
-    heads = {"Accept": "application/json", "Authorization":"bearer " + str(token) }
+def filePost(ip, token, apipost, file, params=None, response="text/html"):
+    files = {"file":open(file,'rb')}
+    url, heads = url_and_headers(ip,apipost,token,response)
+    if params:
+        req = requests.post(url, files=files, headers=heads, params=params, verify=False)
+    else:
+        req = requests.post(url, files=files, headers=heads, verify=False)
+    return req
+
+def discoPatch(ip, token, apipatch, jsoncode, params=None, response="application/json"):
+    url, heads = url_and_headers(ip,apipatch,token,response)
     if params:
         req = requests.patch(url, json=jsoncode, headers=heads, params=params, verify=False)
     else:
         req = requests.patch(url, json=jsoncode, headers=heads, verify=False)
+    return req
+
+def discoPut(ip, token, apiput, jsoncode, params=None, response="application/json"):
+    url, heads = url_and_headers(ip,apiput,token,response)
+    if params:
+        req = requests.put(url, json=jsoncode, headers=heads, params=params, verify=False)
+    else:
+        req = requests.put(url, json=jsoncode, headers=heads, verify=False)
+    return req
+
+def discoDelete(ip, token, del_node, params=None, response="application/json"):
+    url, heads = url_and_headers(ip,del_node,token,response)
+    if params:
+        req = requests.delete(url, headers=heads, params=params, verify=False)
+    else:
+        req = requests.delete(url, headers=heads, verify=False)
     return req
 
 class discovery():
@@ -182,14 +209,9 @@ class data():
 
 class vault():
     '''Manage the credential vault.'''
-    def __init__(self, ip, token, limit = None, delete = False):
+    def __init__(self, ip, token):
         self.ip = ip
         self.token = token
-        self.params = {}
-        if limit:
-            self.params['limit'] = limit
-        if delete:
-            self.params['delete'] = delete
 
     def getVault(self):
         '''Get details of the state of the vault.'''
@@ -204,11 +226,115 @@ class vault():
 class credentials():
     '''Manage credentials.'''
 
+    def __init__(self, ip, token):
+        self.ip = ip
+        self.token = token
+        self.params = {}
+
+    def listCredentialTypes(self, group=None, category=None):
+        '''Get a list of all credential types and filter by group and/or category.'''
+        if group:
+            self.params['group'] = group
+        if category:
+            self.params['category'] = category
+        response = discoRequest(self.ip, self.token, "/vault/credential_types", params=self.params)
+        return response
+
+    def credentialType(self, cred_type_name):
+        '''Get the properties of a specific credential type.'''
+        response = discoRequest(self.ip, self.token, "/vault/credential_types/{}".format(cred_type_name))
+        return response
+
+    def listCredentials(self, cred_id=None):
+        '''Get a list of all credentials.'''
+        if cred_id:
+            response = discoRequest(self.ip, self.token, "/vault/credentials/{}".format(cred_id))
+        else:
+            response = discoRequest(self.ip, self.token, "/vault/credentials")
+        return response
+
+    def newCredential(self, body):
+        '''Create a new credential.'''
+        response = discoPost(self.ip, self.token, "/vault/credentials", body)
+        return response
+
+    def deleteCredential(self, cred_id):
+        '''Delete a credential.'''
+        response = discoDelete(self.ip, self.token, "/vault/credentials/{}".format(cred_id))
+        return response
+
+    def updateCredential(self, cred_id, body):
+        '''Updates partial resources of a credential. Missing properties are left unchanged.'''
+        response = discoPatch(self.ip, self.token, "/vault/credentials/{}".format(cred_id), body)
+        return response
+
+    def replaceCredential(self, cred_id, body):
+        '''Replaces a single credential. All required credential properties must be present. Optional properties that are missing will be reset to their defaults.'''
+        response = discoPut(self.ip, self.token, "/vault/credentials/{}".format(cred_id), body)
+        return response
+
 class knowledge():
     '''Upload new TKUs and pattern modules.'''
+
+    def __init__(self, ip, token):
+        self.ip = ip
+        self.token = token
+        self.params = {}
+
+    def getKnowledgeManagement(self):
+        '''Get the current state of the appliance's knowledge, including TKU versions.'''
+        response = discoRequest(self.ip, self.token, "/knowledge")
+        return response
+
+    def getUploadStatus(self):
+        '''Get the current state of a knowledge upload.'''
+        response = discoRequest(self.ip, self.token, "/knowledge/status")
+        return response
+
+    def uploadKnowledge(self, filename, file, activate=True, allow_restart=False):
+        '''Upload a TKU or pattern module to the appliance.'''
+        if activate:
+            self.params['activate'] = activate
+        if allow_restart:
+            self.params['allow_restart'] = allow_restart
+        response = filePost(self.ip, self.token, "/knowledge/{}".format(filename), file, params=self.params)
+        return response
 
 class events():
     '''Push events.'''
 
+    def __init__(self, ip, token):
+        self.ip = ip
+        self.token = token
+
+    def status(self, body):
+        '''Returns a unique ID if the event has been recorded, otherwise an empty string is returned e.g. if the event source has been disabled.'''
+        response = discoPost(self.ip, self.token, "/events", body)
+        return response
+
 class admin():
     '''Manage the BMC Discovery appliance.'''
+
+    def __init__(self, ip, token):
+        self.ip = ip
+        self.token = token
+
+    def baseline(self):
+        '''Get a summary of the appliance status, and details of which baseline checks have passed or failed.'''
+        response = discoRequest(self.ip, self.token, "/admin/baseline")
+        return response
+
+    def about(self):
+        '''Get information about the appliance, like its version and versions of the installed packages.'''
+        response = discoRequest(self.ip, self.token, "/admin/about")
+        return response
+
+    def licensing(self,content_type="text/plain"):
+        '''Get the latest signed licensing report.'''
+        if content_type == "csv":
+            response = discoRequest(self.ip, self.token, "/admin/licensing/csv",response="application/zip")
+        elif content_type == "raw":
+            response = discoRequest(self.ip, self.token, "/admin/licensing/raw",response="application/zip")
+        else:
+            response = discoRequest(self.ip, self.token, "/admin/licensing",response=content_type)
+        return response
