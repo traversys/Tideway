@@ -55,7 +55,7 @@ Initiating an instance is done by calling one of the following top-level endpoin
 Upon initiation the following parameters can be used:
 
 | Endpoints | Parameter | Use | Type | Default Value | Description
-| - | - | - | - | -
+| - | - | - | - | - | - | -
 | All | target | Required | String | | The Hostname, FQDN or IP Address of the Discovery instance.
 | All | token | Required | String | | The authentication token of the API user. It is not necessary to include the "bearer" pre-text.
 | /Discovery<br>/Data | limit | | Integer | 100 | This limits the amount of results returned by the API. You can use optional offset parameters on some queries in order to retrieve results in batches.
@@ -226,7 +226,7 @@ True
 ```
 
 | Parameters | Type | Use | Options
-| - | - | -
+| - | - | - | -
 | **run_id** | String | Required | |
 | result=**string** | String | | "Success"<br>"Skipped"<br>"NoAccess"<br>"NoResponse"<br>"Error"<br>"Dropped"
 | offset=**intger** | Integer | | |
@@ -269,7 +269,7 @@ True
 ```
 
 | Parameters | Type | Use | Options
-| - | - | -
+| - | - | - | -
 | **run_id** | String | Required | |
 | **inferred_kind** | String | Required | |
 | offset=**intger** | Integer | | |
@@ -316,7 +316,7 @@ True
 ```
 
 | Parameters | Type | Use | Options
-| - | - | -
+| - | - | - | -
 | **query** | String | Required | |
 | offset=**intger** | Integer | | |
 | results_id=**string** | String | | |
@@ -426,7 +426,7 @@ True
 ```
 
 | Parameters | Type | Use
-| - | - | - | -
+| - | - | -
 | **json** | JSON | Required
 
 ## Credentials
@@ -499,7 +499,7 @@ True
 ```
 
 | Parameters | Type
-| - | - | -
+| - | -
 | cred_id=**string** | String
 
 ### newCredential(*json*)
@@ -640,7 +640,7 @@ True
 ```
 
 | Parameters | Type | Use | Options
-| - | - | -
+| - | - | - | -
 | **filename** | String | Required | |
 | **file** | String | Required | |
 | activate=**boolean** | Boolean | | True<br>False |
@@ -734,5 +734,5 @@ Report end time  : 2021-01-21 23:00:00.410085+00:00
 ```
 
 | Parameters | Type | Use | Options
-| - | - | -
+| - | - | - | -
 | content_type=**string** | String | | "text/plain"<br>"csv"<br>"raw" |
