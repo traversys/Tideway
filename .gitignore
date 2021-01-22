@@ -2,3 +2,4 @@ build/
 dist/
 tideway/__pycache__
 tideway.egg-info/
+test.py
