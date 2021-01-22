@@ -55,7 +55,7 @@ Initiating an instance is done by calling one of the following top-level endpoin
 Upon initiation the following parameters can be used:
 
 | Endpoints | Parameter | Use | Type | Default Value | Description
-| - | - | - | - | - | - | -
+| - | - | - | - | - | -
 | All | target | Required | String | | The Hostname, FQDN or IP Address of the Discovery instance.
 | All | token | Required | String | | The authentication token of the API user. It is not necessary to include the "bearer" pre-text.
 | /Discovery<br>/Data | limit | | Integer | 100 | This limits the amount of results returned by the API. You can use optional offset parameters on some queries in order to retrieve results in batches.
@@ -122,16 +122,16 @@ https://appliance-hostname/api/v1.1/swagger.json
 
 ### setDiscoveryStatus(*json*)
 
+| Parameters | Type | Use
+| - | - | -
+| **json** | JSON | Required
+
 - Start or stop the discovery process.
 
 ```python
 >>> tw.setDiscoveryStatus({"status": "running"}).ok
 True
 ```
-
-| Parameters | Type | Use
-| - | - | -
-| **json** | JSON | Required
 
 ### getDiscoveryCloudMetaData()
 
@@ -142,6 +142,10 @@ True
 ```
 
 ### discoveryRun(*json*)
+
+| Parameters | Type | Use
+| - | - | -
+| **json** | JSON | Required
 
 - Create a new snapshot discovery run.
 
@@ -154,10 +158,6 @@ True
 True
 ```
 
-| Parameters | Type | Use
-| - | - | -
-| **json** | JSON | Required
-
 ### getDiscoveryRuns()
 
 - Get details of all currently processing discovery runs.
@@ -167,6 +167,10 @@ True
 ```
 
 ### getDiscoveryRun(*run_id*)
+
+| Parameters | Type | Use
+| - | - | -
+| **run_id** | String | Required
 
 - Get details of specific currently processing discovery run.
 
@@ -185,11 +189,12 @@ True
 ]
 ```
 
+### updateDiscoveryRun(*run_id*, *json*)
+
 | Parameters | Type | Use
 | - | - | -
 | **run_id** | String | Required
-
-### updateDiscoveryRun(*run_id*, *json*)
+| **json** | JSON | Required
 
 - Update the state of a specific discovery run.
 
@@ -198,12 +203,11 @@ True
 True
 ```
 
+### getDiscoveryRunResults(*run_id*)
+
 | Parameters | Type | Use
 | - | - | -
 | **run_id** | String | Required
-| **json** | JSON | Required
-
-### getDiscoveryRunResults(*run_id*)
 
 - Get a summary of the results from scanning all endpoints in the run, partitioned by result type.
 
@@ -211,19 +215,7 @@ True
 >>> tw.getDiscoveryRunResults("1234567890")
 ```
 
-| Parameters | Type | Use
-| - | - | -
-| **run_id** | String | Required
-
 ### getDiscoveryRunResult(*run_id* [, result=*optional* (default=*"Success"*) ] [, offset=*optional* ] [, results_id=*optional* ] [, format=*optional* ])
-
-- Get a summary of the results from scanning all endpoints in the run that had a specific type of result.
-- Example: Retrieve DiscoveryRuns which ended with an Error, and retrieve result rows 51-100.
-
-```python
->>> tw = tideway.discovery('appliance-hostname','auth-token',limit=50)
->>> tw.getDiscoveryRunResult("1234567890", result="Error", offset=50, results_id="a12b3cd4e5f6")
-```
 
 | Parameters | Type | Use | Options
 | - | - | - | -
@@ -233,7 +225,19 @@ True
 | results_id=**string** | String | | |
 | format=**string** | String | | "object"
 
+- Get a summary of the results from scanning all endpoints in the run that had a specific type of result.
+- Example: Retrieve DiscoveryRuns which ended with an Error, and retrieve result rows 51-100.
+
+```python
+>>> tw = tideway.discovery('appliance-hostname','auth-token',limit=50)
+>>> tw.getDiscoveryRunResult("1234567890", result="Error", offset=50, results_id="a12b3cd4e5f6")
+```
+
 ### getDiscoveryRunInferred(*run_id*)
+
+| Parameters | Type | Use
+| - | - | -
+| **run_id** | String | Required
 
 - Get a summary of all inferred devices from a discovery run, partitioned by device type.
 
@@ -241,11 +245,15 @@ True
 >>> tw.getDiscoveryRunInferred("1234567890")
 ```
 
-| Parameters | Type | Use
-| - | - | -
-| **run_id** | String | Required
-
 ### getDiscoveryRunInferredKind(*run_id*, *inferred_kind* [, offset=*optional* ] [, results_id=*optional* ] [, format=*optional* ]):
+
+| Parameters | Type | Use | Options
+| - | - | - | -
+| **run_id** | String | Required | |
+| **inferred_kind** | String | Required | |
+| offset=**intger** | Integer | | |
+| results_id=**string** | String | | |
+| format=**string** | String | | "object"
 
 - Get a summary of the devices inferred by a discovery run which have a specific inferred kind.
 
@@ -268,14 +276,6 @@ True
 ...
 ```
 
-| Parameters | Type | Use | Options
-| - | - | - | -
-| **run_id** | String | Required | |
-| **inferred_kind** | String | Required | |
-| offset=**intger** | Integer | | |
-| results_id=**string** | String | | |
-| format=**string** | String | | "object"
-
 ## Data
 
 - Initiate a Data object for the instance of Discovery you intend to query.
@@ -286,6 +286,13 @@ True
 ```
 
 ### search(*query* [, offset=*optional* ] [, results_id=*optional* ] [, format=*optional* ])
+
+| Parameters | Type | Use | Options
+| - | - | - | -
+| **query** | String | Required | |
+| offset=**intger** | Integer | | |
+| results_id=**string** | String | | |
+| format=**string** | String | | "object"
 
 - Run a search query, receiving paginated results.
 
@@ -315,14 +322,14 @@ True
 ...
 ```
 
+### searchQuery(*json* [, offset=*optional* ] [, results_id=*optional* ] [, format=*optional* ])
+
 | Parameters | Type | Use | Options
 | - | - | - | -
-| **query** | String | Required | |
+| **json** | JSON | Required | {"query":"search string"}
 | offset=**intger** | Integer | | |
 | results_id=**string** | String | | |
 | format=**string** | String | | "object"
-
-### searchQuery(*json* [, offset=*optional* ] [, results_id=*optional* ] [, format=*optional* ])
 
 - An alternative to GET /data/search, for search queries which are too long for urls.
 
@@ -348,20 +355,7 @@ True
 ]
 ```
 
-| Parameters | Type | Use | Options
-| - | - | - | -
-| **json** | JSON | Required | {"query":"search string"}
-| offset=**intger** | Integer | | |
-| results_id=**string** | String | | |
-| format=**string** | String | | "object"
-
 ### nodeLookup(*node_id* [, relationships=*optional* (default=*False*) ] [, traverse=*optional* ] [, flags=*optional* ])
-
-- Get the state of a node with specified id.
-
-```python
->>> td.nodeLookup("a1b2c3d4e5f6")
-```
 
 | Parameters | Type | Use | Options
 | - | - | - | -
@@ -370,13 +364,13 @@ True
 | traverse=**string** | String | | "NodeKind:Relationship:NodeKind:Node"
 | flags=**string** | String | | "include_destroyed"<br>"exclude_current" |
 
-### lookupNodeKind(*kind* [, offset=*optional* ] [, results_id=*optional* ] [, format=*optional* ])
-
-- Finds all nodes of a specified node kind.
+- Get the state of a node with specified id.
 
 ```python
->>> td.lookupNodeKind("Host")
+>>> td.nodeLookup("a1b2c3d4e5f6")
 ```
+
+### lookupNodeKind(*kind* [, offset=*optional* ] [, results_id=*optional* ] [, format=*optional* ])
 
 | Parameters | Type | Use | Options
 | - | - | - | -
@@ -385,19 +379,25 @@ True
 | results_id=**string** | String | | |
 | format=**string** | String | | "object"
 
-### graphNode(*node_id* [, focus=*optional* (default=*"sofware-connected"*)] [, apply_rules=*optional* (default=*True*) ])
-
-- Graph data represents a set of nodes and relationships that are associated to the given node.
+- Finds all nodes of a specified node kind.
 
 ```python
->>> td.graphNode("a1b2c3d4e5f6")
+>>> td.lookupNodeKind("Host")
 ```
+
+### graphNode(*node_id* [, focus=*optional* (default=*"sofware-connected"*)] [, apply_rules=*optional* (default=*True*) ])
 
 | Parameters | Type | Use | Options
 | - | - | - | -
 | **node_id** | JSON | Required | |
 | focus=**string** | String | | "software-connected"<br>"software"<br>"infrastructure"
 | apply_rules=**boolean** | Boolean | | True<br>False
+
+- Graph data represents a set of nodes and relationships that are associated to the given node.
+
+```python
+>>> td.graphNode("a1b2c3d4e5f6")
+```
 
 ## Vault
 
@@ -419,15 +419,15 @@ True
 
 ### updateVault(*json*)
 
+| Parameters | Type | Use
+| - | - | -
+| **json** | JSON | Required
+
 - Change the state of the vault.
 
 ```python
 >>> tv.updateVault({"open": True,"passphrase": "pass phrase"})
 ```
-
-| Parameters | Type | Use
-| - | - | -
-| **json** | JSON | Required
 
 ## Credentials
 
@@ -439,6 +439,11 @@ True
 ```
 
 ### listCredentialTypes([ group=*optional* ] [, category=*optional* ])
+
+| Parameters | Type
+| - | -
+| group=**string** | String
+| category=**string** | String
 
 - Get a list of all credential types and filter by group and/or category.
 
@@ -460,12 +465,11 @@ True
 ...
 ```
 
-| Parameters | Type
-| - | -
-| group=**string** | String
-| category=**string** | String
-
 ### credentialType(*cred_type_name*)
+
+| Parameters | Type | Use
+| - | - | -
+| **cred_type_name** | String | Required
 
 - Get the properties of a specific credential type.
 
@@ -486,11 +490,11 @@ True
 }
 ```
 
-| Parameters | Type | Use
-| - | - | -
-| **cred_type_name** | String | Required
-
 ### listCredentials([cred_id=*optional*])
+
+| Parameters | Type
+| - | -
+| cred_id=**string** | String
 
 - Get a list of credentials.
 
@@ -498,11 +502,11 @@ True
 >>> tc.listCredentials()
 ```
 
-| Parameters | Type
-| - | -
-| cred_id=**string** | String
-
 ### newCredential(*json*)
+
+| Parameters | Type | Use
+| - | - | -
+| **json** | String | Required
 
 - Create a new credential.
 
@@ -524,11 +528,11 @@ True
 }
 ```
 
+### deleteCredential(*cred_id*)
+
 | Parameters | Type | Use
 | - | - | -
-| **json** | String | Required
-
-### deleteCredential(*cred_id*)
+| cred_id=**string** | String | Required
 
 - Delete a credential.
 
@@ -537,11 +541,12 @@ True
 True
 ```
 
+### updateCredential(*cred_id*, *json*)
+
 | Parameters | Type | Use
 | - | - | -
 | cred_id=**string** | String | Required
-
-### updateCredential(*cred_id*, *json*)
+| **json** | String | Required
 
 - Updates partial resources of a credential. Missing properties are left unchanged.
 
@@ -550,12 +555,12 @@ True
 True
 ```
 
+### replaceCredential(*cred_id*, *json*)
+
 | Parameters | Type | Use
 | - | - | -
 | cred_id=**string** | String | Required
 | **json** | String | Required
-
-### replaceCredential(*cred_id*, *json*)
 
 - Replaces a single credential. All required credential properties must be present. Optional properties that are missing will be reset to their defaults.
 
@@ -573,11 +578,6 @@ True
 }).ok
 True
 ```
-
-| Parameters | Type | Use
-| - | - | -
-| cred_id=**string** | String | Required
-| **json** | String | Required
 
 ## Knowledge
 
@@ -633,18 +633,18 @@ True
 
 ### uploadKnowledge(*filename*, *file* [, activate=*optional* (default=*True*) ] [, allow_restart=*optional* (default=*False*)])
 
-- Upload a TKU or pattern module to the appliance.
-
-```python
->>> tk.uploadKnowledge("TestPattern.tpl","C:/Users/User001/Documents/TestPattern.tpl")
-```
-
 | Parameters | Type | Use | Options
 | - | - | - | -
 | **filename** | String | Required | |
 | **file** | String | Required | |
 | activate=**boolean** | Boolean | | True<br>False |
 | allow_restart=**boolean** | Boolean | | True<br>False |
+
+- Upload a TKU or pattern module to the appliance.
+
+```python
+>>> tk.uploadKnowledge("TestPattern.tpl","C:/Users/User001/Documents/TestPattern.tpl")
+```
 
 ## Events
 
@@ -657,16 +657,16 @@ True
 
 ### status(*json*)
 
+| Parameters | Type | Use
+| - | - | -
+| **json** | JSON | Required |
+
 - Returns a unique ID if the event has been recorded, otherwise an empty string is returned e.g. if the event source has been disabled.
 
 ```python
 >>> te.status({"source":"Event1","type":"EventType1"}
 })
 ```
-
-| Parameters | Type | Use
-| - | - | -
-| **json** | JSON | Required |
 
 ## Admin
 
@@ -718,6 +718,10 @@ True
 
 ### licensing([ content_type=*optional* (default="text/plain") ])
 
+| Parameters | Type | Use | Options
+| - | - | - | -
+| content_type=**string** | String | | "text/plain"<br>"csv"<br>"raw" |
+
 - Get the latest signed licensing report.
 - CSV option returns raw license data in CSV format as a zip file for offline analysis.
 - RAW option return an encrypted raw license object for import to another appliance.
@@ -732,7 +736,3 @@ Report start time: 2021-01-18 23:00:00.409987+00:00
 Report end time  : 2021-01-21 23:00:00.410085+00:00
 ...
 ```
-
-| Parameters | Type | Use | Options
-| - | - | - | -
-| content_type=**string** | String | | "text/plain"<br>"csv"<br>"raw" |
