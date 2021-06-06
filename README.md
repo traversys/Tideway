@@ -51,6 +51,7 @@ Initiating an instance is done by calling one of the following top-level endpoin
 - knowledge
 - events
 - admin
+- topology
 
 Upon initiation the following parameters can be used:
 
@@ -60,11 +61,70 @@ Upon initiation the following parameters can be used:
 | All | token | Required | String | | The authentication token of the API user. It is not necessary to include the "bearer" pre-text.
 | /Discovery<br>/Data | limit | | Integer | 100 | This limits the amount of results returned by the API. You can use optional offset parameters on some queries in order to retrieve results in batches.
 | /Discovery<br>/Data | delete | | Boolean | False | If supported, you can specify to delete the results of a function call.
-| All | api_version | | String | "1.1" | This should be the supported version of the API. Discovery 12.1 supports 1.0 and 1.1.
+| All | api_version | | String | "1.2" | This should be the supported version of the API. Discovery 12.1 supports 1.0, 1.1 and 1.2.
 | All | ssl_verify | | Boolean | False | Choose whether to query the API using a valid SSL certificate. If you are using self-signed HTTPS then you should leave this with the default value.
 
+## Responses
 
-## Appliance
+```
+>>> tw.about()
+```
+#### .headers
+```
+{'Date': 'Sun, 06 Jun 2021 18:43:31 GMT', 'Server': 'waitress', 'X-Content-Type-Options': 'nosniff', 'Content-Length': '160', 'Content-Type': 'application/json', 'Content-security-policy': "default-src https: 'self'; style-src https: 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval' blob:; img-src 'self' data:; base-uri 'none'; object-src 'none'; connect-src https: 'self'; frame-ancestors 'self';", 'Keep-Alive': 'timeout=15, max=100', 'Connection': 'Keep-Alive'}
+```
+#### .encoding
+```None```
+#### .elapsed
+```0:00:00.028861```
+#### .content
+```
+b'{\n    "api_versions": [\n        "1.0",\n        "1.1",\n        "1.2"\n    ],\n    "component": "REST API",\n    "product": "BMC Discovery",\n    "version": "12.2"\n}\n'
+```
+#### .cookies
+```<RequestsCookieJar[]>```
+#### .history
+```[]```
+#### .is_permanent_redirect
+```False```
+#### .is_redirect
+```False```
+#### .iter_content()
+```<generator object iter_slices at 0x7fc1252a8820>```
+#### .json()
+```
+{'api_versions': ['1.0', '1.1', '1.2'], 'component': 'REST API', 'product': 'BMC Discovery', 'version': '12.2'}
+```
+#### .url
+```
+https://appliance-hostname/api/about
+```
+#### .text
+```{
+    "api_versions": [
+        "1.0",
+        "1.1",
+        "1.2"
+    ],
+    "component": "REST API",
+    "product": "BMC Discovery",
+    "version": "12.2"
+}
+```
+#### .status_code
+```200```
+#### .request
+```<PreparedRequest [GET]>```
+#### .reason
+```OK```
+### .raise_for_status()
+```None```
+#### .ok
+```True```
+#### links
+```{}```
+
+# Appliance
 
 - Initiate an Appliance object for the instance of Discovery you intend to query.
 
@@ -73,7 +133,7 @@ Upon initiation the following parameters can be used:
 >>> tw = tideway.appliance('appliance-hostname','auth-token')
 ```
 
-### about()
+## about()
 
 - Get the versions of the API supported by a BMC Discovery version.
 
@@ -81,7 +141,7 @@ Upon initiation the following parameters can be used:
 >>> tw.about()
 ```
 
-### swagger()
+## swagger()
 
 - Get JSON swagger file which contains the API schema.
 
@@ -97,8 +157,22 @@ https://appliance-hostname/api/v1.1/swagger.json
     },
 ...
 ```
+## help([ *"API Endpoint"* ])
 
-## Discovery
+- Get help on specific Discovery API endpoint and function to use. Outputs full list by default.
+
+```python
+>>> tw.help("/vault/credentials/{cred_id}")
+Endpoint                      Function                          Description
+----------------------------  --------------------------------  ---------------------------------------------------------------------------------
+/vault/credentials/{cred_id}  deleteCredential(cred_id)         Delete a credential.
+/vault/credentials/{cred_id}  listCredentials(cred_id)          Get the properties of a specific credential.
+/vault/credentials/{cred_id}  updateCredential(cred_id, body)   Updates partial resources of a credential. Missing properties are left unchanged.
+/vault/credentials/{cred_id}  replaceCredential(cred_id, body)  Replaces a single credential. All required credential properties must be present.
+
+```
+
+# Discovery
 
 - Initiate a Discovery object for the instance of Discovery you intend to query.
 
@@ -107,7 +181,7 @@ https://appliance-hostname/api/v1.1/swagger.json
 >>> tw = tideway.discovery('appliance-hostname','auth-token')
 ```
 
-### getDiscoveryStatus()
+## getDiscoveryStatus()
 
 - Get the current status of the discovery process.
 
@@ -120,7 +194,7 @@ https://appliance-hostname/api/v1.1/swagger.json
 }
 ```
 
-### setDiscoveryStatus(*json*)
+## setDiscoveryStatus(*json*)
 
 | Parameters | Type | Use
 | - | - | -
@@ -133,7 +207,15 @@ https://appliance-hostname/api/v1.1/swagger.json
 True
 ```
 
-### getDiscoveryCloudMetaData()
+## getApiProviderMetadata()
+
+- Get metadata for the API providers currently supported by BMC Discovery.
+
+```python
+>>> tw.getApiProviderMetadata()
+```
+
+## getDiscoveryCloudMetaData()
 
 - Get metadata for the cloud providers currently supported by BMC Discovery.
 
@@ -141,7 +223,7 @@ True
 >>> tw.getDiscoveryCloudMetaData()
 ```
 
-### discoveryRun(*json*)
+## discoveryRun(*json*)
 
 | Parameters | Type | Use
 | - | - | -
@@ -158,7 +240,7 @@ True
 True
 ```
 
-### getDiscoveryRuns()
+## getDiscoveryRuns()
 
 - Get details of all currently processing discovery runs.
 
@@ -166,7 +248,7 @@ True
 >>> tw.getDiscoveryRuns()
 ```
 
-### getDiscoveryRun(*run_id*)
+## getDiscoveryRun(*run_id*)
 
 | Parameters | Type | Use
 | - | - | -
@@ -189,7 +271,7 @@ True
 ]
 ```
 
-### updateDiscoveryRun(*run_id*, *json*)
+## updateDiscoveryRun(*run_id*, *json*)
 
 | Parameters | Type | Use
 | - | - | -
@@ -203,7 +285,7 @@ True
 True
 ```
 
-### getDiscoveryRunResults(*run_id*)
+## getDiscoveryRunResults(*run_id*)
 
 | Parameters | Type | Use
 | - | - | -
@@ -215,7 +297,7 @@ True
 >>> tw.getDiscoveryRunResults("1234567890")
 ```
 
-### getDiscoveryRunResult(*run_id* [, result=*optional* (default=*"Success"*) ] [, offset=*optional* ] [, results_id=*optional* ] [, format=*optional* ])
+## getDiscoveryRunResult(*run_id* [, result=*optional* (default=*"Success"*) ] [, offset=*optional* ] [, results_id=*optional* ] [, format=*optional* ])
 
 | Parameters | Type | Use | Options
 | - | - | - | -
@@ -233,7 +315,7 @@ True
 >>> tw.getDiscoveryRunResult("1234567890", result="Error", offset=50, results_id="a12b3cd4e5f6")
 ```
 
-### getDiscoveryRunInferred(*run_id*)
+## getDiscoveryRunInferred(*run_id*)
 
 | Parameters | Type | Use
 | - | - | -
@@ -245,7 +327,7 @@ True
 >>> tw.getDiscoveryRunInferred("1234567890")
 ```
 
-### getDiscoveryRunInferredKind(*run_id*, *inferred_kind* [, offset=*optional* ] [, results_id=*optional* ] [, format=*optional* ]):
+## getDiscoveryRunInferredKind(*run_id*, *inferred_kind* [, offset=*optional* ] [, results_id=*optional* ] [, format=*optional* ]):
 
 | Parameters | Type | Use | Options
 | - | - | - | -
@@ -276,7 +358,7 @@ True
 ...
 ```
 
-## Data
+# Data
 
 - Initiate a Data object for the instance of Discovery you intend to query.
 
@@ -285,7 +367,7 @@ True
 >>> td = tideway.data('appliance-hostname','auth-token')
 ```
 
-### search(*query* [, offset=*optional* ] [, results_id=*optional* ] [, format=*optional* ])
+## search(*query* [, offset=*optional* ] [, results_id=*optional* ] [, format=*optional* ])
 
 | Parameters | Type | Use | Options
 | - | - | - | -
@@ -322,7 +404,7 @@ True
 ...
 ```
 
-### searchQuery(*json* [, offset=*optional* ] [, results_id=*optional* ] [, format=*optional* ])
+## searchQuery(*json* [, offset=*optional* ] [, results_id=*optional* ] [, format=*optional* ])
 
 | Parameters | Type | Use | Options
 | - | - | - | -
@@ -355,7 +437,7 @@ True
 ]
 ```
 
-### nodeLookup(*node_id* [, relationships=*optional* (default=*False*) ] [, traverse=*optional* ] [, flags=*optional* ])
+## nodeLookup(*node_id* [, relationships=*optional* (default=*False*) ] [, traverse=*optional* ] [, flags=*optional* ])
 
 | Parameters | Type | Use | Options
 | - | - | - | -
@@ -370,7 +452,7 @@ True
 >>> td.nodeLookup("a1b2c3d4e5f6")
 ```
 
-### lookupNodeKind(*kind* [, offset=*optional* ] [, results_id=*optional* ] [, format=*optional* ])
+## lookupNodeKind(*kind* [, offset=*optional* ] [, results_id=*optional* ] [, format=*optional* ])
 
 | Parameters | Type | Use | Options
 | - | - | - | -
@@ -385,7 +467,7 @@ True
 >>> td.lookupNodeKind("Host")
 ```
 
-### graphNode(*node_id* [, focus=*optional* (default=*"sofware-connected"*)] [, apply_rules=*optional* (default=*True*) ])
+## graphNode(*node_id* [, focus=*optional* (default=*"sofware-connected"*)] [, apply_rules=*optional* (default=*True*) ])
 
 | Parameters | Type | Use | Options
 | - | - | - | -
@@ -399,7 +481,48 @@ True
 >>> td.graphNode("a1b2c3d4e5f6")
 ```
 
-## Vault
+## partitions()
+
+- Graph data represents a set of nodes and relationships that are associated to the given node.
+
+```python
+>>> td.partions()
+{
+  "Audit": "fb30ac60bb23b90471917ae7",
+  "Conjecture": "fb30ac60bb23b9047191a1f9",
+  "DDD": "fb30ac60bb23b9047191a1fa",
+  "Default": "fb30ac60bb23b90471917ae5",
+  "Logs": "fb30ac60bb23b9047191a1fc",
+  "Taxonomy": "fb30ac60bb23b90471917ae6",
+  "_System": "fb30ac60bb23b9047191a1fb"
+}
+```
+
+## candidate(*json*)
+
+- The node object of the best candidate based on the provided parameters.
+
+```python
+>>> td.candidate({})
+```
+
+## candidates(*json*)
+
+- Enter parameters to identify a device, the response is a list of candidate nodes ordered by descending score.
+
+```python
+>>> td.candidates({})
+```
+
+## twImport(*json*)
+
+- Imports data. Returns the import UUID.
+
+## twWrite(*json*)
+
+- Perform arbitrary write operations.
+
+# Vault
 
 - Initiate a Vault object for the instance of Discovery you intend to manage.
 
@@ -408,7 +531,7 @@ True
 >>> tv = tideway.vault('appliance-hostname','auth-token')
 ```
 
-### getVault()
+## getVault()
 
 - Get details of the state of the vault.
 
@@ -417,7 +540,7 @@ True
 {'open': True, 'passphrase_saved': False, 'passphrase_set': False}
 ```
 
-### updateVault(*json*)
+## updateVault(*json*)
 
 | Parameters | Type | Use
 | - | - | -
@@ -429,7 +552,7 @@ True
 >>> tv.updateVault({"open": True,"passphrase": "pass phrase"})
 ```
 
-## Credentials
+# Credentials
 
 - Initiate a Credential object for the instance of Discovery you intend to query.
 
@@ -438,7 +561,7 @@ True
 >>> tc = tideway.credentials('appliance-hostname','auth-token')
 ```
 
-### listCredentialTypes([ group=*optional* ] [, category=*optional* ])
+## listCredentialTypes([ group=*optional* ] [, category=*optional* ])
 
 | Parameters | Type
 | - | -
@@ -465,7 +588,7 @@ True
 ...
 ```
 
-### credentialType(*cred_type_name*)
+## credentialType(*cred_type_name*)
 
 | Parameters | Type | Use
 | - | - | -
@@ -490,7 +613,7 @@ True
 }
 ```
 
-### listCredentials([cred_id=*optional*])
+## listCredentials([cred_id=*optional*])
 
 | Parameters | Type
 | - | -
@@ -502,7 +625,7 @@ True
 >>> tc.listCredentials()
 ```
 
-### newCredential(*json*)
+## newCredential(*json*)
 
 | Parameters | Type | Use
 | - | - | -
@@ -528,7 +651,7 @@ True
 }
 ```
 
-### deleteCredential(*cred_id*)
+## deleteCredential(*cred_id*)
 
 | Parameters | Type | Use
 | - | - | -
@@ -541,7 +664,7 @@ True
 True
 ```
 
-### updateCredential(*cred_id*, *json*)
+## updateCredential(*cred_id*, *json*)
 
 | Parameters | Type | Use
 | - | - | -
@@ -555,7 +678,7 @@ True
 True
 ```
 
-### replaceCredential(*cred_id*, *json*)
+## replaceCredential(*cred_id*, *json*)
 
 | Parameters | Type | Use
 | - | - | -
@@ -579,7 +702,7 @@ True
 True
 ```
 
-## Knowledge
+# Knowledge
 
 - Initiate a Knowledge object for the instance of Discovery you intend to query.
 
@@ -588,7 +711,7 @@ True
 >>> tk = tideway.knowledge('appliance-hostname','auth-token')
 ```
 
-### getKnowledgeManagement()
+## getKnowledgeManagement()
 
 - Get the current state of the appliance's knowledge, including TKU versions.
 
@@ -610,7 +733,7 @@ True
 ...
 ```
 
-### getUploadStatus()
+## getUploadStatus()
 
 - Get the current state of a knowledge upload.
 
@@ -631,7 +754,7 @@ True
 }
 ```
 
-### uploadKnowledge(*filename*, *file* [, activate=*optional* (default=*True*) ] [, allow_restart=*optional* (default=*False*)])
+## uploadKnowledge(*filename*, *file* [, activate=*optional* (default=*True*) ] [, allow_restart=*optional* (default=*False*)])
 
 | Parameters | Type | Use | Options
 | - | - | - | -
@@ -646,7 +769,7 @@ True
 >>> tk.uploadKnowledge("TestPattern.tpl","C:/Users/User001/Documents/TestPattern.tpl")
 ```
 
-## Events
+# Events
 
 - Initiate an Event object for the instance of Discovery you intend to query.
 
@@ -655,7 +778,7 @@ True
 >>> te = tideway.events('appliance-hostname','auth-token')
 ```
 
-### status(*json*)
+## status(*json*)
 
 | Parameters | Type | Use
 | - | - | -
@@ -668,71 +791,61 @@ True
 })
 ```
 
-## Admin
+# Topology
 
-- Initiate an Admin object for the instance of Discovery you intend to query.
+- Initiate a Topology object for the instance of Discovery you intend to query.
 
 ```python
 >>> import tideway
->>> ta = tideway.admin('appliance-hostname','auth-token')
+>>> topo = tideway.topology('appliance-hostname','auth-token')
 ```
 
-### baseline()
-
-- Get a summary of the appliance status, and details of which baseline checks have passed or failed.
-
-```python
->>> ta.baseline().json()
-{
-    "results": {
-        "FAILED": [
-            {
-                "enabled": true,
-                "message": "MAJOR: This appliance has insufficent resources",
-                "name": "Appliance Specification",
-                "severity": "MAJOR"
-            },
-            {
-                "details": [
-                    {
-                        "messages": [
-                            "2 credentials have been added",
-...
-```
-
-### about()
-
-- Get information about the appliance, like its version and versions of the installed packages.
-
-```python
->>> ta.about()
-{
-    "versions": {
-        "devices": "5.0.2020.09.3",
-        "os_updates": "7.20.08.25",
-        "product": "12.1",
-        "product_content": "2.0.2020.09.3"
-    }
-}
-```
-
-### licensing([ content_type=*optional* (default="text/plain") ])
+## graphNode(*node_id* [, focus=*optional* (default=*"sofware-connected"*)] [, apply_rules=*optional* (default=*True*) ])
 
 | Parameters | Type | Use | Options
 | - | - | - | -
-| content_type=**string** | String | | "text/plain"<br>"csv"<br>"raw" |
+| **node_id** | JSON | Required | |
+| focus=**string** | String | | "software-connected"<br>"software"<br>"infrastructure"
+| apply_rules=**boolean** | Boolean | | True<br>False
 
-- Get the latest signed licensing report.
-- CSV option returns raw license data in CSV format as a zip file for offline analysis.
-- RAW option return an encrypted raw license object for import to another appliance.
+- Graph data represents a set of nodes and relationships that are associated to the given node.
 
 ```python
->>> ta.licensing()
------BEGIN LICENSE REPORT-----
-License report
-==============
-
-Report start time: 2021-01-18 23:00:00.409987+00:00
-Report end time  : 2021-01-21 23:00:00.410085+00:00
-...
+>>> topo.graphNode("a1b2c3d4e5f6")
 ```
+
+## getNodes(*json*)
+
+| Parameters | Type | Use
+| - | - | -
+| **json** | JSON | Required |
+
+- Get topology data from one or more starting nodes.
+
+## getNodeKinds(*json*)
+
+| Parameters | Type | Use
+| - | - | -
+| **json** | JSON | Required |
+
+- Get nodes of the specified kinds which are related to a given set of nodes.
+
+## visualizationState()
+
+- Get the current state of the visualization for the authenticated user.
+
+## updateVizState(*json*)
+
+| Parameters | Type | Use
+| - | - | -
+| **json** | JSON | Required |
+
+- Update one or more attributes of the current state of the visualization for the authenticated user.
+
+## replaceVizState(*json*)
+
+| Parameters | Type | Use
+| - | - | -
+| **json** | JSON | Required |
+
+- Update any or all of the attributes of the current state of the visualization for the authenticated user.
