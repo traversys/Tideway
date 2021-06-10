@@ -61,7 +61,7 @@ Upon initiation the following parameters can be used:
 | All | token | Required | String | | The authentication token of the API user. It is not necessary to include the "bearer" pre-text.
 | /Discovery<br>/Data | limit | | Integer | 100 | This limits the amount of results returned by the API. You can use optional offset parameters on some queries in order to retrieve results in batches.
 | /Discovery<br>/Data | delete | | Boolean | False | If supported, you can specify to delete the results of a function call.
-| All | api_version | | String | "1.2" | This should be the supported version of the API. Discovery 12.1 supports 1.0, 1.1 and 1.2.
+| All | api_version | | String | "1.2" | This should be the supported version of the API. Discovery 12.2 supports 1.0, 1.1 and 1.2.
 | All | ssl_verify | | Boolean | False | Choose whether to query the API using a valid SSL certificate. If you are using self-signed HTTPS then you should leave this with the default value.
 
 ## Responses
