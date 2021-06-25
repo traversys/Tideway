@@ -6,9 +6,9 @@ import tideway
 dr = tideway.discoRequests
 appliance = tideway.main.Appliance
 
-class Test:
-    def __init__(self):
-        self.help = "Help!"
+# class Test:
+#     def __init__(self):
+#         self.help = "Help!"
 
 class Admin(appliance):
     '''Manage the BMC Discovery appliance.'''

@@ -13,11 +13,12 @@ Simplified Python library for BMC Discovery API Interface that makes use of the 
 {
     "api_versions": [
         "1.0",
-        "1.1"
+        "1.1",
+        "1.2"
     ],
     "component": "REST API",
     "product": "BMC Discovery",
-    "version": "12.1"
+    "version": "12.2"
 }
 ```
 
@@ -33,7 +34,7 @@ Tideway removes the extra layer of manually constructing a URL and parameters fo
 $ python -m pip install tideway
 ```
 
-- Tideway supports BMC Discovery 11.3+, API v1.1 using Python 3.
+- Tideway supports BMC Discovery 11.3+, API v1.2 using Python 3.
 
 # Quickstart Guide
 
@@ -41,56 +42,76 @@ $ python -m pip install tideway
 
 In order to make use of an API endpoint, you will need to initiate an object representing an instance of Discovery using an authentication token (generated in the GUI) and a hostname, fqdn or ip address.
 
-Initiating an instance is done by calling one of the following top-level endpoints:
+Initiating an instance is done by creating an 'appliance' object:
 
-- appliance
-- discovery
-- data
-- vault
-- credential
-- knowledge
-- events
-- admin
-- topology
+`tideway.appliance(<appliance>,<api_token>)`
 
+ Or you can specify one of the following top-level endpoints:
+
+```
+tideway.discovery()
+tideway.data()
+tideway.vault()
+tideway.credential()
+tideway.knowledge()
+tideway.events()
+tideway.admin()
+tideway.topology()
+```
 Upon initiation the following parameters can be used:
 
-| Endpoints | Parameter | Use | Type | Default Value | Description
-| - | - | - | - | - | -
-| All | target | Required | String | | The Hostname, FQDN or IP Address of the Discovery instance.
-| All | token | Required | String | | The authentication token of the API user. It is not necessary to include the "bearer" pre-text.
-| /Discovery<br>/Data | limit | | Integer | 100 | This limits the amount of results returned by the API. You can use optional offset parameters on some queries in order to retrieve results in batches.
-| /Discovery<br>/Data | delete | | Boolean | False | If supported, you can specify to delete the results of a function call.
-| All | api_version | | String | "1.2" | This should be the supported version of the API. Discovery 12.2 supports 1.0, 1.1 and 1.2.
-| All | ssl_verify | | Boolean | False | Choose whether to query the API using a valid SSL certificate. If you are using self-signed HTTPS then you should leave this with the default value.
+| Parameter | Use | Type | Default Value | Description
+| - | - | - | - | -
+| target | Required | String | | The Hostname, FQDN or IP Address of the Discovery instance.
+| token | Required | String | | The authentication token of the API user. It is not necessary to include the "bearer" pre-text.
+| api_version | | String | "1.2" | This should be the supported version of the API. Discovery 12.2 supports 1.0, 1.1 and 1.2.
+| ssl_verify | | Boolean | False | Choose whether to query the API using a valid SSL certificate. If you are using self-signed HTTPS then you should leave this with the default value.
 
 ## Responses
 
+### Input
+
+```python
+>>> tw = tideway.appliance('appliance-hostname','auth-token')
+>>> response = tw.about()
 ```
->>> tw.about()
-```
+
 #### .headers
 ```
 {'Date': 'Sun, 06 Jun 2021 18:43:31 GMT', 'Server': 'waitress', 'X-Content-Type-Options': 'nosniff', 'Content-Length': '160', 'Content-Type': 'application/json', 'Content-security-policy': "default-src https: 'self'; style-src https: 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval' blob:; img-src 'self' data:; base-uri 'none'; object-src 'none'; connect-src https: 'self'; frame-ancestors 'self';", 'Keep-Alive': 'timeout=15, max=100', 'Connection': 'Keep-Alive'}
 ```
 #### .encoding
-```None```
+```
+None
+```
 #### .elapsed
-```0:00:00.028861```
+```
+0:00:00.028861
+```
 #### .content
 ```
 b'{\n    "api_versions": [\n        "1.0",\n        "1.1",\n        "1.2"\n    ],\n    "component": "REST API",\n    "product": "BMC Discovery",\n    "version": "12.2"\n}\n'
 ```
 #### .cookies
-```<RequestsCookieJar[]>```
+```
+<RequestsCookieJar[]>
+```
 #### .history
-```[]```
+```
+[]
+```
 #### .is_permanent_redirect
-```False```
+```
+False
+```
 #### .is_redirect
-```False```
+```
+False
+```
 #### .iter_content()
-```<generator object iter_slices at 0x7fc1252a8820>```
+```
+<generator object iter_slices at 0x7fc1252a8820>
+```
 #### .json()
 ```
 {'api_versions': ['1.0', '1.1', '1.2'], 'component': 'REST API', 'product': 'BMC Discovery', 'version': '12.2'}
@@ -100,7 +121,8 @@ b'{\n    "api_versions": [\n        "1.0",\n        "1.1",\n        "1.2"\n    ]
 https://appliance-hostname/api/about
 ```
 #### .text
-```{
+```
+{
     "api_versions": [
         "1.0",
         "1.1",
@@ -112,17 +134,29 @@ https://appliance-hostname/api/about
 }
 ```
 #### .status_code
-```200```
+```
+200
+```
 #### .request
-```<PreparedRequest [GET]>```
+```
+<PreparedRequest [GET]>
+```
 #### .reason
-```OK```
+```
+OK
+```
 ### .raise_for_status()
-```None```
+```
+None
+```
 #### .ok
-```True```
+```
+True
+```
 #### links
-```{}```
+```
+{}
+```
 
 # Appliance
 
@@ -178,7 +212,8 @@ Endpoint                      Function                          Description
 
 ```python
 >>> import tideway
->>> tw = tideway.discovery('appliance-hostname','auth-token')
+>>> tw = tideway.appliance('appliance-hostname','auth-token')
+>>> discovery = tw.discovery()
 ```
 
 ## getDiscoveryStatus()
@@ -186,7 +221,7 @@ Endpoint                      Function                          Description
 - Get the current status of the discovery process.
 
 ```python
->>> status = tw.getDiscoveryStatus()
+>>> status = discovery.getDiscoveryStatus()
 >>> status.json()
 {
 	'running': False,
@@ -203,7 +238,7 @@ Endpoint                      Function                          Description
 - Start or stop the discovery process.
 
 ```python
->>> tw.setDiscoveryStatus({"status": "running"}).ok
+>>> discovery.setDiscoveryStatus({"status": "running"}).ok
 True
 ```
 
@@ -212,7 +247,7 @@ True
 - Get metadata for the API providers currently supported by BMC Discovery.
 
 ```python
->>> tw.getApiProviderMetadata()
+>>> discovery.getApiProviderMetadata()
 ```
 
 ## getDiscoveryCloudMetaData()
@@ -220,7 +255,7 @@ True
 - Get metadata for the cloud providers currently supported by BMC Discovery.
 
 ```python
->>> tw.getDiscoveryCloudMetaData()
+>>> discovery.getDiscoveryCloudMetaData()
 ```
 
 ## discoveryRun(*json*)
@@ -232,7 +267,7 @@ True
 - Create a new snapshot discovery run.
 
 ```python
->>> tw.discoveryRun({
+>>> discovery.discoveryRun({
   "ranges": [ "192.168.1.0/24" ],
   "label": "Network Snapshot",
   "scan_level": "Full Discovery"
@@ -245,7 +280,7 @@ True
 - Get details of all currently processing discovery runs.
 
 ```python
->>> tw.getDiscoveryRuns()
+>>> discovery.getDiscoveryRuns()
 ```
 
 ## getDiscoveryRun(*run_id*)
@@ -257,7 +292,7 @@ True
 - Get details of specific currently processing discovery run.
 
 ```python
->>> tw.getDiscoveryRun("1234567890").json()
+>>> discovery.getDiscoveryRun("1234567890").json()
 [
 	{
 		'label': 'Network Snapshot',
@@ -281,7 +316,7 @@ True
 - Update the state of a specific discovery run.
 
 ```python
->>> tw.updateDiscoveryRun("1234567890", {"cancelled": True}).ok
+>>> discovery.updateDiscoveryRun("1234567890", {"cancelled": True}).ok
 True
 ```
 
@@ -294,25 +329,26 @@ True
 - Get a summary of the results from scanning all endpoints in the run, partitioned by result type.
 
 ```python
->>> tw.getDiscoveryRunResults("1234567890")
+>>> discovery.getDiscoveryRunResults("1234567890")
 ```
 
-## getDiscoveryRunResult(*run_id* [, result=*optional* (default=*"Success"*) ] [, offset=*optional* ] [, results_id=*optional* ] [, format=*optional* ])
+## getDiscoveryRunResult(*run_id* [, result=*optional* (default=*"Success"*) ] [, offset=*optional* ] [, results_id=*optional* ] [, format=*optional* ] [, limit=*optional*] [, delete=*optional*])
 
-| Parameters | Type | Use | Options
-| - | - | - | -
+| Parameters | Type | Use | Options | Default
+| - | - | - | - | -
 | **run_id** | String | Required | |
 | result=**string** | String | | "Success"<br>"Skipped"<br>"NoAccess"<br>"NoResponse"<br>"Error"<br>"Dropped"
 | offset=**intger** | Integer | | |
 | results_id=**string** | String | | |
 | format=**string** | String | | "object"
+| limit=**integer** | Integer | | | 100 |
+| delete=**boolean** | Boolean | | | False |
 
 - Get a summary of the results from scanning all endpoints in the run that had a specific type of result.
 - Example: Retrieve DiscoveryRuns which ended with an Error, and retrieve result rows 51-100.
 
 ```python
->>> tw = tideway.discovery('appliance-hostname','auth-token',limit=50)
->>> tw.getDiscoveryRunResult("1234567890", result="Error", offset=50, results_id="a12b3cd4e5f6")
+>>> discovery.getDiscoveryRunResult("1234567890", result="Error", offset=50, results_id="a12b3cd4e5f6", limit=50)
 ```
 
 ## getDiscoveryRunInferred(*run_id*)
@@ -324,23 +360,25 @@ True
 - Get a summary of all inferred devices from a discovery run, partitioned by device type.
 
 ```python
->>> tw.getDiscoveryRunInferred("1234567890")
+>>> discovery.getDiscoveryRunInferred("1234567890")
 ```
 
-## getDiscoveryRunInferredKind(*run_id*, *inferred_kind* [, offset=*optional* ] [, results_id=*optional* ] [, format=*optional* ]):
+## getDiscoveryRunInferredKind(*run_id*, *inferred_kind* [, offset=*optional* ] [, results_id=*optional* ] [, format=*optional* ] [, limit=*optional*] [, delete=*optional*])
 
-| Parameters | Type | Use | Options
-| - | - | - | -
+| Parameters | Type | Use | Options | Default
+| - | - | - | - | - 
 | **run_id** | String | Required | |
 | **inferred_kind** | String | Required | |
 | offset=**intger** | Integer | | |
 | results_id=**string** | String | | |
 | format=**string** | String | | "object"
+| limit=**integer** | Integer | | | 100 |
+| delete=**boolean** | Boolean | | | False |
 
 - Get a summary of the devices inferred by a discovery run which have a specific inferred kind.
 
 ```python
->>> tw.getDiscoveryRunResult("1234567890", "Host", format="object").json()
+>>> discovery.getDiscoveryRunResult("1234567890", "Host", format="object").json()
 [
 	{
 		'count': 4,
@@ -364,22 +402,25 @@ True
 
 ```python
 >>> import tideway
->>> td = tideway.data('appliance-hostname','auth-token')
+>>> tw = tideway.appliance('appliance-hostname','auth-token')
+>>> data = tw.data()
 ```
 
-## search(*query* [, offset=*optional* ] [, results_id=*optional* ] [, format=*optional* ])
+## search(*query* [, offset=*optional* ] [, results_id=*optional* ] [, format=*optional* ] [, limit=*optional*] [, delete=*optional*])
 
-| Parameters | Type | Use | Options
-| - | - | - | -
-| **query** | String | Required | |
-| offset=**intger** | Integer | | |
-| results_id=**string** | String | | |
-| format=**string** | String | | "object"
+| Parameters | Type | Use | Options | Default
+| - | - | - | - | -
+| **query** | String or JSON | Required | "search string"<br>{"query":"search string"} | |
+| offset=**integer** | Integer | | | |
+| results_id=**string** | String | | | |
+| format=**string** | String | | "object" |
+| limit=**integer** | Integer | | | 100 |
+| delete=**boolean** | Boolean | | | False |
 
 - Run a search query, receiving paginated results.
 
 ```python
->>> td.search("search Host show os_type process with unique()").json()
+>>> data.search("search Host show os_type process with unique()").json()
 [
 	{
 		'count': 12,
@@ -404,19 +445,38 @@ True
 ...
 ```
 
-## searchQuery(*json* [, offset=*optional* ] [, results_id=*optional* ] [, format=*optional* ])
+## search_bulk(*query* [, format=*optional* ] [, limit=*optional*] [, delete=*optional*])
 
-| Parameters | Type | Use | Options
-| - | - | - | -
+| Parameters | Type | Use | Options | Default
+| - | - | - | - | -
+| **query** | String or JSON | Required | "search string"<br>{"query":"search string"} | |
+| format=**string** | String | | "object" |
+| limit=**integer** | Integer | | | 100 |
+| delete=**boolean** | Boolean | | | False |
+
+- Run a search bulk search query, will loop paginated results and return all results as a JSON list object. The function makes use of results_id and offset automatically so these are not required as arguments. May take a long time to run.
+
+```python
+>>> data.search_bulk("search Host show name", limit=500)
+```
+
+## searchQuery(*json* [, offset=*optional* ] [, results_id=*optional* ] [, format=*optional* ] [, limit=*optional*] [, delete=*optional*])
+
+**NOTE: This method is deprecated. You can use search() for both JSON arguments and search strings.**
+
+| Parameters | Type | Use | Options | Default
+| - | - | - | - | -
 | **json** | JSON | Required | {"query":"search string"}
 | offset=**intger** | Integer | | |
 | results_id=**string** | String | | |
 | format=**string** | String | | "object"
+| limit=**integer** | Integer | | | 100 |
+| delete=**boolean** | Boolean | | | False |
 
 - An alternative to GET /data/search, for search queries which are too long for urls.
 
 ```python
->>> td.searchQuery({"query": "search Host show os_class process with unique()"}, format="object").json()
+>>> data.searchQuery({"query": "search Host show os_class process with unique()"}, format="object").json()
 [
 	{
 		'count': 3,
@@ -449,22 +509,24 @@ True
 - Get the state of a node with specified id.
 
 ```python
->>> td.nodeLookup("a1b2c3d4e5f6")
+>>> data.nodeLookup("a1b2c3d4e5f6")
 ```
 
-## lookupNodeKind(*kind* [, offset=*optional* ] [, results_id=*optional* ] [, format=*optional* ])
+## lookupNodeKind(*kind* [, offset=*optional* ] [, results_id=*optional* ] [, format=*optional* ] [, limit=*optional*] [, delete=*optional*])
 
-| Parameters | Type | Use | Options
-| - | - | - | -
+| Parameters | Type | Use | Options | Default
+| - | - | - | - | -
 | **kind** | String | Required | |
 | offset=**intger** | Integer | | |
 | results_id=**string** | String | | |
 | format=**string** | String | | "object"
+| limit=**integer** | Integer | | | 100 |
+| delete=**boolean** | Boolean | | | False |
 
 - Finds all nodes of a specified node kind.
 
 ```python
->>> td.lookupNodeKind("Host")
+>>> data.lookupNodeKind("Host")
 ```
 
 ## graphNode(*node_id* [, focus=*optional* (default=*"sofware-connected"*)] [, apply_rules=*optional* (default=*True*) ])
@@ -478,7 +540,7 @@ True
 - Graph data represents a set of nodes and relationships that are associated to the given node.
 
 ```python
->>> td.graphNode("a1b2c3d4e5f6")
+>>> data.graphNode("a1b2c3d4e5f6")
 ```
 
 ## partitions()
@@ -503,7 +565,7 @@ True
 - The node object of the best candidate based on the provided parameters.
 
 ```python
->>> td.candidate({})
+>>> data.candidate({})
 ```
 
 ## candidates(*json*)
@@ -511,7 +573,7 @@ True
 - Enter parameters to identify a device, the response is a list of candidate nodes ordered by descending score.
 
 ```python
->>> td.candidates({})
+>>> data.candidates({})
 ```
 
 ## twImport(*json*)
@@ -528,7 +590,8 @@ True
 
 ```python
 >>> import tideway
->>> tv = tideway.vault('appliance-hostname','auth-token')
+>>> tw = tideway.appliance('appliance-hostname','auth-token')
+>>> vault = tw.vault()
 ```
 
 ## getVault()
@@ -536,7 +599,7 @@ True
 - Get details of the state of the vault.
 
 ```python
->>> tv.getVault().json()
+>>> vault.getVault().json()
 {'open': True, 'passphrase_saved': False, 'passphrase_set': False}
 ```
 
@@ -549,7 +612,7 @@ True
 - Change the state of the vault.
 
 ```python
->>> tv.updateVault({"open": True,"passphrase": "pass phrase"})
+>>> vault.updateVault({"open": True,"passphrase": "pass phrase"})
 ```
 
 # Credentials
@@ -558,7 +621,8 @@ True
 
 ```python
 >>> import tideway
->>> tc = tideway.credentials('appliance-hostname','auth-token')
+>>> tw = tideway.appliance('appliance-hostname','auth-token')
+>>> credentials = tw.credentials()
 ```
 
 ## listCredentialTypes([ group=*optional* ] [, category=*optional* ])
@@ -571,7 +635,7 @@ True
 - Get a list of all credential types and filter by group and/or category.
 
 ```python
->>> tc.listCredentialTypes(category="Database").json()
+>>> credentials.listCredentialTypes(category="Database").json()
 [
     {
         "categories": [
@@ -597,7 +661,7 @@ True
 - Get the properties of a specific credential type.
 
 ```python
->>> tc.credentialType("oracle").json()
+>>> credentials.credentialType("oracle").json()
 {
     "categories": [
         "Database Credentials"
@@ -622,7 +686,7 @@ True
 - Get a list of credentials.
 
 ```python
->>> tc.listCredentials()
+>>> credentials.listCredentials()
 ```
 
 ## newCredential(*json*)
@@ -634,7 +698,7 @@ True
 - Create a new credential.
 
 ```python
->>> tc.newCredential({
+>>> credentials.newCredential({
   "enabled": True,
   "username": "discovery_service",
   "password": "password",
@@ -660,7 +724,7 @@ True
 - Delete a credential.
 
 ```python
->>> tc.deleteCredential("a1b2c3d4e5f6").ok
+>>> credentials.deleteCredential("a1b2c3d4e5f6").ok
 True
 ```
 
@@ -674,7 +738,7 @@ True
 - Updates partial resources of a credential. Missing properties are left unchanged.
 
 ```python
->>> tc.updateCredential("a1b2c3d4e5f6",{ "enabled" : False }).ok
+>>> credentials.updateCredential("a1b2c3d4e5f6",{ "enabled" : False }).ok
 True
 ```
 
@@ -708,7 +772,8 @@ True
 
 ```python
 >>> import tideway
->>> tk = tideway.knowledge('appliance-hostname','auth-token')
+>>> tw = tideway.appliance('appliance-hostname','auth-token')
+>>> knowledge = tw.knowledge()
 ```
 
 ## getKnowledgeManagement()
@@ -716,7 +781,7 @@ True
 - Get the current state of the appliance's knowledge, including TKU versions.
 
 ```python
->>> tk.getKnowledgeManagement().json()
+>>> knowledge.getKnowledgeManagement().json()
 {
     "devices": "5.0.2020.09.3",
     "latest_edp": {
@@ -738,7 +803,7 @@ True
 - Get the current state of a knowledge upload.
 
 ```python
->>> tk.getUploadStatus().json()
+>>> knowledge.getUploadStatus().json()
 {
     "error": "",
     "last_result": "success",
@@ -766,7 +831,7 @@ True
 - Upload a TKU or pattern module to the appliance.
 
 ```python
->>> tk.uploadKnowledge("TestPattern.tpl","C:/Users/User001/Documents/TestPattern.tpl")
+>>> knowledge.uploadKnowledge("TestPattern.tpl","C:/Users/User001/Documents/TestPattern.tpl")
 ```
 
 # Events
@@ -775,7 +840,8 @@ True
 
 ```python
 >>> import tideway
->>> te = tideway.events('appliance-hostname','auth-token')
+>>> tw = tideway.appliance('appliance-hostname','auth-token')
+>>> events = tw.events()
 ```
 
 ## status(*json*)
@@ -787,7 +853,7 @@ True
 - Returns a unique ID if the event has been recorded, otherwise an empty string is returned e.g. if the event source has been disabled.
 
 ```python
->>> te.status({"source":"Event1","type":"EventType1"}
+>>> events.status({"source":"Event1","type":"EventType1"}
 })
 ```
 
@@ -797,7 +863,8 @@ True
 
 ```python
 >>> import tideway
->>> topo = tideway.topology('appliance-hostname','auth-token')
+>>> tw = tideway.appliance('appliance-hostname','auth-token')
+>>> topo = tw.topology()
 ```
 
 ## graphNode(*node_id* [, focus=*optional* (default=*"sofware-connected"*)] [, apply_rules=*optional* (default=*True*) ])

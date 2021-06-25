@@ -86,7 +86,7 @@ docTable = [
                     ],
                 [
                     "/data/search",
-                    "searchQuery(body)",
+                    "search(body)",
                     "An alternative to GET /data/search, for search queries which are too long for urls."
                     ],
                 [
@@ -96,7 +96,7 @@ docTable = [
                     ],
                 [
                     "/data/search?format=object",
-                    "searchQuery(body,format='object')",
+                    "search(body,format='object')",
                     "An alternative to GET /data/search?format=object, for search queries which are too long for urls."
                     ],
                 [
@@ -106,8 +106,13 @@ docTable = [
                     ],
                 [
                     "/data/search?format=tree",
-                    "searchQuery(body,format='tree')",
+                    "search(body,format='tree')",
                     "An alternative to GET /data/search?format=tree, for search queries which are too long for urls."
+                    ],
+                [
+                    "/data/search",
+                    "search_bulk(query/body)",
+                    "Run a bulk search query - loops through paginated results and returns a set of JSON results."
                     ],
                 [
                     "/data/candidate",

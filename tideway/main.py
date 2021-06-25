@@ -21,9 +21,33 @@ class Appliance:
         self.url = self.api + "/v" + self.api_version
         self.verify = ssl_verify
 
-    def knowing(self):
-        k = tideway.knowledge(self.target, self.token)
+    def credentials(self):
+        c = tideway.credentials(self.target, self.token, api_version=self.api_version, ssl_verify=self.verify)
+        return c
+
+    def data(self):
+        d = tideway.data(self.target, self.token, api_version=self.api_version, ssl_verify=self.verify)
+        return d
+
+    def discovery(self):
+        di = tideway.discovery(self.target, self.token, api_version=self.api_version, ssl_verify=self.verify)
+        return di
+
+    def events(self):
+        e = tideway.events(self.target, self.token, api_version=self.api_version, ssl_verify=self.verify)
+        return e
+
+    def knowledge(self):
+        k = tideway.knowledge(self.target, self.token, api_version=self.api_version, ssl_verify=self.verify)
         return k
+
+    def topology(self):
+        t = tideway.topology(self.target, self.token, api_version=self.api_version, ssl_verify=self.verify)
+        return t
+
+    def vault(self):
+        v = tideway.vault(self.target, self.token, api_version=self.api_version, ssl_verify=self.verify)
+        return v
 
     ### Admin ###
 
