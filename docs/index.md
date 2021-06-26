@@ -26,7 +26,7 @@ Tideway follows BMC Discovery's well-structured and documented REST API which ca
 
 Tideway removes the extra layer of manually constructing a URL and parameters for python requests allowing you to query API supported features of Discovery seamlessly and faster than if you were to navigate via the GUI.
 
-## Table of contents
+## Table of Contents
 
 - [Installation](#installation)
 - [Quickstart Guide](#quickstart-guide)

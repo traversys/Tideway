@@ -1,3 +1,1 @@
-theme: jekyll-theme-leap-day
-gem "github-pages", group: :jekyll_plugins
-show_downloads: "true"
+remote_theme: rundocs/jekyll-rtd-theme
