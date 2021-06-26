@@ -1,10 +1,6 @@
 ---
 sort: 1
 ---
-
-# Test Documentation
-
-{% include list.liquid all=true %}
 # Tideway
 
 Simplified Python library for BMC Discovery API Interface that makes use of the Python Requests module (https://github.com/psf/requests) and uses the same response handler.
