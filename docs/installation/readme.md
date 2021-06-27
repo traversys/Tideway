@@ -2,8 +2,13 @@
 sort: 2
 ---
 
-# Configuration
-
 {% include list.liquid %}
 
 # Installation
+
+Install.
+
+## Configuration
+
+
+Configure.
