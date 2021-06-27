@@ -27,17 +27,6 @@ Tideway follows BMC Discovery's well-structured and documented REST API which ca
 
 Tideway removes the extra layer of manually constructing a URL and parameters for python requests allowing you to query API supported features of Discovery seamlessly and faster than if you were to navigate via the GUI.
 
-## Test Contents
-
-{% include list.liquid all=true %}
-
-## Contents
-
-- [Tideway](#tideway)
-  - [Test Contents](#test-contents)
-  - [Contents](#contents)
-  - [Installation](#installation)
-
 ## Installation
 
 - Tideway can be installed via PyPI:
@@ -47,3 +36,7 @@ $ python -m pip install tideway
 ```
 
 - Tideway supports BMC Discovery 11.3+, API v1.2 using Python 3.
+
+## Contents
+
+{% include list.liquid all=true %}
