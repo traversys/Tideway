@@ -1,10 +1,10 @@
 ---
-sort: 2
+sort: 1
 ---
 
-{% include list.liquid %}
-
 # Installation
+
+{% include list.liquid %}
 
 Install.
 
