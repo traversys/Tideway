@@ -12,7 +12,11 @@ sort: 3
 >>> data = tw.data()
 ```
 
-### search(*query* [, offset=*optional* ] [, results_id=*optional* ] [, format=*optional* ] [, limit=*optional*] [, delete=*optional*])
+## search()
+
+- Run a search query, receiving paginated results.
+
+Syntax: `search(*query* [, offset=*optional* ] [, results_id=*optional* ] [, format=*optional* ] [, limit=*optional*] [, delete=*optional*])`
 
 | Parameters | Type | Use | Options | Default
 | - | - | - | - | -
@@ -22,8 +26,6 @@ sort: 3
 | format=**string** | String | | "object" |
 | limit=**integer** | Integer | | | 100 |
 | delete=**boolean** | Boolean | | | False |
-
-- Run a search query, receiving paginated results.
 
 ```python
 >>> data.search("search Host show os_type process with unique()").json()
@@ -51,7 +53,15 @@ sort: 3
 ...
 ```
 
-### search_bulk(*query* [, format=*optional* ] [, limit=*optional*] [, delete=*optional*])
+## search_bulk()
+
+- Run a search bulk search query, will loop paginated results and return all results as a JSON list object. The function makes use of results_id and offset automatically so these are not required as arguments.
+
+```note
+This function may take a long time to run as it will be run multiple API calls until the entire query is fulfilled.
+```
+
+Syntax: `search_bulk(*query* [, format=*optional* ] [, limit=*optional*] [, delete=*optional*])`
 
 | Parameters | Type | Use | Options | Default
 | - | - | - | - | -
@@ -60,15 +70,19 @@ sort: 3
 | limit=**integer** | Integer | | | 100 |
 | delete=**boolean** | Boolean | | | False |
 
-- Run a search bulk search query, will loop paginated results and return all results as a JSON list object. The function makes use of results_id and offset automatically so these are not required as arguments. May take a long time to run.
-
 ```python
 >>> data.search_bulk("search Host show name", limit=500)
 ```
 
-### searchQuery(*json* [, offset=*optional* ] [, results_id=*optional* ] [, format=*optional* ] [, limit=*optional*] [, delete=*optional*])
+## searchQuery()
 
-**NOTE: This method is deprecated. You can use search() for both JSON arguments and search strings.**
+- An alternative to GET /data/search, for search queries which are too long for urls.
+
+```note
+This method is deprecated. You can use search() for both JSON arguments and search strings.
+```
+
+Syntax: `searchQuery(*json* [, offset=*optional* ] [, results_id=*optional* ] [, format=*optional* ] [, limit=*optional*] [, delete=*optional*])`
 
 | Parameters | Type | Use | Options | Default
 | - | - | - | - | -
@@ -78,8 +92,6 @@ sort: 3
 | format=**string** | String | | "object"
 | limit=**integer** | Integer | | | 100 |
 | delete=**boolean** | Boolean | | | False |
-
-- An alternative to GET /data/search, for search queries which are too long for urls.
 
 ```python
 >>> data.searchQuery({"query": "search Host show os_class process with unique()"}, format="object").json()
@@ -103,7 +115,11 @@ sort: 3
 ]
 ```
 
-### nodeLookup(*node_id* [, relationships=*optional* (default=*False*) ] [, traverse=*optional* ] [, flags=*optional* ])
+## nodeLookup()
+
+- Get the state of a node with specified id.
+
+Syntax: `nodeLookup(*node_id* [, relationships=*optional* (default=*False*) ] [, traverse=*optional* ] [, flags=*optional* ])`
 
 | Parameters | Type | Use | Options
 | - | - | - | -
@@ -112,13 +128,15 @@ sort: 3
 | traverse=**string** | String | | "NodeKind:Relationship:NodeKind:Node"
 | flags=**string** | String | | "include_destroyed"<br>"exclude_current" |
 
-- Get the state of a node with specified id.
-
 ```python
 >>> data.nodeLookup("a1b2c3d4e5f6")
 ```
 
-### lookupNodeKind(*kind* [, offset=*optional* ] [, results_id=*optional* ] [, format=*optional* ] [, limit=*optional*] [, delete=*optional*])
+## lookupNodeKind()
+
+- Finds all nodes of a specified node kind.
+
+Syntax: `lookupNodeKind(*kind* [, offset=*optional* ] [, results_id=*optional* ] [, format=*optional* ] [, limit=*optional*] [, delete=*optional*])`
 
 | Parameters | Type | Use | Options | Default
 | - | - | - | - | -
@@ -129,13 +147,15 @@ sort: 3
 | limit=**integer** | Integer | | | 100 |
 | delete=**boolean** | Boolean | | | False |
 
-- Finds all nodes of a specified node kind.
-
 ```python
 >>> data.lookupNodeKind("Host")
 ```
 
-### graphNode(*node_id* [, focus=*optional* (default=*"sofware-connected"*)] [, apply_rules=*optional* (default=*True*) ])
+## graphNode()
+
+- Graph data represents a set of nodes and relationships that are associated to the given node.
+
+Syntax: `graphNode(*node_id* [, focus=*optional* (default=*"sofware-connected"*)] [, apply_rules=*optional* (default=*True*) ])`
 
 | Parameters | Type | Use | Options
 | - | - | - | -
@@ -143,13 +163,11 @@ sort: 3
 | focus=**string** | String | | "software-connected"<br>"software"<br>"infrastructure"
 | apply_rules=**boolean** | Boolean | | True<br>False
 
-- Graph data represents a set of nodes and relationships that are associated to the given node.
-
 ```python
 >>> data.graphNode("a1b2c3d4e5f6")
 ```
 
-### partitions()
+## partitions()
 
 - Graph data represents a set of nodes and relationships that are associated to the given node.
 
@@ -166,26 +184,34 @@ sort: 3
 }
 ```
 
-### candidate(*json*)
+## candidate()
 
 - The node object of the best candidate based on the provided parameters.
+
+Syntax: `candidate(*json*)`
 
 ```python
 >>> data.candidate({})
 ```
 
-### candidates(*json*)
+## candidates()
 
 - Enter parameters to identify a device, the response is a list of candidate nodes ordered by descending score.
+
+Syntax: `candidates(*json*)`
 
 ```python
 >>> data.candidates({})
 ```
 
-### twImport(*json*)
+## twImport()
 
 - Imports data. Returns the import UUID.
 
-### twWrite(*json*)
+Syntax: `twImport(*json*)`
+
+### twWrite()
 
 - Perform arbitrary write operations.
+
+Syntax: `twWrite(*json*)`

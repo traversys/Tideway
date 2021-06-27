@@ -55,7 +55,11 @@ sort: 6
 }
 ```
 
-## uploadKnowledge(*filename*, *file* [, activate=*optional* (default=*True*) ] [, allow_restart=*optional* (default=*False*)])
+## uploadKnowledge()
+
+- Upload a TKU or pattern module to the appliance.
+
+Syntax: `uploadKnowledge(*filename*, *file* [, activate=*optional* (default=*True*) ] [, allow_restart=*optional* (default=*False*)])`
 
 | Parameters | Type | Use | Options
 | - | - | - | -
@@ -63,8 +67,6 @@ sort: 6
 | **file** | String | Required | |
 | activate=**boolean** | Boolean | | True<br>False |
 | allow_restart=**boolean** | Boolean | | True<br>False |
-
-- Upload a TKU or pattern module to the appliance.
 
 ```python
 >>> knowledge.uploadKnowledge("TestPattern.tpl","C:/Users/User001/Documents/TestPattern.tpl")

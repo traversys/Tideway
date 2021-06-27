@@ -21,13 +21,15 @@ sort: 4
 {'open': True, 'passphrase_saved': False, 'passphrase_set': False}
 ```
 
-## updateVault(*json*)
+## updateVault()
+
+- Change the state of the vault.
+
+Syntax: `updateVault(*json*)`
 
 | Parameters | Type | Use
 | - | - | -
 | **json** | JSON | Required
-
-- Change the state of the vault.
 
 ```python
 >>> vault.updateVault({"open": True,"passphrase": "pass phrase"})

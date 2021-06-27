@@ -12,13 +12,15 @@ sort: 7
 >>> events = tw.events()
 ```
 
-## status(*json*)
+## status()
+
+- Returns a unique ID if the event has been recorded, otherwise an empty string is returned e.g. if the event source has been disabled.
+
+Syntax: `status(*json*)`
 
 | Parameters | Type | Use
 | - | - | -
 | **json** | JSON | Required |
-
-- Returns a unique ID if the event has been recorded, otherwise an empty string is returned e.g. if the event source has been disabled.
 
 ```python
 >>> events.status({"source":"Event1","type":"EventType1"}

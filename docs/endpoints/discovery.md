@@ -25,13 +25,15 @@ sort: 2
 }
 ```
 
-## setDiscoveryStatus(*json*)
+## setDiscoveryStatus()
+
+- Start or stop the discovery process.
+
+Syntax: `setDiscoveryStatus(*json*)`
 
 | Parameters | Type | Use
 | - | - | -
 | **json** | JSON | Required
-
-- Start or stop the discovery process.
 
 ```python
 >>> discovery.setDiscoveryStatus({"status": "running"}).ok
@@ -54,13 +56,15 @@ True
 >>> discovery.getDiscoveryCloudMetaData()
 ```
 
-## discoveryRun(*json*)
+## discoveryRun()
+
+- Create a new snapshot discovery run.
+
+Syntax: `discoveryRun(*json*)`
 
 | Parameters | Type | Use
 | - | - | -
 | **json** | JSON | Required
-
-- Create a new snapshot discovery run.
 
 ```python
 >>> discovery.discoveryRun({
@@ -77,13 +81,15 @@ True
 ```python
 >>> discovery.getDiscoveryRuns()
 ```
-## getDiscoveryRun(*run_id*)
+## getDiscoveryRun()
+
+- Get details of specific currently processing discovery run.
+
+Syntax: `getDiscoveryRun(*run_id*)`
 
 | Parameters | Type | Use
 | - | - | -
 | **run_id** | String | Required
-
-- Get details of specific currently processing discovery run.
 
 ```python
 >>> discovery.getDiscoveryRun("1234567890").json()
@@ -99,31 +105,40 @@ True
 	}
 ]
 ```
-## updateDiscoveryRun(*run_id*, *json*)
+## updateDiscoveryRun()
+
+- Update the state of a specific discovery run.
+
+Syntax: `updateDiscoveryRun(*run_id*, *json*)`
 
 | Parameters | Type | Use
 | - | - | -
 | **run_id** | String | Required
 | **json** | JSON | Required
 
-- Update the state of a specific discovery run.
-
 ```python
 >>> discovery.updateDiscoveryRun("1234567890", {"cancelled": True}).ok
 True
 ```
-## getDiscoveryRunResults(*run_id*)
+## getDiscoveryRunResults()
+
+- Get a summary of the results from scanning all endpoints in the run, partitioned by result type.
+
+Syntax: `getDiscoveryRunResults(*run_id*)`
 
 | Parameters | Type | Use
 | - | - | -
 | **run_id** | String | Required
 
-- Get a summary of the results from scanning all endpoints in the run, partitioned by result type.
-
 ```python
 >>> discovery.getDiscoveryRunResults("1234567890")
 ```
-## getDiscoveryRunResult(*run_id* [, result=*optional* (default=*"Success"*) ] [, offset=*optional* ] [, results_id=*optional* ] [, format=*optional* ] [, limit=*optional*] [, delete=*optional*])
+## getDiscoveryRunResult()
+
+- Get a summary of the results from scanning all endpoints in the run that had a specific type of result.
+- Example: Retrieve DiscoveryRuns which ended with an Error, and retrieve result rows 51-100.
+
+Syntax: `getDiscoveryRunResult(*run_id* [, result=*optional* (default=*"Success"*) ] [, offset=*optional* ] [, results_id=*optional* ] [, format=*optional* ] [, limit=*optional*] [, delete=*optional*])`
 
 | Parameters | Type | Use | Options | Default
 | - | - | - | - | -
@@ -135,24 +150,28 @@ True
 | limit=**integer** | Integer | | | 100 |
 | delete=**boolean** | Boolean | | | False |
 
-- Get a summary of the results from scanning all endpoints in the run that had a specific type of result.
-- Example: Retrieve DiscoveryRuns which ended with an Error, and retrieve result rows 51-100.
-
 ```python
 >>> discovery.getDiscoveryRunResult("1234567890", result="Error", offset=50, results_id="a12b3cd4e5f6", limit=50)
 ```
-## getDiscoveryRunInferred(*run_id*)
+## getDiscoveryRunInferred()
+
+- Get a summary of all inferred devices from a discovery run, partitioned by device type.
+
+Syntax: `getDiscoveryRunInferred(*run_id*)`
 
 | Parameters | Type | Use
 | - | - | -
 | **run_id** | String | Required
 
-- Get a summary of all inferred devices from a discovery run, partitioned by device type.
-
 ```python
 >>> discovery.getDiscoveryRunInferred("1234567890")
 ```
-## getDiscoveryRunInferredKind(*run_id*, *inferred_kind* [, offset=*optional* ] [, results_id=*optional* ] [, format=*optional* ] [, limit=*optional*] [, delete=*optional*])
+
+## getDiscoveryRunInferredKind()
+
+- Get a summary of the devices inferred by a discovery run which have a specific inferred kind.
+
+Syntax: `getDiscoveryRunInferredKind(*run_id*, *inferred_kind* [, offset=*optional* ] [, results_id=*optional* ] [, format=*optional* ] [, limit=*optional*] [, delete=*optional*])`
 
 | Parameters | Type | Use | Options | Default
 | - | - | - | - | - 
@@ -163,8 +182,6 @@ True
 | format=**string** | String | | "object"
 | limit=**integer** | Integer | | | 100 |
 | delete=**boolean** | Boolean | | | False |
-
-- Get a summary of the devices inferred by a discovery run which have a specific inferred kind.
 
 ```python
 >>> discovery.getDiscoveryRunResult("1234567890", "Host", format="object").json()
