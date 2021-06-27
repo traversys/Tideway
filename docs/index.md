@@ -3,7 +3,7 @@ sort: 1
 ---
 # Tideway
 
-Simplified Python library for BMC Discovery API Interface that makes use of the Python Requests module (https://github.com/psf/requests) and uses the same response handler.
+Simplified Python library for BMC Discovery API Interface that makes use of the Python Requests module [https://github.com/psf/requests](https://github.com/psf/requests) and uses the same response handler.
 
 ```python
 >>> import tideway
