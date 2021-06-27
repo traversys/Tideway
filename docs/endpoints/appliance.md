@@ -35,9 +35,11 @@ https://appliance-hostname/api/v1.1/swagger.json
     },
 ...
 ```
-## help([ *"API Endpoint"* ])
+## help()
 
 - Get help on specific Discovery API endpoint and function to use. Outputs full list by default.
+
+Syntax: `help([ *"API Endpoint"* ])`
 
 ```python
 >>> tw.help("/vault/credentials/{cred_id}")

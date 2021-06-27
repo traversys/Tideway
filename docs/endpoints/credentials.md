@@ -12,14 +12,16 @@ sort: 5
 >>> credentials = tw.credentials()
 ```
 
-## listCredentialTypes([ group=*optional* ] [, category=*optional* ])
+## listCredentialTypes()
+
+- Get a list of all credential types and filter by group and/or category.
 
 | Parameters | Type
 | - | -
 | group=**string** | String
 | category=**string** | String
 
-- Get a list of all credential types and filter by group and/or category.
+Syntax: `listCredentialTypes([ group=*optional* ] [, category=*optional* ])`
 
 ```python
 >>> credentials.listCredentialTypes(category="Database").json()
@@ -39,13 +41,15 @@ sort: 5
 ...
 ```
 
-## credentialType(*cred_type_name*)
+## credentialType()
+
+- Get the properties of a specific credential type.
+
+Syntax: `credentialType(*cred_type_name*)`
 
 | Parameters | Type | Use
 | - | - | -
 | **cred_type_name** | String | Required
-
-- Get the properties of a specific credential type.
 
 ```python
 >>> credentials.credentialType("oracle").json()
@@ -64,25 +68,29 @@ sort: 5
 }
 ```
 
-## listCredentials([cred_id=*optional*])
+## listCredentials()
+
+- Get a list of credentials.
+
+Syntax: `listCredentials([cred_id=*optional*])`
 
 | Parameters | Type
 | - | -
 | cred_id=**string** | String
 
-- Get a list of credentials.
-
 ```python
 >>> credentials.listCredentials()
 ```
 
-## newCredential(*json*)
+## newCredential()
+
+- Create a new credential.
+
+Syntax: `newCredential(*json*)`
 
 | Parameters | Type | Use
 | - | - | -
 | **json** | String | Required
-
-- Create a new credential.
 
 ```python
 >>> credentials.newCredential({
@@ -102,41 +110,51 @@ sort: 5
 }
 ```
 
-## deleteCredential(*cred_id*)
+## deleteCredential()
+
+- Delete a credential.
+
+Syntax: `deleteCredential(*cred_id*)`
 
 | Parameters | Type | Use
 | - | - | -
 | cred_id=**string** | String | Required
-
-- Delete a credential.
 
 ```python
 >>> credentials.deleteCredential("a1b2c3d4e5f6").ok
 True
 ```
 
-## updateCredential(*cred_id*, *json*)
+## updateCredential()
+
+- Updates partial resources of a credential. Missing properties are left unchanged.
+
+Syntax: `updateCredential(*cred_id*, *json*)`
 
 | Parameters | Type | Use
 | - | - | -
 | cred_id=**string** | String | Required
 | **json** | String | Required
-
-- Updates partial resources of a credential. Missing properties are left unchanged.
 
 ```python
 >>> credentials.updateCredential("a1b2c3d4e5f6",{ "enabled" : False }).ok
 True
 ```
 
-## replaceCredential(*cred_id*, *json*)
+## replaceCredential()
+
+- Replaces a single credential.
+
+```note
+All required credential properties must be present. Optional properties that are missing will be reset to their defaults.
+```
+
+Syntax: `replaceCredential(*cred_id*, *json*)`
 
 | Parameters | Type | Use
 | - | - | -
 | cred_id=**string** | String | Required
 | **json** | String | Required
-
-- Replaces a single credential. All required credential properties must be present. Optional properties that are missing will be reset to their defaults.
 
 ```python
 >>> tc.replaceCredential("a1b2c3d4e5f6",{
