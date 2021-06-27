@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="tideway",
-    version="0.1.0",
+    version="0.1.1",
     author="Wes Moskal-Fitzpatrick",
     author_email="wes@traversys.io",
     description="library for BMC Discovery API Interface.",
@@ -21,5 +21,6 @@ setuptools.setup(
     python_requires='>=3.0',
     install_requires=[
         'requests',
+        'tabulate',
     ]
 )

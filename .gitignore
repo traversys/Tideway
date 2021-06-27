@@ -3,3 +3,5 @@ dist/
 tideway/__pycache__
 tideway.egg-info/
 test.py
+examples.py
+.DS_Store
