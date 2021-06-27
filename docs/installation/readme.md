@@ -1,5 +1,9 @@
 ---
-sort: 1
---
+sort: 2
+---
+
+# Configuration
+
+{% include list.liquid %}
 
 # Installation

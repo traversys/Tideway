@@ -5,6 +5,8 @@ sort: 1
 
 Simplified Python library for BMC Discovery API Interface that makes use of the Python Requests module [https://github.com/psf/requests](https://github.com/psf/requests) and uses the same response handler.
 
+{% include list.liquid %}
+
 ```python
 >>> import tideway
 >>> tw = tideway.appliance('appliance-hostname','auth-token')
