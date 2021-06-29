@@ -6,7 +6,9 @@ sort: 2
 
 Initiate a Discovery object for the instance of Discovery you intend to query.
 
-Syntax: <pre>**tideway.discovery(**__target__, __token__ [, _api_version_ ] [, _ssl_verify_ ] [, _limit_ ] [, _offset_ ]**)**</pre>
+Syntax:
+
+<pre>**tideway.discovery(**__target__, __token__ [, _api_version_ ] [, _ssl_verify_ ] [, _limit_ ] [, _offset_ ]**)**</pre>
 
 Initiation:
 ```python
@@ -19,7 +21,9 @@ Initiation:
 
 Get the current status of the discovery process.
 
-Syntax: <pre>**.getDiscoveryStatus()**</pre>
+Syntax:
+
+<pre>**.getDiscoveryStatus()**</pre>
 
 Example:
 ```python
@@ -31,7 +35,9 @@ Example:
 
 Start or stop the discovery process.
 
-Syntax: <pre>**setDiscoveryStatus(__json__)**</pre>
+Syntax:
+
+<pre>**setDiscoveryStatus(__json__)**</pre>
 
 | Parameters   | Type        | Required | Default Value | Options |
 | ------------ | ----------- | :------: | ------------- | --------|
@@ -51,7 +57,9 @@ True
 
 Get metadata for the API providers currently supported by BMC Discovery.
 
-Syntax: <pre>**.getApiProviderMetadata()**</pre>
+Syntax:
+
+<pre>**.getApiProviderMetadata()**</pre>
 
 ```python
 >>> discovery.getApiProviderMetadata().json()[0]['cred_params'][0]
@@ -62,7 +70,9 @@ Syntax: <pre>**.getApiProviderMetadata()**</pre>
 
 Get metadata for the cloud providers currently supported by BMC Discovery.
 
-Syntax: <pre>**.getDiscoveryCloudMetaData()**</pre>
+Syntax:
+
+<pre>**.getDiscoveryCloudMetaData()**</pre>
 
 ```python
 discovery.getDiscoveryCloudMetaData().json()[0]['cred_params'][0]
@@ -73,7 +83,9 @@ discovery.getDiscoveryCloudMetaData().json()[0]['cred_params'][0]
 
 Create a new snapshot discovery run.
 
-Syntax: <pre>**.discoveryRun(__json__)**</pre>
+Syntax:
+
+<pre>**.discoveryRun(__json__)**</pre>
 
 | Parameters   | Type        | Required | Default Value | Options |
 | ------------ | ----------- | :------: | ------------- | --------|
@@ -88,7 +100,9 @@ True
 
 Get details of all currently processing discovery runs.
 
-Syntax: <pre>**.getDiscoveryRuns()**</pre>
+Syntax:
+
+<pre>**.getDiscoveryRuns()**</pre>
 
 Example:
 ```python
@@ -100,7 +114,9 @@ Example:
 
 Get details of specific currently processing discovery run.
 
-Syntax: <pre>**.getDiscoveryRun(__run_id__)**</pre>
+Syntax:
+
+<pre>**.getDiscoveryRun(__run_id__)**</pre>
 
 | Parameters   | Type   | Required | Default Value | Options |
 | ------------ | ------ | :------: | ------------- | --------|
@@ -128,7 +144,9 @@ Example:
 
 Update the state of a specific discovery run.
 
-Syntax: <pre>**.updateDiscoveryRun(__run_id__, __json__)**</pre>
+Syntax:
+
+<pre>**.updateDiscoveryRun(__run_id__, __json__)**</pre>
 
 | Parameters   | Type        | Required | Default Value | Options |
 | ------------ | ----------- | :------: | ------------- | --------|
@@ -145,7 +163,9 @@ True
 
 Get a summary of the results from scanning all endpoints in the run, partitioned by result type.
 
-Syntax: <pre>**.getDiscoveryRunResults(__run_id__)**</pre>
+Syntax:
+
+<pre>**.getDiscoveryRunResults(__run_id__)**</pre>
 
 | Parameters   | Type        | Required | Default Value | Options |
 | ------------ | ----------- | :------: | ------------- | --------|
@@ -175,7 +195,9 @@ Example:
 
 Get a summary of the results from scanning all endpoints in the run that had a specific type of result.
 
-Syntax: <pre>**.getDiscoveryRunResult(**__run_id__ [, result ] [, offset ] [, results_id ] [, format ] [, limit ] [, delete ]**)**</pre>
+Syntax:
+
+<pre>**.getDiscoveryRunResult(**__run_id__ [, result ] [, offset ] [, results_id ] [, format ] [, limit ] [, delete ]**)**</pre>
 
 | Parameters   | Type        | Required | Default Value | Options  |
 | ------------ | ----------- | :------: | ------------- | -------- |
@@ -195,7 +217,9 @@ Example: Retrieve DiscoveryRuns which ended with an Error, and retrieve result r
 
 Get a summary of all inferred devices from a discovery run, partitioned by device type.
 
-Syntax: <pre>**.getDiscoveryRunInferred(__run_id__)**</pre>
+Syntax:
+
+<pre>**.getDiscoveryRunInferred(__run_id__)**</pre>
 
 | Parameters   | Type        | Required | Default Value | Options  |
 | ------------ | ----------- | :------: | ------------- | -------- |
@@ -210,7 +234,9 @@ Example:
 
 Get a summary of the devices inferred by a discovery run which have a specific inferred kind.
 
-Syntax: <pre>**.getDiscoveryRunInferredKind(**__run_id__ , __inferred_kind__ [, offset ] [, results_id ] [, format ] [, limit ] [, delete ]**)**</pre>
+Syntax:
+
+<pre>**.getDiscoveryRunInferredKind(**__run_id__ , __inferred_kind__ [, offset ] [, results_id ] [, format ] [, limit ] [, delete ]**)**</pre>
 
 | Parameters    | Type        | Required | Default Value | Options  |
 | ------------- | ----------- | :------: | ------------- | -------- |

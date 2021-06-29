@@ -6,7 +6,9 @@ sort: 1
 
 Initiate an Appliance object for the instance of Discovery you intend to query.
 
-Syntax: <pre>**tideway.appliance(**__target__, __token__ [, _api_version_ ] [, _ssl_verify_ ] [, _limit_ ] [, _offset_ ]**)**</pre>
+Syntax:
+
+<pre>**tideway.appliance(**__target__, __token__ [, _api_version_ ] [, _ssl_verify_ ] [, _limit_ ] [, _offset_ ]**)**</pre>
 
 Initiation:
 ```python
@@ -18,7 +20,9 @@ Initiation:
 
 Get the versions of the API supported by a BMC Discovery version.
 
-Syntax: <pre>**.about()**</pre>
+Syntax:
+
+<pre>**.about()**</pre>
 
 Example:
 ```python
@@ -30,7 +34,9 @@ Example:
 
 Get information about the appliance, like its version and versions of the installed packages.
 
-Syntax: <pre>**.admin()**</pre>
+Syntax:
+
+<pre>**.admin()**</pre>
 
 Example:
 ```python
@@ -50,7 +56,9 @@ Example:
 
 Get JSON swagger file which contains the API schema.
 
-Syntax: <pre>**.swagger()**</pre>
+Syntax:
+
+<pre>**.swagger()**</pre>
 
 Example:
 ```python
@@ -71,7 +79,9 @@ Example:
 
 - Get a summary of the appliance status, and details of which baseline checks have passed or failed.
 
-Syntax: <pre>**.baseline()**</pre>
+Syntax:
+
+<pre>**.baseline()**</pre>
 
 ```python
 >>> tw.baseline().json()['results']['FAILED'][0]
@@ -85,7 +95,9 @@ Get the latest signed licensing report.
 - CSV option returns raw license data in CSV format as a zip file for offline analysis.
 - RAW option return an encrypted raw license object for import to another appliance.
 
-Syntax: <pre>**.licensing(**[ _content_type_ ]**)**</pre>
+Syntax:
+
+<pre>**.licensing(**[ _content_type_ ]**)**</pre>
 
 | Parameters   | Type   | Required | Default Value | Options |
 | ------------ | ------ | :------: | ------------- | ------- | 
@@ -107,7 +119,9 @@ Report end time  : 2021-01-21 23:00:00.410085+00:00
 
 - Get help on specific Discovery API endpoint and function to use. Outputs full list by default.
 
-Syntax: <pre>**.help(**([ _endpoint_ ])**)**</pre>
+Syntax:
+
+<pre>**.help(**([ _endpoint_ ])**)**</pre>
 
 | Parameters   | Type   | Required | Default Value | Options                                         |
 | ------------ | ------ | :------: | ------------- | ----------------------------------------------- |
