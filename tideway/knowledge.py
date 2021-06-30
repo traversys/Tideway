@@ -21,9 +21,7 @@ class Knowledge(appliance):
 
     def uploadKnowledge(self, filename, file, activate=True, allow_restart=False):
         '''Upload a TKU or pattern module to the appliance.'''
-        if activate:
-            self.params['activate'] = activate
-        if allow_restart:
-            self.params['allow_restart'] = allow_restart
+        self.params['activate'] = activate
+        self.params['allow_restart'] = allow_restart
         response = dr.filePost(self, "/knowledge/{}".format(filename), file)
         return response

@@ -4,66 +4,74 @@ sort: 9
 
 # Admin
 
-- Initiate an Admin object for the instance of Discovery you intend to query.
+Initiate an Admin object for the instance of Discovery you intend to query.
+
+Syntax:
+
+```
+tideway.admin(__target__, __token__ [, _api_version_ ] [, _ssl_verify_ ])
+```
+
+Initiation:
 
 ```python
 >>> import tideway
->>> ta = tideway.admin('appliance-hostname','auth-token')
+>>> tw = tideway.admin('appliance-hostname','auth-token')
 ```
 
 ## baseline()
 
 - Get a summary of the appliance status, and details of which baseline checks have passed or failed.
 
+Syntax:
+
+```
+.baseline()
+```
+
+Example:
+
 ```python
->>> ta.baseline().json()
-{
-    "results": {
-        "FAILED": [
-            {
-                "enabled": true,
-                "message": "MAJOR: This appliance has insufficent resources",
-                "name": "Appliance Specification",
-                "severity": "MAJOR"
-            },
-            {
-                "details": [
-                    {
-                        "messages": [
-                            "2 credentials have been added",
-...
+>>> tw.baseline().json()['results']['FAILED'][0]
+{'enabled': True, 'message': 'MAJOR: This appliance has insufficent resources', 'name': 'Appliance Specification', 'severity': 'MAJOR'}
 ```
 
 ## about()
 
-- Get information about the appliance, like its version and versions of the installed packages.
+Get the versions of the API supported by a BMC Discovery version.
 
+Syntax:
+
+```
+.about()
+```
+
+Example:
 ```python
->>> ta.about()
-{
-    "versions": {
-        "devices": "5.0.2020.09.3",
-        "os_updates": "7.20.08.25",
-        "product": "12.1",
-        "product_content": "2.0.2020.09.3"
-    }
-}
+>>> tw.about().json()
+{'api_versions': ['1.0', '1.1', '1.2'], 'component': 'REST API', 'product': 'BMC Discovery', 'version': '12.2'}
 ```
 
 ## licensing()
 
-- Get the latest signed licensing report.
+Get the latest signed licensing report.
+
 - CSV option returns raw license data in CSV format as a zip file for offline analysis.
 - RAW option return an encrypted raw license object for import to another appliance.
 
-Syntax: `licensing([ content_type=*optional* (default="text/plain") ])`
+Syntax:
 
-| Parameters | Type | Use | Options
-| - | - | - | -
-| content_type=**string** | String | | "text/plain"<br>"csv"<br>"raw" |
+```
+.licensing([ _content_type_ ])
+```
 
+| Parameters   | Type   | Required | Default Value | Options |
+| ------------ | ------ | :------: | ------------- | ------- | 
+| content_type | String | No       | "text/plain"  | <ul><li>"text/plain"</li><li>"csv"</li><li>"raw"</li></ul>
+
+Example:
 ```python
->>> ta.licensing()
+>>> tw.licensing()
 -----BEGIN LICENSE REPORT-----
 License report
 ==============

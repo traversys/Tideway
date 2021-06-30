@@ -4,7 +4,15 @@ sort: 6
 
 # Knowledge
 
-- Initiate a Knowledge object for the instance of Discovery you intend to query.
+Initiate a Knowledge object for the instance of Discovery you intend to query.
+
+Syntax:
+
+```
+tideway.knowledge(__target__, __token__ [, _api_version_ ] [, _ssl_verify_ ])
+```
+
+Initiation:
 
 ```python
 >>> import tideway
@@ -14,32 +22,37 @@ sort: 6
 
 ## getKnowledgeManagement()
 
-- Get the current state of the appliance's knowledge, including TKU versions.
+Get the current state of the appliance's knowledge, including TKU versions.
+
+Syntax:
+
+```
+.getKnowledgeManagement()
+```
+
+Example:
 
 ```python
->>> knowledge.getKnowledgeManagement().json()
-{
-    "devices": "5.0.2020.09.3",
-    "latest_edp": {
-        "active_count": 12,
-        "inactive_count": 0,
-        "modified": false,
-        "name": "EDP-2020-09-3-ADDM-12.1+",
-        "origin": "TKU",
-        "package": "Extended Data Pack",
-        "submission_date": "2020-09-11T19:52:15.165794+00:00",
-        "superseded_count": 0,
-        "upload_id": "fb528ec3f5afe096e4b6e6f776c6564"
-    },
-...
+>>> >>> knowledge.getKnowledgeManagement().json()['latest_tku']['submission_date']
+'2021-05-24T23:06:00.350840+00:00'
 ```
 
 ## getUploadStatus()
 
-- Get the current state of a knowledge upload.
+Get the current state of a knowledge upload.
+
+Syntax:
+
+```
+.getUploadStatus()
+```
+
+Example:
 
 ```python
->>> knowledge.getUploadStatus().json()
+>>> upload = knowledge.getUploadStatus()
+>>> from pprint import pprint
+>>> pprint(upload.json())
 {
     "error": "",
     "last_result": "success",
@@ -57,17 +70,24 @@ sort: 6
 
 ## uploadKnowledge()
 
-- Upload a TKU or pattern module to the appliance.
+Upload a TKU or pattern module to the appliance.
 
-Syntax: `uploadKnowledge(*filename*, *file* [, activate=*optional* (default=*True*) ] [, allow_restart=*optional* (default=*False*)])`
+Syntax:
 
-| Parameters | Type | Use | Options
-| - | - | - | -
-| **filename** | String | Required | |
-| **file** | String | Required | |
-| activate=**boolean** | Boolean | | True<br>False |
-| allow_restart=**boolean** | Boolean | | True<br>False |
+```
+.uploadKnowledge(__filename__, __file__ [, _activate_ ] [, _allow_restart_ ])
+```
+
+| Parameters    | Type        | Required | Default Value | Options  |
+| ------------- | ----------- | :------: | ------------- | -------- |
+| filename      | String      | Yes      | N/A           | N/A      |
+| file          | String      | Yes      | N/A           | N/A      |
+| activate      | Boolean     | No       | True  | <ul><li>True</li><li>False</li></ul> |
+| allow_restart | Boolean     | No       | False | <ul><li>True</li><li>False</li></ul> |
+
+Example:
 
 ```python
->>> knowledge.uploadKnowledge("TestPattern.tpl","C:/Users/User001/Documents/TestPattern.tpl")
+>>> knowledge.uploadKnowledge("TestPattern.tpl","C:/Users/User001/Documents/TestPattern.tpl").ok
+True
 ```

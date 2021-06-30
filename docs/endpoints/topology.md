@@ -4,7 +4,15 @@ sort: 8
 
 # Topology
 
-- Initiate a Topology object for the instance of Discovery you intend to query.
+Initiate a Topology object for the instance of Discovery you intend to query.
+
+Syntax:
+
+```
+tideway.topology(__target__, __token__ [, _api_version_ ] [, _ssl_verify_ ])
+```
+
+Initiation:
 
 ```python
 >>> import tideway
@@ -14,60 +22,80 @@ sort: 8
 
 ## graphNode()
 
-- Graph data represents a set of nodes and relationships that are associated to the given node.
+Graph data represents a set of nodes and relationships that are associated to the given node.
 
-Syntax: `graphNode(*node_id* [, focus=*optional* (default=*"sofware-connected"*)] [, apply_rules=*optional* (default=*True*) ])`
+Syntax:
 
-| Parameters | Type | Use | Options
-| - | - | - | -
-| **node_id** | JSON | Required | |
-| focus=**string** | String | | "software-connected"<br>"software"<br>"infrastructure"
-| apply_rules=**boolean** | Boolean | | True<br>False
-
-```python
->>> topo.graphNode("a1b2c3d4e5f6")
 ```
+.graphNode(__node_id__ [, _focus_ ] [, _apply_rules_ ])
+```
+
+| Parameters    | Type        | Required | Default Value | Options  |
+| ------------- | ----------- | :------: | ------------- | -------- |
+| node_id       | JSON Object | Yes      | N/A           | N/A      |
+| focus         | String      | No       | N/A           | <ul><li>"software-connected"</li><li>"software"</li><li>"infrastructure"</li></ul> |
+| apply_rules   | Boolean     | No       | False         | <ul><li>True</li><li>False</li></ul> |
 
 ## getNodes()
 
-- Get topology data from one or more starting nodes.
+Get topology data from one or more starting nodes.
 
-Syntax: `getNodes(*json*)`
+Syntax:
 
-| Parameters | Type | Use
-| - | - | -
-| **json** | JSON | Required |
+```
+.getNodes(__json__)
+```
+
+| Parameters    | Type        | Required | Default Value | Options  |
+| ------------- | ----------- | :------: | ------------- | -------- |
+| json          | JSON Object | Yes      | N/A           | N/A      |
 
 ## getNodeKinds()
 
-- Get nodes of the specified kinds which are related to a given set of nodes.
+Get nodes of the specified kinds which are related to a given set of nodes.
 
-Syntax: `getNodeKinds(*json*)`
+Syntax:
 
-| Parameters | Type | Use
-| - | - | -
-| **json** | JSON | Required |
+```
+.getNodeKinds(__json__)
+```
+
+| Parameters    | Type        | Required | Default Value | Options  |
+| ------------- | ----------- | :------: | ------------- | -------- |
+| json          | JSON Object | Yes      | N/A           | N/A      |
 
 ## visualizationState()
 
-- Get the current state of the visualization for the authenticated user.
+Get the current state of the visualization for the authenticated user.
+
+Syntax:
+
+```
+.visualizationState()
+```
 
 ## updateVizState()
 
-- Update one or more attributes of the current state of the visualization for the authenticated user.
+Update one or more attributes of the current state of the visualization for the authenticated user.
 
-Syntax: `updateVizState(*json*)`
+Syntax:
+```
+.updateVizState(__json__)
+```
 
-| Parameters | Type | Use
-| - | - | -
-| **json** | JSON | Required |
+| Parameters    | Type        | Required | Default Value | Options  |
+| ------------- | ----------- | :------: | ------------- | -------- |
+| json          | JSON Object | Yes      | N/A           | N/A      |
 
 ## replaceVizState()
 
-- Update any or all of the attributes of the current state of the visualization for the authenticated user.
+Update any or all of the attributes of the current state of the visualization for the authenticated user.
 
-Syntax: `replaceVizState(*json*)`
+Syntax:
+```
+replaceVizState(__json__)
+```
 
-| Parameters | Type | Use
-| - | - | -
-| **json** | JSON | Required |
+| Parameters    | Type        | Required | Default Value | Options  |
+| ------------- | ----------- | :------: | ------------- | -------- |
+| json          | JSON Object | Yes      | N/A           | N/A      |

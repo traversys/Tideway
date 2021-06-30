@@ -67,12 +67,9 @@ class Discovery(appliance):
 
     def getDiscoveryRunResult(self, runid, result="Success", offset=None, results_id=None, format=None, limit = 100, delete = False):
         '''Get a summary of the results from scanning all endpoints in the run that had a specific type of result.'''
-        if offset:
-            self.params['offset'] = offset
-        if results_id:
-            self.params['results_id'] = results_id
-        if format:
-            self.params['format'] = format
+        self.params['offset'] = offset
+        self.params['results_id'] = results_id
+        self.params['format'] = format
         self.params['limit'] = limit
         self.params['delete'] = delete
         response = dr.discoRequest(self, "/discovery/runs/{}/results/{}".format(runid,result))
@@ -85,12 +82,9 @@ class Discovery(appliance):
 
     def getDiscoveryRunInferredKind(self, runid, inferred_kind, offset=None, results_id=None, format=None, limit = 100, delete = False):
         '''Get a summary of the devices inferred by a discovery run which have a specific inferred kind.'''
-        if offset:
-            self.params['offset'] = offset
-        if results_id:
-            self.params['results_id'] = results_id
-        if format:
-            self.params['format'] = format
+        self.params['offset'] = offset
+        self.params['results_id'] = results_id
+        self.params['format'] = format
         self.params['limit'] = limit
         self.params['delete'] = delete
         response = dr.discoRequest(self, "/discovery/runs/{}/inferred/{}".format(runid,inferred_kind))

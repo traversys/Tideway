@@ -4,7 +4,15 @@ sort: 1
 
 # Appliance
 
-- Initiate an Appliance object for the instance of Discovery you intend to query.
+Initiate an Appliance object for the instance of Discovery you intend to query.
+
+Syntax:
+
+```
+tideway.appliance(__target__, __token__ [, _api_version_ ] [, _ssl_verify_ ] [, _limit_ ] [, _offset_ ])
+```
+
+Initiation:
 
 ```python
 >>> import tideway
@@ -13,18 +21,34 @@ sort: 1
 
 ## about()
 
-- Get the versions of the API supported by a BMC Discovery version.
+Get the versions of the API supported by a BMC Discovery version.
 
+Syntax:
+
+```
+.about()
+```
+
+Example:
 ```python
->>> tw.about()
+>>> tw.about().json()
+{'api_versions': ['1.0', '1.1', '1.2'], 'component': 'REST API', 'product': 'BMC Discovery', 'version': '12.2'}
 ```
 
 ## admin()
 
-- Get information about the appliance, like its version and versions of the installed packages.
+Get information about the appliance, like its version and versions of the installed packages.
 
+Syntax:
+
+```
+.admin()
+```
+
+Example:
 ```python
->>> tw.admin()
+>>> details = tw.admin().text
+>>> print(details)
 {
     "versions": {
         "devices": "5.0.2020.09.3",
@@ -37,58 +61,67 @@ sort: 1
 
 ## swagger()
 
-- Get JSON swagger file which contains the API schema.
+Get JSON swagger file which contains the API schema.
+
+Syntax:
+
+```
+.swagger()
+```
+
+Example:
 
 ```python
->>> tw.swagger()
-https://appliance-hostname/api/v1.1/swagger.json
-{
-    "swagger": "2.0",
-    "info": {
-        "version": "1.1",
-        "title": "BMC Discovery API",
-        "description": "The REST API for BMC Discovery"
-    },
-...
+>>> swagger = tw.swagger()
+>>> from pprint import pprint
+>>> pprint(swagger.json()['tags'])
+[{'description': 'Control scanning and view results', 'name': 'discovery'},
+ {'description': 'Read and import data', 'name': 'data'},
+ {'description': 'Manage the credential vault', 'name': 'vault'},
+ {'description': 'Manage credentials', 'name': 'credentials'},
+ {'description': 'Upload new TKUs and pattern modules', 'name': 'knowledge'},
+ {'description': 'Push events', 'name': 'events'},
+ {'description': 'Manage the BMC Discovery appliance', 'name': 'admin'},
+ {'description': 'Retrieve topology data from the datastore', 'name': 'topology'}]
 ```
 
 ## baseline()
 
 - Get a summary of the appliance status, and details of which baseline checks have passed or failed.
 
+Syntax:
+
+```
+.baseline()
+```
+
+Example:
+
 ```python
->>> ta.baseline().json()
-{
-    "results": {
-        "FAILED": [
-            {
-                "enabled": true,
-                "message": "MAJOR: This appliance has insufficent resources",
-                "name": "Appliance Specification",
-                "severity": "MAJOR"
-            },
-            {
-                "details": [
-                    {
-                        "messages": [
-                            "2 credentials have been added",
-...
+>>> tw.baseline().json()['results']['FAILED'][0]
+{'enabled': True, 'message': 'MAJOR: This appliance has insufficent resources', 'name': 'Appliance Specification', 'severity': 'MAJOR'}
 ```
 
 ## licensing()
 
-- Get the latest signed licensing report.
+Get the latest signed licensing report.
+
 - CSV option returns raw license data in CSV format as a zip file for offline analysis.
 - RAW option return an encrypted raw license object for import to another appliance.
 
-Syntax: `licensing([ content_type=*optional* (default="text/plain") ])`
+Syntax:
 
-| Parameters | Type | Use | Options
-| - | - | - | -
-| content_type=**string** | String | | "text/plain"<br>"csv"<br>"raw" |
+```
+.licensing([ _content_type_ ])
+```
 
+| Parameters   | Type   | Required | Default Value | Options |
+| ------------ | ------ | :------: | ------------- | ------- | 
+| content_type | String | No       | "text/plain"  | <ul><li>"text/plain"</li><li>"csv"</li><li>"raw"</li></ul>
+
+Example:
 ```python
->>> ta.licensing()
+>>> tw.licensing()
 -----BEGIN LICENSE REPORT-----
 License report
 ==============
@@ -102,7 +135,15 @@ Report end time  : 2021-01-21 23:00:00.410085+00:00
 
 - Get help on specific Discovery API endpoint and function to use. Outputs full list by default.
 
-Syntax: `help([ *"API Endpoint"* ])`
+Syntax:
+
+```.help(([ _endpoint_ ]))```
+
+| Parameters   | Type   | Required | Default Value | Options                                         |
+| ------------ | ------ | :------: | ------------- | ----------------------------------------------- |
+| endpoint     | String | No       | N/A           | Any API endpoint from Swagger UI specification. |
+
+Example:
 
 ```python
 >>> tw.help("/vault/credentials/{cred_id}")

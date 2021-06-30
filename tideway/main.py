@@ -14,8 +14,7 @@ class Appliance:
         self.token = token
         self.params = {}
         self.params['limit'] = limit
-        if delete:
-            self.params['delete'] = delete
+        self.params['delete'] = delete
         self.api_version = api_version
         self.api = "https://" + str(target) + "/api"
         self.url = self.api + "/v" + self.api_version

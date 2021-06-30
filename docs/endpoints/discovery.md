@@ -4,7 +4,15 @@ sort: 2
 
 # Discovery
 
-- Initiate a Discovery object for the instance of Discovery you intend to query.
+Initiate a Discovery object for the instance of Discovery you intend to query.
+
+Syntax:
+
+```
+tideway.discovery(__target__, __token__ [, _api_version_ ] [, _ssl_verify_ ] [, _limit_ ] [, _offset_ ])
+```
+
+Initiation:
 
 ```python
 >>> import tideway
@@ -14,85 +22,129 @@ sort: 2
 
 ## getDiscoveryStatus()
 
-- Get the current status of the discovery process.
+Get the current status of the discovery process.
 
+Syntax:
+
+```
+.getDiscoveryStatus()
+```
+
+Example:
 ```python
->>> status = discovery.getDiscoveryStatus()
->>> status.json()
-{
-	'running': False,
-	'status': 'running'
-}
+>>> >>> discovery.getDiscoveryStatus().json()
+{'running': False, 'status': 'running'}
 ```
 
 ## setDiscoveryStatus()
 
-- Start or stop the discovery process.
+Start or stop the discovery process.
 
-Syntax: `setDiscoveryStatus(*json*)`
+Syntax:
 
-| Parameters | Type | Use
-| - | - | -
-| **json** | JSON | Required
+```
+.setDiscoveryStatus(__json__)
+```
+
+| Parameters   | Type        | Required | Default Value | Options |
+| ------------ | ----------- | :------: | ------------- | --------|
+| json         | JSON Object | Yes      | N/A           | N/A     |
+
+Example:
 
 ```python
+>>> >>> discovery.getDiscoveryStatus().json()
+{'running': False, 'status': 'stopped'}
 >>> discovery.setDiscoveryStatus({"status": "running"}).ok
 True
+>>> >>> discovery.getDiscoveryStatus().json()
+{'running': False, 'status': 'running'}
 ```
 
 ## getApiProviderMetadata()
 
-- Get metadata for the API providers currently supported by BMC Discovery.
+Get metadata for the API providers currently supported by BMC Discovery.
+
+Syntax:
+
+```
+.getApiProviderMetadata()
+```
 
 ```python
->>> discovery.getApiProviderMetadata()
+>>> discovery.getApiProviderMetadata().json()[0]['cred_params'][0]
+{'allowed_values': [], 'description': 'URL of the Kubernetes/OpenShift cluster with port', 'is_list': False, 'mandatory': False, 'name': 'kubernetes.cluster_url', 'type': 'str'}
 ```
 
 ## getDiscoveryCloudMetaData()
 
-- Get metadata for the cloud providers currently supported by BMC Discovery.
+Get metadata for the cloud providers currently supported by BMC Discovery.
+
+Syntax:
+
+```
+.getDiscoveryCloudMetaData()
+```
 
 ```python
->>> discovery.getDiscoveryCloudMetaData()
+discovery.getDiscoveryCloudMetaData().json()[0]['cred_params'][0]
+{'allowed_values': [], 'description': 'Azure Directory ID (also known as the Tenant ID)', 'is_list': False, 'mandatory': True, 'name': 'azure.tenant_id', 'type': 'str'}
 ```
 
 ## discoveryRun()
 
-- Create a new snapshot discovery run.
+Create a new snapshot discovery run.
 
-Syntax: `discoveryRun(*json*)`
+Syntax:
 
-| Parameters | Type | Use
-| - | - | -
-| **json** | JSON | Required
+```
+.discoveryRun(__json__)
+```
 
+| Parameters   | Type        | Required | Default Value | Options |
+| ------------ | ----------- | :------: | ------------- | --------|
+| json         | JSON Object | Yes      | N/A           | N/A     |
+
+Example:
 ```python
->>> discovery.discoveryRun({
-  "ranges": [ "192.168.1.0/24" ],
-  "label": "Network Snapshot",
-  "scan_level": "Full Discovery"
-}).ok
+>>> discovery.discoveryRun({"ranges":[ "192.168.1.0/24" ],"label":"Network Snapshot","scan_level":"Full Discovery"}).ok
 True
 ```
 ## getDiscoveryRuns()
 
-- Get details of all currently processing discovery runs.
+Get details of all currently processing discovery runs.
 
-```python
->>> discovery.getDiscoveryRuns()
+Syntax:
+
 ```
+.getDiscoveryRuns()
+```
+
+Example:
+```python
+>>> discovery.getDiscoveryRuns().json()
+[]
+```
+
 ## getDiscoveryRun()
 
-- Get details of specific currently processing discovery run.
+Get details of specific currently processing discovery run.
 
-Syntax: `getDiscoveryRun(*run_id*)`
+Syntax:
 
-| Parameters | Type | Use
-| - | - | -
-| **run_id** | String | Required
+```
+.getDiscoveryRun(__run_id__)
+```
 
+| Parameters   | Type   | Required | Default Value | Options |
+| ------------ | ------ | :------: | ------------- | --------|
+| run_id       | String | Yes      | N/A           | N/A     |
+
+Example:
 ```python
->>> discovery.getDiscoveryRun("1234567890").json()
+>>> run = discovery.getDiscoveryRun("1234567890")
+>>> from pprint import pprint
+>>> pprint(run.json())
 [
 	{
 		'label': 'Network Snapshot',
@@ -105,86 +157,129 @@ Syntax: `getDiscoveryRun(*run_id*)`
 	}
 ]
 ```
+
 ## updateDiscoveryRun()
 
-- Update the state of a specific discovery run.
+Update the state of a specific discovery run.
 
-Syntax: `updateDiscoveryRun(*run_id*, *json*)`
+Syntax:
 
-| Parameters | Type | Use
-| - | - | -
-| **run_id** | String | Required
-| **json** | JSON | Required
+```
+.updateDiscoveryRun(__run_id__, __json__)
+```
 
+| Parameters   | Type        | Required | Default Value | Options |
+| ------------ | ----------- | :------: | ------------- | --------|
+| run_id       | String      | Yes      | N/A           | N/A     |
+| json         | JSON Object | Yes      | N/A           | N/A     |
+
+Example:
 ```python
 >>> discovery.updateDiscoveryRun("1234567890", {"cancelled": True}).ok
 True
 ```
+
 ## getDiscoveryRunResults()
 
-- Get a summary of the results from scanning all endpoints in the run, partitioned by result type.
+Get a summary of the results from scanning all endpoints in the run, partitioned by result type.
 
-Syntax: `getDiscoveryRunResults(*run_id*)`
+Syntax:
 
-| Parameters | Type | Use
-| - | - | -
-| **run_id** | String | Required
-
-```python
->>> discovery.getDiscoveryRunResults("1234567890")
 ```
+.getDiscoveryRunResults(__run_id__)
+```
+
+| Parameters   | Type        | Required | Default Value | Options |
+| ------------ | ----------- | :------: | ------------- | --------|
+| run_id       | String      | Yes      | N/A           | N/A     |
+
+Example:
+```python
+>>> run = discovery.getDiscoveryRunResults("1234567890")
+>>> print(run.text)
+{
+    "Dropped": {
+        "count": 204,
+        "uri": "https://appliance/api/v1.2/discovery/runs/1234567890/results/Dropped"
+    },
+    "Skipped": {
+        "count": 3,
+        "uri": "https://appliance/api/v1.2/discovery/runs/1234567890/results/Skipped"
+    },
+    "Success": {
+        "count": 47,
+        "uri": "https://appliance/api/v1.2/discovery/runs/1234567890/results/Success"
+    }
+}
+```
+
 ## getDiscoveryRunResult()
 
-- Get a summary of the results from scanning all endpoints in the run that had a specific type of result.
-- Example: Retrieve DiscoveryRuns which ended with an Error, and retrieve result rows 51-100.
+Get a summary of the results from scanning all endpoints in the run that had a specific type of result.
 
-Syntax: `getDiscoveryRunResult(*run_id* [, result=*optional* (default=*"Success"*) ] [, offset=*optional* ] [, results_id=*optional* ] [, format=*optional* ] [, limit=*optional*] [, delete=*optional*])`
+Syntax:
 
-| Parameters | Type | Use | Options | Default
-| - | - | - | - | -
-| **run_id** | String | Required | |
-| result=**string** | String | | "Success"<br>"Skipped"<br>"NoAccess"<br>"NoResponse"<br>"Error"<br>"Dropped"
-| offset=**intger** | Integer | | |
-| results_id=**string** | String | | |
-| format=**string** | String | | "object"
-| limit=**integer** | Integer | | | 100 |
-| delete=**boolean** | Boolean | | | False |
+```
+.getDiscoveryRunResult(__run_id__ [, result ] [, offset ] [, results_id ] [, format ] [, limit ] [, delete ])
+```
 
+| Parameters   | Type        | Required | Default Value | Options  |
+| ------------ | ----------- | :------: | ------------- | -------- |
+| run_id       | String      | Yes      | N/A           | N/A      |
+| result       | String      | No       | "Success"     | <ul><li>"Success"</li><li>"Skipped"</li><li>"NoAccess"</li><li>"NoResponse"</li><li>"Error"</li><li>"Dropped"</li></ul> |
+| offset       | Integer     | No       | N/A           | N/A      |
+| results_id   | String      | No       | N/A           | N/A      |
+| format       | String      | No       | N/A           | <ul><li>"object"</li></ul> |
+| limit        | Integer     | No       | 100           | N/A      |
+| delete       | Boolean     | No       | False         | <ul><li>True</li><li>False</li></ul> |
+
+Example: Retrieve DiscoveryRuns which ended with an Error, and retrieve result rows 51-100.
 ```python
 >>> discovery.getDiscoveryRunResult("1234567890", result="Error", offset=50, results_id="a12b3cd4e5f6", limit=50)
 ```
 ## getDiscoveryRunInferred()
 
-- Get a summary of all inferred devices from a discovery run, partitioned by device type.
+Get a summary of all inferred devices from a discovery run, partitioned by device type.
 
-Syntax: `getDiscoveryRunInferred(*run_id*)`
+Syntax:
 
-| Parameters | Type | Use
-| - | - | -
-| **run_id** | String | Required
+```
+.getDiscoveryRunInferred(__run_id__)
+```
 
+| Parameters   | Type        | Required | Default Value | Options  |
+| ------------ | ----------- | :------: | ------------- | -------- |
+| run_id       | String      | Yes      | N/A           | N/A      |
+
+Example:
 ```python
 >>> discovery.getDiscoveryRunInferred("1234567890")
 ```
 
 ## getDiscoveryRunInferredKind()
 
-- Get a summary of the devices inferred by a discovery run which have a specific inferred kind.
+Get a summary of the devices inferred by a discovery run which have a specific inferred kind.
 
-Syntax: `getDiscoveryRunInferredKind(*run_id*, *inferred_kind* [, offset=*optional* ] [, results_id=*optional* ] [, format=*optional* ] [, limit=*optional*] [, delete=*optional*])`
+Syntax:
 
-| Parameters | Type | Use | Options | Default
-| - | - | - | - | - 
-| **run_id** | String | Required | |
-| **inferred_kind** | String | Required | |
-| offset=**intger** | Integer | | |
-| results_id=**string** | String | | |
-| format=**string** | String | | "object"
-| limit=**integer** | Integer | | | 100 |
-| delete=**boolean** | Boolean | | | False |
+```
+.getDiscoveryRunInferredKind(__run_id__ , __inferred_kind__ [, offset ] [, results_id ] [, format ] [, limit ] [, delete ])
+```
 
+| Parameters    | Type        | Required | Default Value | Options  |
+| ------------- | ----------- | :------: | ------------- | -------- |
+| run_id        | String      | Yes      | N/A           | N/A      |
+| inferred_kind | String      | Yes      | N/A           | N/A      |
+| offset        | Integer     | No       | N/A           | N/A      |
+| results_id    | String      | No       | N/A           | N/A      |
+| format        | String      | No       | N/A           | <ul><li>"object"</li></ul> |
+| limit         | Integer     | No       | 100           | N/A      |
+| delete        | Boolean     | No       | False         | <ul><li>True</li><li>False</li></ul> |
+
+Example:
 ```python
->>> discovery.getDiscoveryRunResult("1234567890", "Host", format="object").json()
+>>> result = discovery.getDiscoveryRunResult("1234567890", "Host", format="object")
+>>> print(result.text)
 [
 	{
 		'count': 4,
