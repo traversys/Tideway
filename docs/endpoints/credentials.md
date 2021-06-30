@@ -4,7 +4,15 @@ sort: 5
 
 # Credentials
 
-- Initiate a Credential object for the instance of Discovery you intend to query.
+Initiate a Credential object for the instance of Discovery you intend to query.
+
+Syntax:
+
+```
+tideway.credentials(__target__, __token__ [, _api_version_ ] [, _ssl_verify_ ])
+```
+
+Initiation:
 
 ```python
 >>> import tideway
@@ -14,17 +22,25 @@ sort: 5
 
 ## listCredentialTypes()
 
-- Get a list of all credential types and filter by group and/or category.
+Get a list of all credential types and filter by group and/or category.
 
-| Parameters | Type
-| - | -
-| group=**string** | String
-| category=**string** | String
+Syntax:
 
-Syntax: `listCredentialTypes([ group=*optional* ] [, category=*optional* ])`
+```
+.listCredentialTypes([ _group_ ] [, _category_ ])
+```
+
+| Parameters    | Type        | Required | Default Value | Options  |
+| ------------- | ----------- | :------: | ------------- | -------- |
+| group         | String      | No       | N/A           | N/A      |
+| category      | String      | No       | N/A           | N/A      |
+
+Example:
 
 ```python
->>> credentials.listCredentialTypes(category="Database").json()
+>>> db_creds = credentials.listCredentialTypes(category="Database")
+>>> from pprint import pprint
+>>> pprint(db_creds.json())
 [
     {
         "categories": [
@@ -43,16 +59,22 @@ Syntax: `listCredentialTypes([ group=*optional* ] [, category=*optional* ])`
 
 ## credentialType()
 
-- Get the properties of a specific credential type.
+Get the properties of a specific credential type.
 
-Syntax: `credentialType(*cred_type_name*)`
+Syntax:
 
-| Parameters | Type | Use
-| - | - | -
-| **cred_type_name** | String | Required
+```
+.credentialType(__cred_type_name__)
+```
+
+| Parameters    | Type        | Required | Default Value | Options  |
+| ------------- | ----------- | :------: | ------------- | -------- |
+| cred_type_name | String     | Yes      | N/A           | N/A      |
 
 ```python
->>> credentials.credentialType("oracle").json()
+>>> ora_creds.credentials.credentialType("oracle").json()
+>>> from pprint import pprint
+>>> pprint(ora_creds.json())
 {
     "categories": [
         "Database Credentials"
@@ -70,71 +92,82 @@ Syntax: `credentialType(*cred_type_name*)`
 
 ## listCredentials()
 
-- Get a list of credentials.
+Get a list of credentials.
 
-Syntax: `listCredentials([cred_id=*optional*])`
+Syntax:
 
-| Parameters | Type
-| - | -
-| cred_id=**string** | String
+```
+.listCredentials([ _uuid_ ])
+```
+
+| Parameters    | Type        | Required | Default Value | Options  |
+| ------------- | ----------- | :------: | ------------- | -------- |
+| uuid          | String      | No       | N/A           | N/A      |
+
+Example:
 
 ```python
->>> credentials.listCredentials()
+>>> creds = credentials.listCredentials("e7f00000106c1")
+>>> print(creds.json()['types'])
+['ssh']
 ```
 
 ## newCredential()
 
-- Create a new credential.
+Create a new credential.
 
-Syntax: `newCredential(*json*)`
+Syntax:
 
-| Parameters | Type | Use
-| - | - | -
-| **json** | String | Required
+```
+.newCredential(__json__)
+```
+
+| Parameters    | Type        | Required | Default Value | Options  |
+| ------------- | ----------- | :------: | ------------- | -------- |
+| json          | JSON Object | Yes      | N/A           | N/A      |
+
+Example:
 
 ```python
->>> credentials.newCredential({
-  "enabled": True,
-  "username": "discovery_service",
-  "password": "password",
-  "label": "SSH Service Account",
-  "description": "Service Account for SSH",
-  "ip_range": "0.0.0.0/0,::/0",
-  "types": [
-    "ssh"
-  ]
-}).json()
-{
-    "uri": "https://appliance-hostname/api/v1.1/vault/credentials/a1b2c3d4e5f6",
-    "uuid": "a1b2c3d4e5f6"
-}
+>>> credentials.newCredential({"enabled": True,"username": "discovery_service","password": "password","label": "SSH Service Account","description": "Service Account for SSH","ip_range": "0.0.0.0/0,::/0","types": ["ssh"]}).ok
+True
 ```
 
 ## deleteCredential()
 
-- Delete a credential.
+Delete a credential.
 
-Syntax: `deleteCredential(*cred_id*)`
+Syntax:
+```
+.deleteCredential([ _uuid_ ])
+```
 
-| Parameters | Type | Use
-| - | - | -
-| cred_id=**string** | String | Required
+| Parameters    | Type        | Required | Default Value | Options  |
+| ------------- | ----------- | :------: | ------------- | -------- |
+| uuid          | String      | Yes      | N/A           | N/A      |
+
+Example:
 
 ```python
->>> credentials.deleteCredential("a1b2c3d4e5f6").ok
+>>> credentials.deleteCredential("e7f00000106c1").ok
 True
 ```
 
 ## updateCredential()
 
-- Updates partial resources of a credential. Missing properties are left unchanged.
+Updates partial resources of a credential. Missing properties are left unchanged.
 
-Syntax: `updateCredential(*cred_id*, *json*)`
+Syntax:
+```
+.updateCredential(__uuid__, __json__)
+```
 
-| Parameters | Type | Use
-| - | - | -
-| cred_id=**string** | String | Required
-| **json** | String | Required
+| Parameters    | Type        | Required | Default Value | Options  |
+| ------------- | ----------- | :------: | ------------- | -------- |
+| uuid          | String      | Yes      | N/A           | N/A      |
+| json          | JSON Object | Yes      | N/A           | N/A      |
+
+Example:
 
 ```python
 >>> credentials.updateCredential("a1b2c3d4e5f6",{ "enabled" : False }).ok
@@ -143,30 +176,25 @@ True
 
 ## replaceCredential()
 
-- Replaces a single credential.
+Replaces a single credential.
 
 ```note
 All required credential properties must be present. Optional properties that are missing will be reset to their defaults.
 ```
 
-Syntax: `replaceCredential(*cred_id*, *json*)`
+Syntax:
+```
+.replaceCredential(__uuid__, __json__)
+```
 
-| Parameters | Type | Use
-| - | - | -
-| cred_id=**string** | String | Required
-| **json** | String | Required
+| Parameters    | Type        | Required | Default Value | Options  |
+| ------------- | ----------- | :------: | ------------- | -------- |
+| uuid          | String      | Yes      | N/A           | N/A      |
+| json          | JSON Object | Yes      | N/A           | N/A      |
+
+Example:
 
 ```python
->>> tc.replaceCredential("a1b2c3d4e5f6",{
-  "enabled": True,
-  "username": "discovery_service",
-  "password": "password",
-  "label": "Limited SSH Discovery",
-  "description": "Limited SSH Service Account",
-  "ip_range": "192.168.1.0/24",
-  "types": [
-    "ssh"
-  ]
-}).ok
+>>> tc.replaceCredential("a1b2c3d4e5f6",{"enabled": True,"username": "discovery_service","password": "password","label": "Limited SSH Discovery","description": "Limited SSH Service Account","ip_range": "192.168.1.0/24","types":["ssh"]}).ok
 True
 ```

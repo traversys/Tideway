@@ -8,9 +8,12 @@ Initiate a Discovery object for the instance of Discovery you intend to query.
 
 Syntax:
 
-<pre>**tideway.discovery(**__target__, __token__ [, _api_version_ ] [, _ssl_verify_ ] [, _limit_ ] [, _offset_ ]**)**</pre>
+```
+tideway.discovery(__target__, __token__ [, _api_version_ ] [, _ssl_verify_ ] [, _limit_ ] [, _offset_ ])
+```
 
 Initiation:
+
 ```python
 >>> import tideway
 >>> tw = tideway.appliance('appliance-hostname','auth-token')
@@ -23,7 +26,9 @@ Get the current status of the discovery process.
 
 Syntax:
 
-<pre>**.getDiscoveryStatus()**</pre>
+```
+.getDiscoveryStatus()
+```
 
 Example:
 ```python
@@ -37,13 +42,16 @@ Start or stop the discovery process.
 
 Syntax:
 
-<pre>**setDiscoveryStatus(__json__)**</pre>
+```
+.setDiscoveryStatus(__json__)
+```
 
 | Parameters   | Type        | Required | Default Value | Options |
 | ------------ | ----------- | :------: | ------------- | --------|
 | json         | JSON Object | Yes      | N/A           | N/A     |
 
 Example:
+
 ```python
 >>> >>> discovery.getDiscoveryStatus().json()
 {'running': False, 'status': 'stopped'}
@@ -59,7 +67,9 @@ Get metadata for the API providers currently supported by BMC Discovery.
 
 Syntax:
 
-<pre>**.getApiProviderMetadata()**</pre>
+```
+.getApiProviderMetadata()
+```
 
 ```python
 >>> discovery.getApiProviderMetadata().json()[0]['cred_params'][0]
@@ -72,7 +82,9 @@ Get metadata for the cloud providers currently supported by BMC Discovery.
 
 Syntax:
 
-<pre>**.getDiscoveryCloudMetaData()**</pre>
+```
+.getDiscoveryCloudMetaData()
+```
 
 ```python
 discovery.getDiscoveryCloudMetaData().json()[0]['cred_params'][0]
@@ -85,7 +97,9 @@ Create a new snapshot discovery run.
 
 Syntax:
 
-<pre>**.discoveryRun(__json__)**</pre>
+```
+.discoveryRun(__json__)
+```
 
 | Parameters   | Type        | Required | Default Value | Options |
 | ------------ | ----------- | :------: | ------------- | --------|
@@ -102,7 +116,9 @@ Get details of all currently processing discovery runs.
 
 Syntax:
 
-<pre>**.getDiscoveryRuns()**</pre>
+```
+.getDiscoveryRuns()
+```
 
 Example:
 ```python
@@ -116,7 +132,9 @@ Get details of specific currently processing discovery run.
 
 Syntax:
 
-<pre>**.getDiscoveryRun(__run_id__)**</pre>
+```
+.getDiscoveryRun(__run_id__)
+```
 
 | Parameters   | Type   | Required | Default Value | Options |
 | ------------ | ------ | :------: | ------------- | --------|
@@ -146,7 +164,9 @@ Update the state of a specific discovery run.
 
 Syntax:
 
-<pre>**.updateDiscoveryRun(__run_id__, __json__)**</pre>
+```
+.updateDiscoveryRun(__run_id__, __json__)
+```
 
 | Parameters   | Type        | Required | Default Value | Options |
 | ------------ | ----------- | :------: | ------------- | --------|
@@ -165,7 +185,9 @@ Get a summary of the results from scanning all endpoints in the run, partitioned
 
 Syntax:
 
-<pre>**.getDiscoveryRunResults(__run_id__)**</pre>
+```
+.getDiscoveryRunResults(__run_id__)
+```
 
 | Parameters   | Type        | Required | Default Value | Options |
 | ------------ | ----------- | :------: | ------------- | --------|
@@ -197,7 +219,9 @@ Get a summary of the results from scanning all endpoints in the run that had a s
 
 Syntax:
 
-<pre>**.getDiscoveryRunResult(**__run_id__ [, result ] [, offset ] [, results_id ] [, format ] [, limit ] [, delete ]**)**</pre>
+```
+.getDiscoveryRunResult(__run_id__ [, result ] [, offset ] [, results_id ] [, format ] [, limit ] [, delete ])
+```
 
 | Parameters   | Type        | Required | Default Value | Options  |
 | ------------ | ----------- | :------: | ------------- | -------- |
@@ -219,7 +243,9 @@ Get a summary of all inferred devices from a discovery run, partitioned by devic
 
 Syntax:
 
-<pre>**.getDiscoveryRunInferred(__run_id__)**</pre>
+```
+.getDiscoveryRunInferred(__run_id__)
+```
 
 | Parameters   | Type        | Required | Default Value | Options  |
 | ------------ | ----------- | :------: | ------------- | -------- |
@@ -236,7 +262,9 @@ Get a summary of the devices inferred by a discovery run which have a specific i
 
 Syntax:
 
-<pre>**.getDiscoveryRunInferredKind(**__run_id__ , __inferred_kind__ [, offset ] [, results_id ] [, format ] [, limit ] [, delete ]**)**</pre>
+```
+.getDiscoveryRunInferredKind(__run_id__ , __inferred_kind__ [, offset ] [, results_id ] [, format ] [, limit ] [, delete ])
+```
 
 | Parameters    | Type        | Required | Default Value | Options  |
 | ------------- | ----------- | :------: | ------------- | -------- |

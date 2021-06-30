@@ -15,10 +15,8 @@ class Topology(appliance):
             associated to the given node.
         '''
         # TODO: add complete attribute
-        if focus:
-            self.params['focus'] = focus
-        if apply_rules:
-            self.params['apply_rules'] = apply_rules
+        self.params['focus'] = focus
+        self.params['apply_rules'] = apply_rules
         response = dr.discoRequest(self, "/data/nodes/{}/graph".format(node_id))
         return response
 

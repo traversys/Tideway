@@ -11,10 +11,8 @@ class Credentials(appliance):
 
     def listCredentialTypes(self, group=None, category=None):
         '''Get a list of all credential types and filter by group and/or category.'''
-        if group:
-            self.params['group'] = group
-        if category:
-            self.params['category'] = category
+        self.params['group'] = group
+        self.params['category'] = category
         response = dr.discoRequest(self, "/vault/credential_types")
         return response
 

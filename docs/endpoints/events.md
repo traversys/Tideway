@@ -4,7 +4,15 @@ sort: 7
 
 # Events
 
-- Initiate an Event object for the instance of Discovery you intend to query.
+Initiate an Event object for the instance of Discovery you intend to query.
+
+Syntax:
+
+```
+tideway.events(__target__, __token__ [, _api_version_ ] [, _ssl_verify_ ])
+```
+
+Initiation:
 
 ```python
 >>> import tideway
@@ -14,15 +22,14 @@ sort: 7
 
 ## status()
 
-- Returns a unique ID if the event has been recorded, otherwise an empty string is returned e.g. if the event source has been disabled.
+Returns a unique ID if the event has been recorded, otherwise an empty string is returned e.g. if the event source has been disabled.
 
-Syntax: `status(*json*)`
+Syntax: 
 
-| Parameters | Type | Use
-| - | - | -
-| **json** | JSON | Required |
-
-```python
->>> events.status({"source":"Event1","type":"EventType1"}
-})
 ```
+.status(__json__)
+```
+
+| Parameters    | Type        | Required | Default Value | Options  |
+| ------------- | ----------- | :------: | ------------- | -------- |
+| json          | JSON Object | Yes      | N/A           | N/A      |

@@ -8,9 +8,12 @@ Initiate an Appliance object for the instance of Discovery you intend to query.
 
 Syntax:
 
-<pre>**tideway.appliance(**__target__, __token__ [, _api_version_ ] [, _ssl_verify_ ] [, _limit_ ] [, _offset_ ]**)**</pre>
+```
+tideway.appliance(__target__, __token__ [, _api_version_ ] [, _ssl_verify_ ] [, _limit_ ] [, _offset_ ])
+```
 
 Initiation:
+
 ```python
 >>> import tideway
 >>> tw = tideway.appliance('appliance-hostname','auth-token')
@@ -22,7 +25,9 @@ Get the versions of the API supported by a BMC Discovery version.
 
 Syntax:
 
-<pre>**.about()**</pre>
+```
+.about()
+```
 
 Example:
 ```python
@@ -36,7 +41,9 @@ Get information about the appliance, like its version and versions of the instal
 
 Syntax:
 
-<pre>**.admin()**</pre>
+```
+.admin()
+```
 
 Example:
 ```python
@@ -58,9 +65,12 @@ Get JSON swagger file which contains the API schema.
 
 Syntax:
 
-<pre>**.swagger()**</pre>
+```
+.swagger()
+```
 
 Example:
+
 ```python
 >>> swagger = tw.swagger()
 >>> from pprint import pprint
@@ -81,7 +91,11 @@ Example:
 
 Syntax:
 
-<pre>**.baseline()**</pre>
+```
+.baseline()
+```
+
+Example:
 
 ```python
 >>> tw.baseline().json()['results']['FAILED'][0]
@@ -97,7 +111,9 @@ Get the latest signed licensing report.
 
 Syntax:
 
-<pre>**.licensing(**[ _content_type_ ]**)**</pre>
+```
+.licensing([ _content_type_ ])
+```
 
 | Parameters   | Type   | Required | Default Value | Options |
 | ------------ | ------ | :------: | ------------- | ------- | 
@@ -121,7 +137,7 @@ Report end time  : 2021-01-21 23:00:00.410085+00:00
 
 Syntax:
 
-<pre>**.help(**([ _endpoint_ ])**)**</pre>
+```.help(([ _endpoint_ ]))```
 
 | Parameters   | Type   | Required | Default Value | Options                                         |
 | ------------ | ------ | :------: | ------------- | ----------------------------------------------- |
