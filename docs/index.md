@@ -40,3 +40,12 @@ $ python -m pip install tideway
 ## Contents
 
 {% include list.liquid all=true %}
+
+## Releases
+
+| Version | Summary                                                | Known Issues                                                   | Fixed                          |
+| :-----: | ------------------------------------------------------ | -------------------------------------------------------------- | ------------------------------ |
+| 0.1.0   | Initial release, compatible with API v1.1              |                                                                |                                |
+| 0.1.1   | Updated to API v1.2<br>Added `help()`, `search_bulk()` | search call retains last parameters for `offset`, `results_id` |                                |
+| 0.1.2   | Bug Fixes | Bulk search with larger limit than dataset will fail on missing `next_offset` | Fixed issue with `offset` and `results_id` values<br>Fixed issue with bulk search parameter lower limit. |
+| 0.1.3   | Bug Fixes                                              |                                                                | Added check for `next_offset`. |
