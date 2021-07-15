@@ -42,7 +42,7 @@ class Data(appliance):
         all_results = []
         for item in results['results']:
             all_results.append(item)
-        if 'results_id' in results:
+        if 'results_id' and 'next_offset' in results:
             total = init_results[0]['count']
             res_id = results['results_id']
             next_offset=results['next_offset']
