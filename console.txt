@@ -5,5 +5,4 @@ data.search({"query":"search NetworkDevice"}).json()
 data.search("search Host").json()[0]['results_id']
 data.search("search Host",offset=200,limit=5,results_id='SG9zdABu8APWYAIABiQAAAAyhQ==').json()
 data.search("search NetworkDevice").json()
-
 data.search_bulk("search Host",limit=500).json()

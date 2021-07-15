@@ -16,6 +16,7 @@ def discoRequest(appliance, api_endpoint, response="application/json"):
 
 def discoPost(appliance, api_endpoint, jsoncode, response="application/json"):
     url, heads = url_and_headers(appliance.url,appliance.token,api_endpoint,response)
+    print ("jsoncode: %s" % jsoncode)
     req = requests.post(url, json=jsoncode, headers=heads, params=appliance.params, verify=appliance.verify)
     return req
 
