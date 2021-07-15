@@ -7,3 +7,4 @@ examples.py
 .DS_Store
 tideway/__init__.pyc
 tideway/main.pyc
+*.txt
