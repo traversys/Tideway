@@ -40,6 +40,9 @@ class Data(appliance):
         init_results = initial.json()
         results = init_results[0]
         all_results = []
+        if 'headings' in results:
+            headings = results['headings']
+            all_results.append(headings)
         for item in results['results']:
             all_results.append(item)
         if 'results_id' and 'next_offset' in results:
