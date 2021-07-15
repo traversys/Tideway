@@ -273,7 +273,6 @@ Syntax:
 ```
 .twImport(__json__)
 ```
-=======
 
 | Parameters    | Type        | Required | Default Value | Options  |
 | ------------- | ----------- | :------: | ------------- | -------- |
@@ -281,7 +280,6 @@ Syntax:
 
 
 ## twWrite()
-=======
 
 Perform arbitrary write operations.
 
