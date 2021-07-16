@@ -1,9 +1,0 @@
-import tideway; tw = tideway.appliance('192.168.1.176','MzozYmE5YjYzOWE4NGFhMGYwZjcyZTdmMDAwMDAxMDY5MjpjcmF6eWFwaTowLWVmZWYxMWMyODI3MjkyYWIwMDdiYmExZWI3ZDAwZDJiOWI4MDU0NzRhYzJmYjhhMWI1MGRhZGUxMjhhNzcxMTA=');data=tw.data()
-
-data.search({"query":"search Host where name = 'fus134g-wesleyf'"}).json()
-data.search({"query":"search NetworkDevice"}).json()
-data.search("search Host").json()[0]['results_id']
-data.search("search Host",offset=200,limit=5,results_id='SG9zdABu8APWYAIABiQAAAAyhQ==').json()
-data.search("search NetworkDevice").json()
-
-data.search_bulk("search Host",limit=500).json()
