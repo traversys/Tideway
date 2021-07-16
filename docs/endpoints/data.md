@@ -278,7 +278,6 @@ Syntax:
 | ------------- | ----------- | :------: | ------------- | -------- |
 | json          | JSON Object | Yes      | N/A           | N/A      |
 
-
 ## twWrite()
 
 Perform arbitrary write operations.
