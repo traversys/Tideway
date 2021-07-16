@@ -5,6 +5,5 @@ tideway.egg-info/
 test.py
 examples.py
 .DS_Store
-tideway/__init__.pyc
-tideway/main.pyc
+*.pyc
 *.txt
