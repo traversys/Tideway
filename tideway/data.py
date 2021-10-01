@@ -37,30 +37,33 @@ class Data(appliance):
     def search_bulk(self, query, format = None, limit = 100, delete = False):
         '''Performs a bulk search, will loop through paginated results until the limit is reached and return a JSON object.'''
         initial = Data.search(self, query, None, None, format, limit, delete)
-        init_results = initial.json()
-        results = init_results[0]
-        all_results = []
-        if 'headings' in results:
-            headings = results['headings']
-            all_results.append(headings)
-        for item in results['results']:
-            all_results.append(item)
-        if 'results_id' and 'next_offset' in results:
-            total = init_results[0]['count']
-            res_id = results['results_id']
-            next_offset=results['next_offset']
-            total = int(total / next_offset)
-            for count in range(0,total):
-                s = Data.search(self, query, next_offset, res_id, format, limit, delete)
-                json_results = s.json()
-                records = json_results[0]['results']
-                for item in records:
-                    all_results.append(item)
-                if 'next_offset' in json_results[0]:
-                    next_offset=json_results[0]['next_offset']
-                else:
-                    break
-        return json.loads(json.dumps(all_results))
+        if initial.ok:
+            init_results = initial.json()
+            results = init_results[0]
+            all_results = []
+            if 'headings' in results:
+                headings = results['headings']
+                all_results.append(headings)
+            for item in results['results']:
+                all_results.append(item)
+            if 'results_id' and 'next_offset' in results:
+                total = init_results[0]['count']
+                res_id = results['results_id']
+                next_offset=results['next_offset']
+                total = int(total / next_offset)
+                for count in range(0,total):
+                    s = Data.search(self, query, next_offset, res_id, format, limit, delete)
+                    json_results = s.json()
+                    records = json_results[0]['results']
+                    for item in records:
+                        all_results.append(item)
+                    if 'next_offset' in json_results[0]:
+                        next_offset=json_results[0]['next_offset']
+                    else:
+                        break
+            return json.loads(json.dumps(all_results))
+        else:
+            return initial
 
     def candidate(self, body):
         '''

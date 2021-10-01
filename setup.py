@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="tideway",
-    version="0.1.4",
+    version="0.1.5",
     author="Wes Moskal-Fitzpatrick",
     author_email="wes@traversys.io",
     description="library for BMC Discovery API Interface.",

@@ -9,7 +9,7 @@ import tideway
 class Appliance:
     '''An appliance instance.'''
 
-    def __init__(self, target, token, limit = 100, delete = False, api_version = "1.2", ssl_verify = False):
+    def __init__(self, target, token, limit = 100, delete = False, api_version = "1.3", ssl_verify = False):
         self.target = target
         self.token = token
         self.params = {}
