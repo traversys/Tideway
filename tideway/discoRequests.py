@@ -5,7 +5,7 @@ requests.packages.urllib3.disable_warnings()
 
 def url_and_headers(target,token,api_endpoint,response):
     url = target + api_endpoint
-    headers = {"Accept": response, "Authorization":"bearer " + str(token) }
+    headers = {"Accept": response, "Authorization":"Bearer " + str(token) }
     return url, headers
 
 def discoRequest(appliance, api_endpoint, response="application/json"):

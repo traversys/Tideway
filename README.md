@@ -39,4 +39,5 @@ Documentation can be found at [https://traversys.github.io/Tideway/](https://tra
 | 0.1.1   | Updated to API v1.2<br>Added `help()`, `search_bulk()` | search call retains last parameters for `offset`, `results_id` |                                |
 | 0.1.2   | Bug Fixes | Bulk search with larger limit than dataset will fail on missing `next_offset` | Fixed issue with `offset` and `results_id` values<br>Fixed issue with bulk search parameter lower limit. |
 | 0.1.3   | Bug Fixes                                              |                                                                | Added check for `next_offset`. |
-| 0.1.4   | Search bulk update | Discovery 12.3 (21.3) enforces strict case for "Bearer" header - api calls will not current work. | Now includes headers for non-formatted search. |
+| 0.1.4   | Search bulk update | Discovery 12.3 (21.3) enforces strict case for "Bearer" header - api calls will not current work.  | Now includes headers for non-formatted search. |
+| 0.1.5   | Updated to support Discovery 12.3 (API version 1.3)    |                                                                | Fixed issue with Bearer capitalisation.<br>Search Bulk will now return the full response on failure |
