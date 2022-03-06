@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import requests
 import tideway
 
 dr = tideway.discoRequests
@@ -22,6 +21,21 @@ class Discovery(appliance):
         response = dr.discoPatch(self, "/discovery", body)
         return response
 
+    def discoveryStatus(self):
+        '''Get the current status of the discovery process. JSON Output.'''
+        response = dr.discoRequest(self, "/discovery")
+        return response.json()
+
+    def newDiscoveryStatus(self, body):
+        '''
+            Set the Discovery status using JSON format.
+        '''
+        response = dr.discoPatch(self, "/discovery", body)
+        return response.ok
+
+    ## pprint(tw.swagger().json()['paths']['/discovery'])
+    discovery = property(fget=discoveryStatus,fset=newDiscoveryStatus)
+
     def getApiProviderMetadata(self):
         '''
             Get metadata for the API providers currently supported by BMC
@@ -32,6 +46,17 @@ class Discovery(appliance):
         response = dr.discoRequest(self, "/discovery/api_provider_metadata")
         return response
 
+    @property
+    def api_provider_metadata(self):
+        '''
+            Get metadata for the API providers currently supported by BMC
+            Discovery. This can be used as a reference when interacting with the
+            /discovery/runs and /vault/credentials endpoints. Support for new
+            API providers is available in TKU knowledge updates.
+        '''
+        response = dr.discoRequest(self, "/discovery/api_provider_metadata")
+        return response.json()
+
     def getDiscoveryCloudMetaData(self):
         '''
             Get metadata for the cloud providers currently supported by BMC
@@ -39,6 +64,15 @@ class Discovery(appliance):
         '''
         response = dr.discoRequest(self, "/discovery/cloud_metadata")
         return response
+
+    @property
+    def cloud_metadata(self):
+        '''
+            Get metadata for the cloud providers currently supported by BMC
+            Discovery.
+        '''
+        response = dr.discoRequest(self, "/discovery/cloud_metadata")
+        return response.json
 
     def getDiscoveryRuns(self):
         '''Get details of all currently processing discovery runs.'''
@@ -49,6 +83,18 @@ class Discovery(appliance):
         '''Get details of specific currently processing discovery run.'''
         response = dr.discoRequest(self, "/discovery/runs/{}".format(runid))
         return response
+
+    def get_runs(self):
+        '''Get details of all currently processing discovery runs.'''
+        response = dr.discoRequest(self, "/discovery/runs")
+        return response.json()
+
+    def new_run(self, body):
+        '''Create a new snapshot discovery run.'''
+        response = dr.discoPost(self, "/discovery/runs", body)
+        return response.ok
+
+    discovery_runs = property(fget=get_runs,fset=new_run)
 
     def discoveryRun(self, body):
         '''Create a new snapshot discovery run.'''

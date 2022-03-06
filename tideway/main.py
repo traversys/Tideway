@@ -9,7 +9,7 @@ import tideway
 class Appliance:
     '''An appliance instance.'''
 
-    def __init__(self, target, token, limit = 100, delete = False, api_version = "1.3", ssl_verify = False):
+    def __init__(self, target, token, limit = 100, delete = False, api_version = "1.4", ssl_verify = False):
         self.target = target
         self.token = token
         self.params = {}
@@ -50,11 +50,25 @@ class Appliance:
 
     ### Admin ###
 
+    @property
+    def get_about(self):
+        '''Return about in JSON format.'''
+        url = self.api + "/about"
+        req = requests.get(url, verify=self.verify)
+        return req.json()
+
     def about(self):
-        '''Return about info for API.'''
+        '''Return about data.'''
         url = self.api + "/about"
         req = requests.get(url, verify=self.verify)
         return req
+
+    @property
+    def get_swagger(self):
+        '''Get swagger file JSON output.'''
+        url = self.url + "/swagger.json"
+        req = requests.get(url, verify=self.verify)
+        return req.json()
 
     def swagger(self):
         '''Get swagger file.'''
@@ -62,15 +76,33 @@ class Appliance:
         req = requests.get(url, verify=self.verify)
         return req
 
+    @property
+    def get_baseline(self):
+        '''Get JSON summary of the appliance status, and details of which baseline checks have passed or failed.'''
+        response = dr.discoRequest(self, "/admin/baseline")
+        return response.json()
+
     def baseline(self):
         '''Get a summary of the appliance status, and details of which baseline checks have passed or failed.'''
         response = dr.discoRequest(self, "/admin/baseline")
         return response
 
+    @property
+    def get_admin(self):
+        '''Get information about the appliance, like its version and versions of the installed packages. JSON Output.'''
+        response = dr.discoRequest(self, "/admin/about")
+        return response.json()
+
     def admin(self):
         '''Get information about the appliance, like its version and versions of the installed packages.'''
         response = dr.discoRequest(self, "/admin/about")
         return response
+
+    @property
+    def get_licensing(self):
+        '''Output the latest signed licensing report.'''
+        response = dr.discoRequest(self, "/admin/licensing",response="text/plain")
+        return response.text
 
     def licensing(self,content_type="text/plain"):
         '''Get the latest signed licensing report.'''

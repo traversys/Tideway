@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import requests
 import tideway
 import warnings
 import json
@@ -113,6 +112,12 @@ class Data(appliance):
         '''Get names and ids of partitions.'''
         response = dr.discoRequest(self, "/data/partitions")
         return response
+
+    @property
+    def get_partitions(self):
+        '''Get names and ids of partitions.'''
+        response = dr.discoRequest(self, "/data/partitions")
+        return response.json()
 
     def twImport(self, body):
         '''
