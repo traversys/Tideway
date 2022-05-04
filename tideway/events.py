@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import requests
 import tideway
 
 dr = tideway.discoRequests
