@@ -25,6 +25,13 @@ def filePost(appliance, api_endpoint, file, response="text/html"):
     req = requests.post(url, files=files, headers=heads, params=appliance.params, verify=appliance.verify)
     return req
 
+def keytabPost(appliance, api_endpoint, file, username, response="application/json", content_type="multipart/form-data"):
+    form_data= {"keytab":open(file,'rb'),"username":username}
+    url, heads = url_and_headers(appliance.url,appliance.token,api_endpoint,response)
+    heads['Content-type']=content_type
+    req = requests.post(url, files=form_data, headers=heads, params=appliance.params, verify=appliance.verify)
+    return req
+
 def discoPatch(appliance, api_endpoint, jsoncode, response="application/json"):
     url, heads = url_and_headers(appliance.url,appliance.token,api_endpoint,response)
     req = requests.patch(url, json=jsoncode, headers=heads, params=appliance.params, verify=appliance.verify)

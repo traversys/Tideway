@@ -1,23 +1,92 @@
 ---
-sort: 1
+sort: 2
 ---
 
 # Appliance
 
-Initiate an Appliance object for the instance of Discovery you intend to query.
+Initiate an Appliance or Outpost object for the instance of Discovery you intend to query.
 
 Syntax:
 
 ```
 tideway.appliance(__target__, __token__ [, _api_version_ ] [, _ssl_verify_ ] [, _limit_ ] [, _offset_ ])
+tideway.outpost(__target__, __token__ [, _api_version_ ] [, _ssl_verify_ ] [, _limit_ ] [, _offset_ ])
 ```
 
 Initiation:
 
 ```python
 >>> import tideway
->>> tw = tideway.appliance('appliance-hostname','auth-token')
+>>> tw = tideway.appliance('hostname','auth-token')
 ```
+
+## get()
+
+Run a direct endpoint query using GET request.
+
+Syntax:
+
+```
+.get(__endpoint__)
+```
+
+| Parameters    | Type        | Required | Default Value | Options  |
+| ------------- | ----------- | :------: | ------------- | -------- |
+| endpoint      | String      | Yes      | N/A           | N/A      |
+
+Example:
+```python
+>>> tw.get("/vault")
+{
+    "open": true,
+    "passphrase_saved": false,
+    "passphrase_set": false
+}
+```
+
+## post()
+
+Run a direct endpoint query using POST.
+
+Syntax:
+
+```
+.post(__endpoint__, __body__)
+```
+
+| Parameters    | Type        | Required | Default Value | Options  |
+| ------------- | ----------- | :------: | ------------- | -------- |
+| endpoint      | String      | Yes      | N/A           | N/A      |
+| body          | JSON Object | Yes      | N/A           | N/A      |
+
+Example:
+```python
+>>> tw.post("/data/search",{"query": "search Host show os_class process with unique()"})
+[
+	{
+		'count': 3,
+		'kind': 'Unique row',
+		'offset': 0,
+		'results': [
+			{
+				'os_class': 'UNIX'
+			},
+			{
+				'os_class': 'Windows'
+			},
+			{
+				'os_class': 'Other'
+			}
+		]
+	}
+]
+```
+
+## delete()
+
+## patch()
+
+## put()
 
 ## about()
 

@@ -1,5 +1,5 @@
 ---
-sort: 9
+sort: 1
 ---
 
 # Admin
@@ -16,41 +16,51 @@ Initiation:
 
 ```python
 >>> import tideway
->>> tw = tideway.admin('appliance-hostname','auth-token')
+>>> tw = tideway.admin('hostname','auth-token')
 ```
 
-## baseline()
+## get_admin_baseline
 
-- Get a summary of the appliance status, and details of which baseline checks have passed or failed.
+Get a summary of the appliance status, and details of which baseline checks have passed or failed.
 
 Syntax:
 
 ```
-.baseline()
+.get_admin_baseline
 ```
 
 Example:
 
 ```python
->>> tw.baseline().json()['results']['FAILED'][0]
+>>> tw.get_admin_baseline.json()['results']['FAILED'][0]
 {'enabled': True, 'message': 'MAJOR: This appliance has insufficent resources', 'name': 'Appliance Specification', 'severity': 'MAJOR'}
 ```
 
-## about()
+## get_admin_about
 
 Get the versions of the API supported by a BMC Discovery version.
 
 Syntax:
 
 ```
-.about()
+.get_admin_about
 ```
 
 Example:
 ```python
->>> tw.about().json()
+>>> tw.get_admin_about.json()
 {'api_versions': ['1.0', '1.1', '1.2'], 'component': 'REST API', 'product': 'BMC Discovery', 'version': '12.2'}
 ```
+
+## baseline()
+[Deprecated] See [get_admin_baseline](#get_admin_baseline) for usage.
+
+Syntax: `.baseline()`
+
+## about()
+[Deprecated] See [get_admin_about](#get_admin_about) for usage.
+
+Syntax: `.about()`
 
 ## licensing()
 
