@@ -88,14 +88,14 @@ class Data(appliance):
         else:
             return initial
 
-    def post_data_condition(self, query, offset=None, results_id=None, format=None, limit = 100, delete = False):
+    def post_data_condition(self, body, offset=None, results_id=None, format=None, limit = 100, delete = False):
         '''Search using a condition, retrieving tabular data as arrays'''
         self.params['offset'] = offset
         self.params['results_id'] = results_id
         self.params['format'] = format
         self.params['delete'] = delete
         self.params['limit'] = limit
-        response = dr.discoPost(self, "/data/condition", query)
+        response = dr.discoPost(self, "/data/condition", body)
         return response
 
     def post_data_condition_param_values(self, body):

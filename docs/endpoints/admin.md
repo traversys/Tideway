@@ -53,11 +53,13 @@ Example:
 ```
 
 ## baseline()
+
 [Deprecated] See [get_admin_baseline](#get_admin_baseline) for usage.
 
 Syntax: `.baseline()`
 
 ## about()
+
 [Deprecated] See [get_admin_about](#get_admin_about) for usage.
 
 Syntax: `.about()`

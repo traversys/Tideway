@@ -2,7 +2,7 @@
 sort: 2
 ---
 
-# Appliance
+# Appliance or Outpost
 
 Initiate an Appliance or Outpost object for the instance of Discovery you intend to query.
 
@@ -18,6 +18,147 @@ Initiation:
 ```python
 >>> import tideway
 >>> tw = tideway.appliance('hostname','auth-token')
+```
+
+## api_about
+
+Get the versions of the API supported by a BMC Discovery version.
+
+Syntax:
+
+```
+.api_about
+```
+
+Example:
+```python
+>>> tw.api_about.json()
+{'api_versions': ['1.0', '1.1', '1.2'], 'component': 'REST API', 'product': 'BMC Discovery', 'version': '12.2'}
+```
+
+## api_swagger
+
+Get JSON swagger file which contains the API schema.
+
+Syntax:
+
+```
+.api_swagger
+```
+
+Example:
+
+```python
+>>> swagger = tw.api_swagger
+>>> from pprint import pprint
+>>> pprint(api_swagger.json()['tags'])
+[{'description': 'Control scanning and view results', 'name': 'discovery'},
+ {'description': 'Read and import data', 'name': 'data'},
+ {'description': 'Manage the credential vault', 'name': 'vault'},
+ {'description': 'Manage credentials', 'name': 'credentials'},
+ {'description': 'Upload new TKUs and pattern modules', 'name': 'knowledge'},
+ {'description': 'Push events', 'name': 'events'},
+ {'description': 'Manage the BMC Discovery appliance', 'name': 'admin'},
+ {'description': 'Retrieve topology data from the datastore', 'name': 'topology'}]
+```
+
+## api_help
+
+Outputs full list of help methods see [help()](#help).
+
+## get_admin_baseline
+
+- Get a summary of the appliance status, and details of which baseline checks have passed or failed.
+
+Syntax:
+
+```
+.get_admin_baseline
+```
+
+Example:
+
+```python
+>>> tw.get_admin_baseline.json()['results']['FAILED'][0]
+{'enabled': True, 'message': 'MAJOR: This appliance has insufficent resources', 'name': 'Appliance Specification', 'severity': 'MAJOR'}
+```
+
+## get_admin_about
+
+Get information about the appliance, like its version and versions of the installed packages.
+
+Syntax:
+
+```
+.get_admin_about
+```
+
+Example:
+```python
+>>> details = tw.get_admin_about.text
+>>> print(details)
+{
+    "versions": {
+        "devices": "5.0.2020.09.3",
+        "os_updates": "7.20.08.25",
+        "product": "12.1",
+        "product_content": "2.0.2020.09.3"
+    }
+}
+```
+
+## get_admin_licensing
+
+Get the latest signed licensing report in plain text.
+
+Syntax:
+
+```
+.get_admin_licensing
+```
+
+Example:
+```python
+>>> tw.get_admin_licensing.text
+-----BEGIN LICENSE REPORT-----
+License report
+==============
+
+Report start time: 2021-01-18 23:00:00.409987+00:00
+Report end time  : 2021-01-21 23:00:00.410085+00:00
+...
+```
+
+## get_admin_licensing_csv
+
+Get the latest raw license data in CSV format as a zip file for offline analysis.
+
+Syntax:
+
+```
+.get_admin_licensing_csv
+```
+
+Example:
+```python
+>>> tw.get_admin_licensing_csv
+
+```
+
+## get_admin_licensing_raw
+
+Get the latest license data as encrypted raw license object for import to another appliance.
+
+Syntax:
+
+```
+.get_admin_licensing_raw
+```
+
+Example:
+```python
+>>> tw.get_admin_licensing_raw
+
 ```
 
 ## get()
@@ -84,92 +225,89 @@ Example:
 
 ## delete()
 
+Run a direct endpoint query using DELETE. The endpoint is assumed to contain a specific identifier parsed as a string query.
+
+Syntax:
+
+```
+.delete(__endpoint__)
+```
+
+| Parameters    | Type        | Required | Default Value | Options  |
+| ------------- | ----------- | :------: | ------------- | -------- |
+| endpoint      | String      | Yes      | N/A           | N/A      |
+
+Example:
+```python
+>>> tw.delete("/discovery/runs/scheduled/{run_id}")
+
+```
+
 ## patch()
+
+Run a direct endpoint query using PATCH.
+
+Syntax:
+
+```
+.patch(__endpoint__, __body__)
+```
+
+| Parameters    | Type        | Required | Default Value | Options  |
+| ------------- | ----------- | :------: | ------------- | -------- |
+| endpoint      | String      | Yes      | N/A           | N/A      |
+| body          | JSON Object | Yes      | N/A           | N/A      |
+
+Example:
+```python
+>>> tw.patch("/discovery/runs/scheduled/{run_id}",{"enabled": true})
+
+```
 
 ## put()
 
-## about()
-
-Get the versions of the API supported by a BMC Discovery version.
+Run a direct endpoint query using PUT.
 
 Syntax:
 
 ```
-.about()
+.put(__endpoint__, __body__)
 ```
+
+| Parameters    | Type        | Required | Default Value | Options  |
+| ------------- | ----------- | :------: | ------------- | -------- |
+| endpoint      | String      | Yes      | N/A           | N/A      |
+| body          | JSON Object | Yes      | N/A           | N/A      |
 
 Example:
 ```python
->>> tw.about().json()
-{'api_versions': ['1.0', '1.1', '1.2'], 'component': 'REST API', 'product': 'BMC Discovery', 'version': '12.2'}
+>>> tw.put("/vault/credentials/{cred_id}",{"enabled": true})
+
 ```
+
+## about()
+
+[Deprecated] See [api_about](#api_about) for usage.
+
+Syntax: `.about()`
 
 ## admin()
 
-Get information about the appliance, like its version and versions of the installed packages.
+[Deprecated] See [get_admin_about](#get_admin_about) for usage.
 
-Syntax:
-
-```
-.admin()
-```
-
-Example:
-```python
->>> details = tw.admin().text
->>> print(details)
-{
-    "versions": {
-        "devices": "5.0.2020.09.3",
-        "os_updates": "7.20.08.25",
-        "product": "12.1",
-        "product_content": "2.0.2020.09.3"
-    }
-}
-```
+Syntax: `.admin()`
 
 ## swagger()
 
-Get JSON swagger file which contains the API schema.
+[Deprecated] See [api_swagger](#api_swagger) for usage.
 
-Syntax:
-
-```
-.swagger()
-```
-
-Example:
-
-```python
->>> swagger = tw.swagger()
->>> from pprint import pprint
->>> pprint(swagger.json()['tags'])
-[{'description': 'Control scanning and view results', 'name': 'discovery'},
- {'description': 'Read and import data', 'name': 'data'},
- {'description': 'Manage the credential vault', 'name': 'vault'},
- {'description': 'Manage credentials', 'name': 'credentials'},
- {'description': 'Upload new TKUs and pattern modules', 'name': 'knowledge'},
- {'description': 'Push events', 'name': 'events'},
- {'description': 'Manage the BMC Discovery appliance', 'name': 'admin'},
- {'description': 'Retrieve topology data from the datastore', 'name': 'topology'}]
-```
+Syntax: `.swagger()`
 
 ## baseline()
 
-- Get a summary of the appliance status, and details of which baseline checks have passed or failed.
+[Deprecated] See [get_admin_baseline](#get_admin_baseline) for usage.
 
-Syntax:
-
-```
-.baseline()
-```
-
-Example:
-
-```python
->>> tw.baseline().json()['results']['FAILED'][0]
-{'enabled': True, 'message': 'MAJOR: This appliance has insufficent resources', 'name': 'Appliance Specification', 'severity': 'MAJOR'}
-```
+Syntax: `.baseline()`
 
 ## licensing()
 
@@ -206,7 +344,9 @@ Report end time  : 2021-01-21 23:00:00.410085+00:00
 
 Syntax:
 
-```.help(([ _endpoint_ ]))```
+```
+.help([ _endpoint_ ])
+```
 
 | Parameters   | Type   | Required | Default Value | Options                                         |
 | ------------ | ------ | :------: | ------------- | ----------------------------------------------- |

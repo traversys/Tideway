@@ -24,7 +24,7 @@ class Kerberos(appliance):
         return req
 
     def patch_vault_kerberos_realm(self, realm_name, body):
-        '''Delete a realm.'''
+        '''Update a Kerberos realm.'''
         req = dr.discoPatch(self, "/vault/kerberos/realms/{}".format(realm_name), body)
         return req
 

@@ -1,5 +1,5 @@
 ---
-sort: 7
+sort: 8
 ---
 
 # Knowledge
@@ -20,37 +20,37 @@ Initiation:
 >>> knowledge = tw.knowledge()
 ```
 
-## getKnowledgeManagement()
+## get_knowledge
 
 Get the current state of the appliance's knowledge, including TKU versions.
 
 Syntax:
 
 ```
-.getKnowledgeManagement()
+.get_knowledge
 ```
 
 Example:
 
 ```python
->>> >>> knowledge.getKnowledgeManagement().json()['latest_tku']['submission_date']
+>>> >>> knowledge.get_knowledge.json()['latest_tku']['submission_date']
 '2021-05-24T23:06:00.350840+00:00'
 ```
 
-## getUploadStatus()
+## get_knowledge_status
 
 Get the current state of a knowledge upload.
 
 Syntax:
 
 ```
-.getUploadStatus()
+.get_knowledge_status
 ```
 
 Example:
 
 ```python
->>> upload = knowledge.getUploadStatus()
+>>> upload = knowledge.get_knowledge_status
 >>> from pprint import pprint
 >>> pprint(upload.json())
 {
@@ -68,14 +68,14 @@ Example:
 }
 ```
 
-## uploadKnowledge()
+## post_knowledge()
 
 Upload a TKU or pattern module to the appliance.
 
 Syntax:
 
 ```
-.uploadKnowledge(__filename__, __file__ [, _activate_ ] [, _allow_restart_ ])
+.post_knowledge(__filename__, __file__ [, _activate_ ] [, _allow_restart_ ])
 ```
 
 | Parameters    | Type        | Required | Default Value | Options  |
@@ -88,6 +88,24 @@ Syntax:
 Example:
 
 ```python
->>> knowledge.uploadKnowledge("TestPattern.tpl","C:/Users/User001/Documents/TestPattern.tpl").ok
+>>> knowledge.post_knowledge("TestPattern.tpl","C:/Users/User001/Documents/TestPattern.tpl").ok
 True
 ```
+
+## getKnowledgeManagement()
+
+[Deprecated] See [get_knowledge](#get_knowledge) for usage.
+
+Syntax: `.getKnowledgeManagement()`
+
+## getUploadStatus()
+
+[Deprecated] See [get_knowledge_status](#get_knowledge_status) for usage.
+
+Syntax: `.getUploadStatus()`
+
+## uploadKnowledge()
+
+[Deprecated] See [post_knowledge](#post_knowledge) for usage.
+
+Syntax: `.uploadKnowledge(__filename__, __file__ [, _activate_ ] [, _allow_restart_ ])`

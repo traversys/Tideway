@@ -119,7 +119,7 @@ class Appliance:
     def get_admin_baseline(self):
         '''Alternate API call for baseline.'''
         response = dr.discoRequest(self, "/admin/baseline")
-        return response.json()
+        return response
 
     def baseline(self):
         '''Get a summary of the appliance status, and details of which baseline checks have passed or failed.'''
@@ -130,7 +130,7 @@ class Appliance:
     def get_admin_about(self):
         '''Alternate API call for /admin/about.'''
         response = dr.discoRequest(self, "/admin/about")
-        return response.json()
+        return response
 
     def admin(self):
         '''Get information about the appliance, like its version and versions of the installed packages.'''
