@@ -8,7 +8,7 @@ sort: 2
 ## Input
 
 ```python
->>> tw = tideway.appliance('appliance-hostname','auth-token')
+>>> tw = tideway.appliance('appliance-hostname','auth-token',api_version='1.2')
 >>> response = tw.about()
 ```
 

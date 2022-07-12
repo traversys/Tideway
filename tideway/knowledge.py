@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import requests
 import tideway
 
 dr = tideway.discoRequests
@@ -13,10 +12,19 @@ class Knowledge(appliance):
         '''Get the current state of the appliance's knowledge, including TKU versions.'''
         response = dr.discoRequest(self, "/knowledge")
         return response
+    get_knowledge = property(getKnowledgeManagement)
 
     def getUploadStatus(self):
         '''Get the current state of a knowledge upload.'''
         response = dr.discoRequest(self, "/knowledge/status")
+        return response
+    get_knowledge_status = property(getUploadStatus)
+
+    def post_knowledge(self, filename, file, activate=True, allow_restart=False):
+        '''Alternate API call for POST /knowledge/filename'''
+        self.params['activate'] = activate
+        self.params['allow_restart'] = allow_restart
+        response = dr.filePost(self, "/knowledge/{}".format(filename), file)
         return response
 
     def uploadKnowledge(self, filename, file, activate=True, allow_restart=False):

@@ -1,5 +1,5 @@
 ---
-sort: 5
+sort: 3
 ---
 
 # Credentials
@@ -20,14 +20,14 @@ Initiation:
 >>> credentials = tw.credentials()
 ```
 
-## listCredentialTypes()
+## get_vault_credential_type()
 
 Get a list of all credential types and filter by group and/or category.
 
 Syntax:
 
 ```
-.listCredentialTypes([ _group_ ] [, _category_ ])
+.get_vault_credential_type([ _group_ ] [, _category_ ])
 ```
 
 | Parameters    | Type        | Required | Default Value | Options  |
@@ -38,7 +38,7 @@ Syntax:
 Example:
 
 ```python
->>> db_creds = credentials.listCredentialTypes(category="Database")
+>>> db_creds = credentials.get_vault_credential_type(category="Database")
 >>> from pprint import pprint
 >>> pprint(db_creds.json())
 [
@@ -57,14 +57,18 @@ Example:
 ...
 ```
 
-## credentialType()
+## get_vault_credential_types
+
+List all credential types. See [get_vault_credential_type](#get_vault_credential_type).
+
+## get_vault_credential_type_name()
 
 Get the properties of a specific credential type.
 
 Syntax:
 
 ```
-.credentialType(__cred_type_name__)
+.get_vault_credential_type_name(__cred_type_name__)
 ```
 
 | Parameters    | Type        | Required | Default Value | Options  |
@@ -72,7 +76,7 @@ Syntax:
 | cred_type_name | String     | Yes      | N/A           | N/A      |
 
 ```python
->>> ora_creds.credentials.credentialType("oracle").json()
+>>> ora_creds.credentials.get_vault_credential_type_name("oracle").json()
 >>> from pprint import pprint
 >>> pprint(ora_creds.json())
 {
@@ -90,14 +94,14 @@ Syntax:
 }
 ```
 
-## listCredentials()
+## get_vault_credential()
 
 Get a list of credentials.
 
 Syntax:
 
 ```
-.listCredentials([ _uuid_ ])
+.get_vault_credential([ _uuid_ ])
 ```
 
 | Parameters    | Type        | Required | Default Value | Options  |
@@ -107,19 +111,23 @@ Syntax:
 Example:
 
 ```python
->>> creds = credentials.listCredentials("e7f00000106c1")
+>>> creds = credentials.get_vault_credential("e7f00000106c1")
 >>> print(creds.json()['types'])
 ['ssh']
 ```
 
-## newCredential()
+## get_vault_credentials
+
+List all vault credentials. See [get_vault_credential](#get_vault_credential).
+
+## post_vault_credential()
 
 Create a new credential.
 
 Syntax:
 
 ```
-.newCredential(__json__)
+.post_vault_credential(__json__)
 ```
 
 | Parameters    | Type        | Required | Default Value | Options  |
@@ -129,17 +137,17 @@ Syntax:
 Example:
 
 ```python
->>> credentials.newCredential({"enabled": True,"username": "discovery_service","password": "password","label": "SSH Service Account","description": "Service Account for SSH","ip_range": "0.0.0.0/0,::/0","types": ["ssh"]}).ok
+>>> credentials.post_vault_credential({"enabled": True,"username": "discovery_service","password": "password","label": "SSH Service Account","description": "Service Account for SSH","ip_range": "0.0.0.0/0,::/0","types": ["ssh"]}).ok
 True
 ```
 
-## deleteCredential()
+## delete_vault_credential()
 
 Delete a credential.
 
 Syntax:
 ```
-.deleteCredential([ _uuid_ ])
+.delete_vault_credential([ _uuid_ ])
 ```
 
 | Parameters    | Type        | Required | Default Value | Options  |
@@ -149,17 +157,17 @@ Syntax:
 Example:
 
 ```python
->>> credentials.deleteCredential("e7f00000106c1").ok
+>>> credentials.delete_vault_credential("e7f00000106c1").ok
 True
 ```
 
-## updateCredential()
+## patch_vault_credential()
 
 Updates partial resources of a credential. Missing properties are left unchanged.
 
 Syntax:
 ```
-.updateCredential(__uuid__, __json__)
+.patch_vault_credential(__uuid__, __json__)
 ```
 
 | Parameters    | Type        | Required | Default Value | Options  |
@@ -170,11 +178,11 @@ Syntax:
 Example:
 
 ```python
->>> credentials.updateCredential("a1b2c3d4e5f6",{ "enabled" : False }).ok
+>>> credentials.patch_vault_credential("a1b2c3d4e5f6",{ "enabled" : False }).ok
 True
 ```
 
-## replaceCredential()
+## put_vault_credential()
 
 Replaces a single credential.
 
@@ -184,7 +192,7 @@ All required credential properties must be present. Optional properties that are
 
 Syntax:
 ```
-.replaceCredential(__uuid__, __json__)
+.put_vault_credential(__uuid__, __json__)
 ```
 
 | Parameters    | Type        | Required | Default Value | Options  |
@@ -195,6 +203,48 @@ Syntax:
 Example:
 
 ```python
->>> tc.replaceCredential("a1b2c3d4e5f6",{"enabled": True,"username": "discovery_service","password": "password","label": "Limited SSH Discovery","description": "Limited SSH Service Account","ip_range": "192.168.1.0/24","types":["ssh"]}).ok
+>>> credentials.put_vault_credential("a1b2c3d4e5f6",{"enabled": True,"username": "discovery_service","password": "password","label": "Limited SSH Discovery","description": "Limited SSH Service Account","ip_range": "192.168.1.0/24","types":["ssh"]}).ok
 True
 ```
+
+## listCredentialTypes()
+
+[Deprecated] See [get_vault_credential_type](#get_vault_credential_type) for usage.
+
+Syntax: `.listCredentialTypes([ _group_ ] [, _category_ ])`
+
+## credentialType()
+
+[Deprecated] See [get_vault_credential_type_name](#get_vault_credential_type_name) for usage.
+
+Syntax: `.credentialType(__cred_type_name__)`
+
+## listCredentials()
+
+[Deprecated] See [get_vault_credential](#get_vault_credential) for usage.
+
+Syntax: `.listCredentials([ _uuid_ ])`
+
+## newCredential()
+
+[Deprecated] See [post_vault_credential](#post_vault_credential) for usage.
+
+Syntax: `.newCredential(__json__)`
+
+## deleteCredential()
+
+[Deprecated] See [delete_vault_credential](#delete_vault_credential) for usage.
+
+Syntax: `.deleteCredential([ _uuid_ ])`
+
+## updateCredential()
+
+[Deprecated] See [patch_vault_credential](#patch_vault_credential) for usage.
+
+Syntax: `.updateCredential(__uuid__, __json__)`
+
+## replaceCredential()
+
+[Deprecated] See [put_vault_credential](#put_vault_credential) for usage.
+
+Syntax: `.replaceCredential(__uuid__, __json__)`

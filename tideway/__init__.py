@@ -9,19 +9,26 @@ from tideway import main, \
                     credentials, \
                     knowledge, \
                     events, \
+                    kerberos, \
+                    models, \
+                    taxonomy, \
                     topology
 
 # Main declaration to create an appliance object
 appliance = main.Appliance
+outpost = main.Appliance
 
 # For the previous version classes single file - moved to main.py
 # Method 1: tideway._________(appliance,token)
 # method 2: tideway.________.func(appliance)
-discovery = discovery.Discovery
-data = data.Data
-vault = vault.Vault
-credentials = credentials.Credentials
-knowledge = knowledge.Knowledge
-events = events.Events
 admin = admin.Admin
+credentials = credentials.Credentials
+data = data.Data
+discovery = discovery.Discovery
+events = events.Events
+kerberos = kerberos.Kerberos
+knowledge = knowledge.Knowledge
+models = models.Models
+taxonomy = taxonomy.Taxonomy
 topology = topology.Topology
+vault = vault.Vault

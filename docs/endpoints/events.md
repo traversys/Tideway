@@ -1,5 +1,5 @@
 ---
-sort: 7
+sort: 6
 ---
 
 # Events
@@ -20,16 +20,22 @@ Initiation:
 >>> events = tw.events()
 ```
 
-## status()
+## post_events()
 
 Returns a unique ID if the event has been recorded, otherwise an empty string is returned e.g. if the event source has been disabled.
 
 Syntax: 
 
 ```
-.status(__json__)
+.post_events(__json__)
 ```
 
 | Parameters    | Type        | Required | Default Value | Options  |
 | ------------- | ----------- | :------: | ------------- | -------- |
 | json          | JSON Object | Yes      | N/A           | N/A      |
+
+## status()
+
+[Deprecated] See [post_events](#post_events) for usage.
+
+Syntax: `.status(__json__)`

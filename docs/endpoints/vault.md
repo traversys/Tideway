@@ -1,5 +1,5 @@
 ---
-sort: 4
+sort: 12
 ---
 
 # Vault
@@ -20,31 +20,31 @@ Initiation:
 >>> vault = tw.vault()
 ```
 
-## getVault()
+## get_vault
 
 Get details of the state of the vault.
 
 Syntax:
 
 ```
-.getVault()
+.get_vault
 ```
 
 Example:
 
 ```python
->>> vault.getVault().json()
+>>> vault.get_vault.json()
 {'open': True, 'passphrase_saved': False, 'passphrase_set': False}
 ```
 
-## updateVault()
+## patch_vault()
 
 Change the state of the vault.
 
 Syntax:
 
 ```
-.updateVault(__json__)
+.patch_vault(__json__)
 ```
 
 | Parameters    | Type        | Required | Default Value | Options  |
@@ -54,6 +54,18 @@ Syntax:
 Example:
 
 ```python
->>> vault.updateVault({"open": True,"passphrase":"long pass phrase"}).ok
+>>> vault.patch_vault({"open": True,"passphrase":"long pass phrase"}).ok
 True
 ```
+
+## getVault()
+
+[Deprecated] See [get_vault](#get_vault) for usage.
+
+Syntax: `.getVault()`
+
+## updateVault()
+
+[Deprecated] See [patch_vault](#patch_vault) for usage.
+
+Syntax: `.updateVault(__json__)`

@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import requests
 import tideway
 
 dr = tideway.discoRequests
@@ -12,6 +11,12 @@ class Vault(appliance):
     def getVault(self):
         '''Get details of the state of the vault.'''
         response = dr.discoRequest(self, "/vault")
+        return response
+    get_vault = property(getVault)
+
+    def patch_vault(self, body):
+        '''Alternate API call for PATCH /vault'''
+        response = dr.discoPatch(self, "/vault", body)
         return response
 
     def updateVault(self, body):
