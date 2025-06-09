@@ -103,8 +103,8 @@ class Data(appliance):
         response = dr.discoPost(self, "/data/condition/param_values", body)
         return response
 
-    def get_data_condition_template(self,template_id):
-        '''Get a list of all templates'''
+    def get_data_condition_template(self, template_id=None):
+        '''Get a template or a list of all templates.'''
         if template_id:
             req = dr.discoRequest(self, "/data/condition/templates/{}".format(template_id))
         else:
