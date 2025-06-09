@@ -10,7 +10,6 @@ class Kerberos(appliance):
 
     def get_vault_kerberos_realm(self, realm_name=None):
         '''Retrieve all or specific realm.'''
-        req = dr.discoRequest(self, "/vault/kerberos/realms")
         if realm_name:
             req = dr.discoRequest(self, "/vault/kerberos/realms/{}".format(realm_name))
         else:

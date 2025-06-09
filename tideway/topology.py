@@ -16,7 +16,7 @@ class Topology(appliance):
         response = dr.discoRequest(self, "/data/nodes/{}/graph".format(node_id))
         return response
 
-    def graphNode(self, node_id, focus="sofware-connected", apply_rules=True):
+    def graphNode(self, node_id, focus="software-connected", apply_rules=True):
         '''
             Graph data represents a set of nodes and relationships that are
             associated to the given node.

@@ -155,7 +155,7 @@ Syntax:
 
 ## get_data_condition_template()
 
-Get a list of all available templates.
+Get the properties of a specific template or a list of all templates.
 
 Syntax:
 
