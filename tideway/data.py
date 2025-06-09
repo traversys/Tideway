@@ -159,11 +159,11 @@ class Data(appliance):
             response = dr.discoRequest(self, "/data/nodes/{}".format(node_id))
         return response
 
-    def get_data_nodes_graph(self, node_id, focus="software-connected", apply_rules=True):
+    def get_data_nodes_graph(self, node_id, focus="software-connected", apply_rules=True, complete=False):
         '''Alternate API call for /data/nodes/node_id/graph'''
         self.params['focus'] = focus
         self.params['apply_rules'] = apply_rules
-        self.params['complete'] = False
+        self.params['complete'] = complete
         response = dr.discoRequest(self, "/data/nodes/{}/graph".format(node_id))
         return response
 
