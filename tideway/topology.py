@@ -8,7 +8,7 @@ appliance = tideway.main.Appliance
 class Topology(appliance):
     '''Retrieve topology data from the datastore.'''
 
-    def get_data_nodes_graph(self, node_id, focus="sofware-connected", apply_rules=True, complete=False):
+    def get_data_nodes_graph(self, node_id, focus="software-connected", apply_rules=True, complete=False):
         '''Alternate API call for /data/nodes/node_id/graph'''
         self.params['focus'] = focus
         self.params['apply_rules'] = apply_rules
