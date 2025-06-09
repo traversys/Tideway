@@ -155,7 +155,8 @@ Syntax:
 
 ## get_data_condition_template()
 
-Get a list of all available templates.
+
+Get the properties of a specific template or a list of all templates.
 
 Syntax:
 
@@ -259,7 +260,7 @@ Graph data represents a set of nodes and relationships that are associated to th
 Syntax:
 
 ```
-.get_data_nodes_graph(__node_id__ [, _focus_ ] [, _apply_rules_ ])
+.get_data_nodes_graph(__node_id__ [, _focus_ ] [, _apply_rules_ ] [, _complete_ ])
 ```
 
 | Parameters    | Type        | Required | Default Value | Options  |
@@ -267,6 +268,7 @@ Syntax:
 | node_id       | JSON Object | Yes      | N/A           | N/A      |
 | focus         | String      | No       | N/A           | <ul><li>"software-connected"</li><li>"software"</li><li>"infrastructure"</li></ul> |
 | apply_rules   | Boolean     | No       | False         | <ul><li>True</li><li>False</li></ul> |
+| complete      | Boolean     | No       | False         | <ul><li>True</li><li>False</li></ul> |
 
 ## get_data_kinds()
 

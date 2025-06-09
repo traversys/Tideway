@@ -13,38 +13,50 @@ class Appliance:
     def __init__(self, target, token, limit = 100, delete = False, api_version = "1.5", ssl_verify = False):
         self.target = target
         self.token = token
+        self.default_limit = limit
+        self.default_delete = delete
         self.params = {}
-        self.params['limit'] = limit
-        self.params['delete'] = delete
+        self.reset_params()
         self.api_version = api_version
         self.target_url = "https://" + str(target)
         self.api = self.target_url + "/api"
         self.url = self.api + "/v" + self.api_version
         self.verify = ssl_verify
 
+    def reset_params(self):
+        '''Reset request parameters back to default.'''
+        self.params.clear()
+        self.params['limit'] = self.default_limit
+        self.params['delete'] = self.default_delete
+
     def get(self,endpoint):
         '''Request any endpoint.'''
         req = dr.discoRequest(self,endpoint)
+        self.reset_params()
         return req
 
     def post(self,endpoint,body):
         '''Post any endpoint.'''
         req = dr.discoPost(self, endpoint, body)
+        self.reset_params()
         return req
 
     def delete(self,endpoint):
         '''Delete any endpoint.'''
         req = dr.discoDelete(self, endpoint)
+        self.reset_params()
         return req
 
     def patch(self,endpoint,body):
         '''Patch any endpoint.'''
         req = dr.discoPatch(self, endpoint, body)
+        self.reset_params()
         return req
 
     def put(self,endpoint,body):
         '''Update any endpoint.'''
         req = dr.discoPut(self, endpoint, body)
+        self.reset_params()
         return req
 
     def credentials(self):

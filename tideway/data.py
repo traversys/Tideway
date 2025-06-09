@@ -69,7 +69,7 @@ class Data(appliance):
                 all_results.append(headings)
             for item in results['results']:
                 all_results.append(item)
-            if 'results_id' and 'next_offset' in results:
+            if 'results_id' in results and 'next_offset' in results:
                 total = init_results[0]['count']
                 res_id = results['results_id']
                 next_offset=results['next_offset']
@@ -104,7 +104,7 @@ class Data(appliance):
         return response
 
     def get_data_condition_template(self, template_id=None):
-        '''Get a list of all templates'''
+        '''Get a template or a list of all templates.'''
         if template_id:
             req = dr.discoRequest(self, "/data/condition/templates/{}".format(template_id))
         else:
@@ -159,15 +159,15 @@ class Data(appliance):
             response = dr.discoRequest(self, "/data/nodes/{}".format(node_id))
         return response
 
-    def get_data_nodes_graph(self, node_id, focus="sofware-connected", apply_rules=True):
+    def get_data_nodes_graph(self, node_id, focus="software-connected", apply_rules=True, complete=False):
         '''Alternate API call for /data/nodes/node_id/graph'''
         self.params['focus'] = focus
         self.params['apply_rules'] = apply_rules
-        self.params['complete'] = False
+        self.params['complete'] = complete
         response = dr.discoRequest(self, "/data/nodes/{}/graph".format(node_id))
         return response
 
-    def graphNode(self, node_id, focus="sofware-connected", apply_rules=True):
+    def graphNode(self, node_id, focus="software-connected", apply_rules=True):
         '''Graph data represents a set of nodes and relationships that are associated to the given node.'''
         self.params['focus'] = focus
         self.params['apply_rules'] = apply_rules
