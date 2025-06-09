@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from tkinter import BASELINE
 import requests
 from . import discoRequests as dr
 from . import endpoints
