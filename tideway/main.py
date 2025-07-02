@@ -113,18 +113,23 @@ class Appliance:
         req = requests.get(url, verify=self.verify)
         return req
 
+    def _get_api_schema(self):
+        '''Helper to fetch API schema, trying /swagger.json first, then /openapi.json.'''
+        for path in ["/swagger.json", "/openapi.json"]:
+            url = self.url + path
+            req = requests.get(url, verify=self.verify)
+            if req.status_code != 404:
+                return req
+        return req  # return the last response (likely 404 if both failed)
+
     @property
     def api_swagger(self):
         '''Alternate API call for swagger.'''
-        url = self.url + "/swagger.json"
-        req = requests.get(url, verify=self.verify)
-        return req
+        return self._get_api_schema()
 
     def swagger(self):
-        '''Get swagger file.'''
-        url = self.url + "/swagger.json"
-        req = requests.get(url, verify=self.verify)
-        return req
+        '''Fetch API schema, trying /swagger.json first, then /openapi.json.'''
+        return self._get_api_schema()
 
     @property
     def get_admin_baseline(self):
