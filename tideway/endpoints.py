@@ -42,6 +42,48 @@ docTable = [
                     ],
                 [
                     "GET",
+                    "/admin/instance",
+                    "- instance()\n- get_admin_instance",
+                    "Get details about the appliance instance."
+                    ],
+                [
+                    "GET",
+                    "/admin/cluster",
+                    "- cluster()\n- get_admin_cluster",
+                    "Get cluster configuration and status."
+                    ],
+                [
+                    "GET",
+                    "/admin/organizations",
+                    "- organizations()\n- get_admin_organizations",
+                    "Get configured organizations."
+                    ],
+                [
+                    "GET",
+                    "/admin/preferences",
+                    "- preferences()\n- get_admin_preferences",
+                    "Get global appliance preferences."
+                    ],
+                [
+                    "GET",
+                    "/admin/builtin_reports",
+                    "- builtin_reports()\n- get_admin_builtin_reports",
+                    "Get built-in report definitions."
+                    ],
+                [
+                    "GET",
+                    "/admin/custom_reports",
+                    "- custom_reports()\n- get_admin_custom_reports",
+                    "Get custom report definitions."
+                    ],
+                [
+                    "GET",
+                    "/admin/smtp",
+                    "- smtp()\n- get_admin_smtp",
+                    "Get SMTP configuration."
+                    ],
+                [
+                    "GET",
                     "/vault/credential_types",
                     "- listCredentialTypes()\n- get_vault_credential_type(group, cagetory)\n- get_vault_credential_types",
                     "Get a list of all credential types and filter by group and/or category."
