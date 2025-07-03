@@ -10,6 +10,7 @@ from tideway import main, \
                     knowledge, \
                     events, \
                     kerberos, \
+                    security, \
                     models, \
                     taxonomy, \
                     topology
@@ -32,3 +33,4 @@ models = models.Models
 taxonomy = taxonomy.Taxonomy
 topology = topology.Topology
 vault = vault.Vault
+security = security.Security
