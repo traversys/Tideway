@@ -33,3 +33,10 @@ class Knowledge(appliance):
         self.params['allow_restart'] = allow_restart
         response = dr.filePost(self, "/knowledge/{}".format(filename), file)
         return response
+
+    def getKnowledgeTriggerPatterns(self, lookup_data_sources=None):
+        '''Get a list of all knowledge trigger patterns.'''
+        self.params['lookup_data_sources'] = lookup_data_sources
+        response = dr.discoRequest(self, "/knowledge/trigger_patterns")
+        return response
+    get_knowledge_trigger_patterns = property(getKnowledgeTriggerPatterns)

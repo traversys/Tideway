@@ -92,6 +92,20 @@ Example:
 True
 ```
 
+## get_knowledge_trigger_patterns()
+
+Get a list of trigger patterns.
+
+Syntax:
+
+```
+.get_knowledge_trigger_patterns([ _lookup_data_sources_ ])
+```
+
+| Parameters          | Type    | Required | Default Value | Options                          |
+| ------------------- | ------- | :------: | ------------- | -------------------------------- |
+| lookup_data_sources | Boolean | No       | N/A           | <ul><li>True</li><li>False</li></ul> |
+
 ## getKnowledgeManagement()
 
 [Deprecated] See [get_knowledge](#get_knowledge) for usage.
