@@ -131,6 +131,24 @@ class Appliance:
         '''Fetch API schema, trying /swagger.json first, then /openapi.json.'''
         return self._get_api_schema()
 
+    def _load_schema(self):
+        '''Return cached API schema as dict, fetching it if necessary.'''
+        if getattr(self, '_api_schema', None) is None:
+            response = self.api_swagger
+            self._api_schema = response.json() if response.ok else {}
+        return self._api_schema
+
+    def api_schema(self):
+        '''Return the parsed API schema.'''
+        return self._load_schema()
+
+    def api_paths(self, path=None):
+        '''Return all available API paths or details for a specific path.'''
+        paths = self._load_schema().get('paths', {})
+        if path:
+            return paths.get(path)
+        return paths
+
     @property
     def get_admin_baseline(self):
         '''Alternate API call for baseline.'''
