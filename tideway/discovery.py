@@ -188,3 +188,22 @@ class Discovery(appliance):
         '''Update the parameters of a specific scheduled discovery run.'''
         response = dr.discoPatch(self, "/discovery/runs/scheduled/{}".format(run_id), body)
         return response
+
+    def get_discovery_outpost(self, outpost_id=None):
+        '''Get all configured Outposts or a specific one.'''
+        if outpost_id:
+            req = dr.discoRequest(self, "/discovery/outposts/{}".format(outpost_id))
+        else:
+            req = dr.discoRequest(self, "/discovery/outposts")
+        return req
+    get_discovery_outposts = property(get_discovery_outpost)
+
+    def post_discovery_outpost(self, body):
+        '''Register a new Outpost.'''
+        response = dr.discoPost(self, "/discovery/outposts", body)
+        return response
+
+    def delete_discovery_outpost(self, outpost_id):
+        '''Delete an Outpost.'''
+        response = dr.discoDelete(self, "/discovery/outposts/{}".format(outpost_id))
+        return response
