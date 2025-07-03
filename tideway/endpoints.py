@@ -198,6 +198,12 @@ docTable = [
                     ],
                 [
                     "GET",
+                    "/data/condition/params",
+                    "- get_data_condition_params()",
+                    "Get the list of available condition parameters.",
+                    ],
+                [
+                    "GET",
                     "/data/condition/templates",
                     "- get_data_condition_templates\n- get_data_condition_template()",
                     "Get a list of all templates."
@@ -264,6 +270,12 @@ docTable = [
                     ],
                 [
                     "GET",
+                    "/data/kinds/{kind}/values/{attribute}",
+                    "- get_data_kinds_values(kind, attribute)",
+                    "Retrieve values for an attribute of a node kind.",
+                    ],
+                [
+                    "GET",
                     "/data/partitions",
                     "- partitions()\n- get_data_partitions",
                     "Get names and ids of partitions."
@@ -282,9 +294,69 @@ docTable = [
                     ],
                 [
                     "POST",
+                    "/data/import/graph",
+                    "- post_data_import_graph(body)",
+                    "Import graph data. Returns the import UUID.",
+                    ],
+                [
+                    "POST",
                     "/data/write",
                     "- twWrite(body)\n- post_data_write(body)",
                     "Perform arbitrary write operations."
+                    ],
+                [
+                    "GET",
+                    "/data/external_consumers",
+                    "- get_data_external_consumers\n- get_data_external_consumer()",
+                    "Retrieve external consumers.",
+                    ],
+                [
+                    "POST",
+                    "/data/external_consumers",
+                    "- post_data_external_consumer(body)",
+                    "Create an external consumer.",
+                    ],
+                [
+                    "GET",
+                    "/data/external_consumers/{consumer}",
+                    "- get_data_external_consumer(consumer)",
+                    "Retrieve an external consumer.",
+                    ],
+                [
+                    "PATCH",
+                    "/data/external_consumers/{consumer}",
+                    "- patch_data_external_consumer(consumer, body)",
+                    "Update an external consumer.",
+                    ],
+                [
+                    "DELETE",
+                    "/data/external_consumers/{consumer}",
+                    "- delete_data_external_consumer(consumer)",
+                    "Delete an external consumer.",
+                    ],
+                [
+                    "GET",
+                    "/data/external_consumers/{consumer}/{path}",
+                    "- get_data_external_consumer(consumer, path)",
+                    "Retrieve external consumer sub-resource.",
+                    ],
+                [
+                    "POST",
+                    "/data/external_consumers/{consumer}/{path}",
+                    "- post_data_external_consumer(body, consumer, path)",
+                    "Create or update external consumer sub-resource.",
+                    ],
+                [
+                    "PATCH",
+                    "/data/external_consumers/{consumer}/{path}",
+                    "- patch_data_external_consumer(consumer, body, path)",
+                    "Update external consumer sub-resource.",
+                    ],
+                [
+                    "DELETE",
+                    "/data/external_consumers/{consumer}/{path}",
+                    "- delete_data_external_consumer(consumer, path)",
+                    "Delete external consumer sub-resource.",
                     ],
                 [
                     "GET",

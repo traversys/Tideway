@@ -21,3 +21,12 @@ def test_params_not_leak_between_calls():
         assert mock_get.call_args[1]['params'] == {'limit': 100, 'delete': False}
         assert tw.params == {'limit': 100, 'delete': False}
 
+
+def test_params_reset_after_get_data_kinds_values():
+    tw = tideway.appliance('host', 'token')
+    with patch('tideway.discoRequests.requests.get') as mock_get:
+        mock_get.return_value = MagicMock(status_code=200, ok=True)
+        tw.data().get_data_kinds_values('Host', 'name', offset=5)
+        assert mock_get.call_args[1]['params']['offset'] == 5
+        assert tw.params == {'limit': 100, 'delete': False}
+
