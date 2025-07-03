@@ -59,6 +59,10 @@ class Appliance:
         self.reset_params()
         return req
 
+    def admin(self):
+        a = tideway.admin(self.target, self.token, api_version=self.api_version, ssl_verify=self.verify)
+        return a
+    
     def credentials(self):
         c = tideway.credentials(self.target, self.token, api_version=self.api_version, ssl_verify=self.verify)
         return c
@@ -175,14 +179,6 @@ class Appliance:
         '''Alternate API call for /admin/about.'''
         response = dr.discoRequest(self, "/admin/about")
         return response
-
-    def admin(self):
-        '''Get information about the appliance, like its version and versions of the installed packages.'''
-        warnings.warn(
-            "admin() is deprecated; use get_admin_about instead.",
-            DeprecationWarning,
-        )
-        return self.get_admin_about
 
     @property
     def get_admin_licensing(self):

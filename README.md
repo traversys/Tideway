@@ -34,6 +34,12 @@ Documentation can be found at [https://traversys.github.io/Tideway/](https://tra
 
 - Tideway can be installed via PyPI:
 
+```console
+$ python -m pip install tideway
+```
+
+- Tideway supports BMC Discovery 11.3+, API v1.0-1.14 using Python 3.
+
 ## Releases
 
 | Version | Summary                   | Known Issues                                       | Fixed                            |
