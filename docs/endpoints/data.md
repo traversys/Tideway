@@ -46,12 +46,12 @@ Alternative search method defaulted to 'tree' format. See [search](#search) for 
 
 ## search()
 
-Run a search query, receiving paginated results.
+Run a search query. By default all paginated results are retrieved and returned as a JSON list. Set ``bulk=False`` to get a single ``requests.Response`` object.
 
 Syntax:
 
 ```
-.search(__query__ [, _offset_ ] [, _results_id_ ] [, _format_ ] [, _limit_ ] [, _delete_ ])
+.search(__query__ [, _offset_ ] [, _results_id_ ] [, _format_ ] [, _limit_ ] [, _delete_ ] [, _bulk_ ] [, _record_limit_ ] [, _call_limit_ ])
 ```
 
 | Parameters    | Type        | Required | Default Value | Options  |
@@ -62,6 +62,9 @@ Syntax:
 | format        | String      | No       | N/A           | <ul><li>"object"</li><li>"tree"</li></ul> |
 | limit         | Integer     | No       | 100           | N/A      |
 | delete        | Boolean     | No       | False         | <ul><li>True</li><li>False</li></ul> |
+| bulk          | Boolean     | No       | True          | <ul><li>True</li><li>False</li></ul> |
+| record_limit  | Integer     | No       | N/A           | N/A |
+| call_limit    | Integer     | No       | N/A           | N/A |
 
 Example:
 
@@ -94,7 +97,7 @@ Example:
 
 ## search_bulk()
 
-Run a search bulk search query, will loop paginated results and return all results as a JSON list object. The function makes use of results_id and offset automatically so these are not required as arguments.
+Run a search bulk search query, looping through paginated results and returning all records as a JSON list object. ``record_limit`` stops collecting after the specified number of records and ``call_limit`` restricts additional API calls.
 
 ```note
 This function may take a long time to run as it will be run multiple API calls until the entire query is fulfilled.
@@ -103,7 +106,7 @@ This function may take a long time to run as it will be run multiple API calls u
 Syntax:
 
 ```
-.search_bulk(__query__ [, _format_ ] [, _limit_ ] [, _delete_ ])
+.search_bulk(__query__ [, _format_ ] [, _limit_ ] [, _delete_ ] [, _record_limit_ ] [, _call_limit_ ])
 ```
 
 | Parameters    | Type        | Required | Default Value | Options  |
@@ -112,6 +115,8 @@ Syntax:
 | format        | String      | No       | N/A           | <ul><li>"object"</li><li>"tree"</li></ul> |
 | limit         | Integer     | No       | 100           | N/A      |
 | delete        | Boolean     | No       | False         | <ul><li>True</li><li>False</li></ul> |
+| record_limit  | Integer     | No       | N/A           | N/A |
+| call_limit    | Integer     | No       | N/A           | N/A |
 
 Example: This search_bulk() returns 500 results each time, and makes 2 additional API calls
 ```python

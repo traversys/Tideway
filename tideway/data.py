@@ -34,59 +34,77 @@ class Data(appliance):
         '''Alternate API call for POST /data/search?format=tree.'''
         return Data.search(self, query, offset, results_id, format, limit, delete)
 
-    def search(self, query, offset=None, results_id=None, format=None, limit = 100, delete = False):
-        '''Run a search query, receiving paginated results.'''
+    def _search_once(self, query, offset=None, results_id=None, format=None, limit=100, delete=False):
+        """Internal helper for single page search request."""
         self.params['offset'] = offset
         self.params['results_id'] = results_id
         self.params['format'] = format
         self.params['delete'] = delete
         self.params['limit'] = limit
         try:
-            q = query["query"]
             body = query
+            _ = query["query"]
             response = dr.discoPost(self, "/data/search", body)
-        except:
-            q = False
+        except Exception:
             self.params['query'] = query
             response = dr.discoRequest(self, "/data/search")
-        del query, offset, results_id, format, limit, delete
         return response
+
+    def _search_all(self, query, format=None, limit=100, delete=False, record_limit=None, call_limit=None):
+        """Retrieve all paginated search results respecting limits."""
+        initial = self._search_once(query, None, None, format, limit, delete)
+        if not initial.ok:
+            return initial
+
+        init_results = initial.json()
+        results = init_results[0]
+        all_results = []
+        if 'headings' in results:
+            headings = results['headings']
+            all_results.append(headings)
+        for item in results['results']:
+            all_results.append(item)
+            if record_limit is not None and len(all_results) - ('headings' in results) >= record_limit:
+                return json.loads(json.dumps(all_results))
+
+        if 'results_id' in results and 'next_offset' in results:
+            res_id = results['results_id']
+            next_offset = results['next_offset']
+            calls_made = 0
+            while True:
+                if call_limit is not None and calls_made >= call_limit:
+                    break
+                s = self._search_once(query, next_offset, res_id, format, limit, delete)
+                if not s.ok:
+                    return s
+                json_results = s.json()
+                records = json_results[0]['results']
+                for item in records:
+                    all_results.append(item)
+                    if record_limit is not None and len(all_results) - ('headings' in results) >= record_limit:
+                        return json.loads(json.dumps(all_results))
+                calls_made += 1
+                if 'next_offset' in json_results[0]:
+                    next_offset = json_results[0]['next_offset']
+                else:
+                    break
+        return json.loads(json.dumps(all_results))
+
+    def search(self, query, offset=None, results_id=None, format=None, limit=100, delete=False, bulk=True, record_limit=None, call_limit=None):
+        """Run a search query. By default all results are returned."""
+        if offset is not None or results_id is not None or not bulk:
+            response = self._search_once(query, offset, results_id, format, limit, delete)
+            return response
+        return self._search_all(query, format, limit, delete, record_limit, call_limit)
 
     def searchQuery(self, body, offset=None, results_id=None, format=None, limit = 100, delete = False):
         '''An alternative to GET /data/search, for search queries which are too long for urls.'''
         warnings.warn('JSON search body can be used with the search() function.', DeprecationWarning)
         return Data.search(self, body, offset, results_id, format, limit, delete)
 
-    def search_bulk(self, query, format = None, limit = 100, delete = False):
-        '''Performs a bulk search, will loop through paginated results until the limit is reached and return a JSON object.'''
-        initial = Data.search(self, query, None, None, format, limit, delete)
-        if initial.ok:
-            init_results = initial.json()
-            results = init_results[0]
-            all_results = []
-            if 'headings' in results:
-                headings = results['headings']
-                all_results.append(headings)
-            for item in results['results']:
-                all_results.append(item)
-            if 'results_id' in results and 'next_offset' in results:
-                total = init_results[0]['count']
-                res_id = results['results_id']
-                next_offset=results['next_offset']
-                total = int(total / next_offset)
-                for count in range(0,total):
-                    s = Data.search(self, query, next_offset, res_id, format, limit, delete)
-                    json_results = s.json()
-                    records = json_results[0]['results']
-                    for item in records:
-                        all_results.append(item)
-                    if 'next_offset' in json_results[0]:
-                        next_offset=json_results[0]['next_offset']
-                    else:
-                        break
-            return json.loads(json.dumps(all_results))
-        else:
-            return initial
+    def search_bulk(self, query, format=None, limit=100, delete=False, record_limit=None, call_limit=None):
+        '''Performs a bulk search, looping through paginated results.'''
+        return self._search_all(query, format, limit, delete, record_limit, call_limit)
 
     def post_data_condition(self, body, offset=None, results_id=None, format=None, limit = 100, delete = False):
         '''Search using a condition, retrieving tabular data as arrays'''
