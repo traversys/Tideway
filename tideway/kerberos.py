@@ -63,6 +63,6 @@ class Kerberos(appliance):
         return req
 
     def delete_vault_kerberos_ccache(self, realm_name, username):
-        '''Delete a cedential cache file'''
-        req = dr.discoDelete(self, "/vault/kerberos/realms/{}/keytabs/{}".format(realm_name, username))
+        '''Delete a credential cache file'''
+        req = dr.discoDelete(self, "/vault/kerberos/realms/{}/ccaches/{}".format(realm_name, username))
         return req
