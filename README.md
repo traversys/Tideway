@@ -18,7 +18,7 @@ Simplified Python library for BMC Discovery API Interface that makes use of the 
         "1.2",
         "1.3",
         "1.4",
-        "1.5"
+        "1.14"
     ],
     "component": "REST API",
     "product": "BMC Discovery",
