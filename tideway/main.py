@@ -5,6 +5,7 @@ import requests
 from . import discoRequests as dr
 from . import endpoints
 import tideway
+import warnings
 
 class Appliance:
     '''An appliance instance.'''
@@ -109,9 +110,11 @@ class Appliance:
 
     def about(self):
         '''Return about data.'''
-        url = self.api + "/about"
-        req = requests.get(url, verify=self.verify)
-        return req
+        warnings.warn(
+            "about() is deprecated; use api_about instead.",
+            DeprecationWarning,
+        )
+        return self.api_about
 
     def _get_api_schema(self):
         '''Helper to fetch API schema, trying /swagger.json first, then /openapi.json.'''
@@ -129,7 +132,11 @@ class Appliance:
 
     def swagger(self):
         '''Fetch API schema, trying /swagger.json first, then /openapi.json.'''
-        return self._get_api_schema()
+        warnings.warn(
+            "swagger() is deprecated; use api_swagger instead.",
+            DeprecationWarning,
+        )
+        return self.api_swagger
 
     @property
     def get_admin_baseline(self):
@@ -139,8 +146,11 @@ class Appliance:
 
     def baseline(self):
         '''Get a summary of the appliance status, and details of which baseline checks have passed or failed.'''
-        response = dr.discoRequest(self, "/admin/baseline")
-        return response
+        warnings.warn(
+            "baseline() is deprecated; use get_admin_baseline instead.",
+            DeprecationWarning,
+        )
+        return self.get_admin_baseline
 
     @property
     def get_admin_about(self):
@@ -150,8 +160,11 @@ class Appliance:
 
     def admin(self):
         '''Get information about the appliance, like its version and versions of the installed packages.'''
-        response = dr.discoRequest(self, "/admin/about")
-        return response
+        warnings.warn(
+            "admin() is deprecated; use get_admin_about instead.",
+            DeprecationWarning,
+        )
+        return self.get_admin_about
 
     @property
     def get_admin_licensing(self):

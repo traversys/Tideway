@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import tideway
+import warnings
 
 dr = tideway.discoRequests
 appliance = tideway.main.Appliance
@@ -21,10 +22,16 @@ class Topology(appliance):
             Graph data represents a set of nodes and relationships that are
             associated to the given node.
         '''
-        self.params['focus'] = focus
-        self.params['apply_rules'] = apply_rules
-        response = dr.discoRequest(self, "/data/nodes/{}/graph".format(node_id))
-        return response
+        warnings.warn(
+            "graphNode() is deprecated; use get_data_nodes_graph() instead.",
+            DeprecationWarning,
+        )
+        return self.get_data_nodes_graph(
+            node_id,
+            focus=focus,
+            apply_rules=apply_rules,
+            complete=False,
+        )
 
     def post_topology_nodes(self, body):
         '''Alternate API call for POST /topology/nodes.'''
@@ -33,8 +40,11 @@ class Topology(appliance):
 
     def getNodes(self, body):
         '''Get topology data from one or more starting nodes.'''
-        response = dr.discoPost(self, "/topology/nodes", body)
-        return response
+        warnings.warn(
+            "getNodes() is deprecated; use post_topology_nodes() instead.",
+            DeprecationWarning,
+        )
+        return self.post_topology_nodes(body)
 
     def post_topology_nodes_kinds(self, body):
         '''Alternate API call for POST /topology/nodes/kinds.'''
@@ -46,16 +56,22 @@ class Topology(appliance):
             Get nodes of the specified kinds which are related to a given set of
             nodes.
         '''
-        response = dr.discoPost(self, "/topology/nodes/kinds", body)
-        return response
+        warnings.warn(
+            "getNodeKinds() is deprecated; use post_topology_nodes_kinds() instead.",
+            DeprecationWarning,
+        )
+        return self.post_topology_nodes_kinds(body)
 
     def visualizationState(self):
         '''
             Get the current state of the visualization for the authenticated
             user.
         '''
-        response = dr.discoRequest(self, "/topology/visualization_state")
-        return response
+        warnings.warn(
+            "visualizationState() is deprecated; use get_topology_viz_state instead.",
+            DeprecationWarning,
+        )
+        return dr.discoRequest(self, "/topology/visualization_state")
     get_topology_viz_state = property(visualizationState)
 
     def patch_topology_viz_state(self, body):
@@ -68,8 +84,11 @@ class Topology(appliance):
             Update one or more attributes of the current state of the
             visualization for the authenticated user.
         '''
-        response = dr.discoPatch(self, "/topology/visualization_state", body)
-        return response
+        warnings.warn(
+            "updateVizState() is deprecated; use patch_topology_viz_state() instead.",
+            DeprecationWarning,
+        )
+        return self.patch_topology_viz_state(body)
 
     def put_topology_viz_state(self, body):
         '''Alternate API call for PUT /topology/visualization_state'''
@@ -81,5 +100,8 @@ class Topology(appliance):
             Update any or all of the attributes of the current state of the
             visualization for the authenticated user.
         '''
-        response = dr.discoPut(self, "/topology/visualization_state", body)
-        return response
+        warnings.warn(
+            "replaceVizState() is deprecated; use put_topology_viz_state() instead.",
+            DeprecationWarning,
+        )
+        return self.put_topology_viz_state(body)
