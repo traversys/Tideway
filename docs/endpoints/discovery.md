@@ -50,6 +50,54 @@ Syntax:
 | ------------ | ----------- | :------: | ------------- | --------|
 | json         | JSON Object | Yes      | N/A           | N/A     |
 
+## get_discovery_outpost()
+
+Get a list of all configured Outposts or details for a specific Outpost.
+
+Syntax:
+
+```
+.get_discovery_outpost([ _outpost_id_ ])
+```
+
+| Parameters   | Type   | Required | Default Value | Options |
+| ------------ | ------ | :------: | ------------- | --------|
+| outpost_id   | String | No       | N/A           | N/A     |
+
+## get_discovery_outposts
+
+Get a list of all configured Outposts. See [get_discovery_outpost](#get_discovery_outpost).
+
+Syntax: `.get_discovery_outposts`
+
+## post_discovery_outpost()
+
+Register a new Outpost with the appliance.
+
+Syntax:
+
+```
+.post_discovery_outpost(__json__)
+```
+
+| Parameters   | Type        | Required | Default Value | Options |
+| ------------ | ----------- | :------: | ------------- | --------|
+| json         | JSON Object | Yes      | N/A           | N/A     |
+
+## delete_discovery_outpost()
+
+Delete a configured Outpost.
+
+Syntax:
+
+```
+.delete_discovery_outpost(__outpost_id__)
+```
+
+| Parameters   | Type   | Required | Default Value | Options |
+| ------------ | ------ | :------: | ------------- | --------|
+| outpost_id   | String | Yes      | N/A           | N/A     |
+
 Example:
 
 ```python
@@ -448,3 +496,52 @@ Syntax:
 | ------------ | ----------- | :------: | ------------- | --------|
 | run_id       | String      | Yes      | N/A           | N/A     |
 | json         | JSON Object | Yes      | N/A           | N/A     |
+
+## get_discovery_outpost()
+
+Get a list of all configured Outposts or details for a specific Outpost.
+
+Syntax:
+
+```
+.get_discovery_outpost([ _outpost_id_ ])
+```
+
+| Parameters   | Type   | Required | Default Value | Options |
+| ------------ | ------ | :------: | ------------- | --------|
+| outpost_id   | String | No       | N/A           | N/A     |
+
+## get_discovery_outposts
+
+Get a list of all configured Outposts. See [get_discovery_outpost](#get_discovery_outpost).
+
+Syntax: `.get_discovery_outposts`
+
+## post_discovery_outpost()
+
+Register a new Outpost with the appliance.
+
+Syntax:
+
+```
+.post_discovery_outpost(__json__)
+```
+
+| Parameters   | Type        | Required | Default Value | Options |
+| ------------ | ----------- | :------: | ------------- | --------|
+| json         | JSON Object | Yes      | N/A           | N/A     |
+
+## delete_discovery_outpost()
+
+Delete a configured Outpost.
+
+Syntax:
+
+```
+.delete_discovery_outpost(__outpost_id__)
+```
+
+| Parameters   | Type   | Required | Default Value | Options |
+| ------------ | ------ | :------: | ------------- | --------|
+| outpost_id   | String | Yes      | N/A           | N/A     |
+
