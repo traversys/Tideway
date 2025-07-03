@@ -153,6 +153,16 @@ Syntax:
 | ------------- | ----------- | :------: | ------------- | -------- |
 | body          | JSON Object | Yes      | N/A           | N/A      |
 
+## get_data_condition_params()
+
+Retrieve the list of available condition parameters.
+
+Syntax:
+
+```
+.get_data_condition_params
+```
+
 ## get_data_condition_template()
 
 
@@ -297,6 +307,26 @@ Example: Gets result #50 from list of nodes
 ['0x7761771a5876f667606e53426', 'Apache Webserver', 'Apache Webserver 2.4 on batman3', '2.4', 'batman3']
 ```
 
+## get_data_kinds_values()
+
+Retrieve values for an attribute of a node kind.
+
+Syntax:
+
+```
+.get_data_kinds_values(__kind__, __attribute__ [, _offset_ ] [, _results_id_ ] [, _format_ ] [, _limit_ ] [, _delete_ ])
+```
+
+| Parameters    | Type        | Required | Default Value | Options  |
+| ------------- | ----------- | :------: | ------------- | -------- |
+| kind          | String      | Yes      | N/A           | Any node kind |
+| attribute     | String      | Yes      | N/A           | N/A |
+| offset        | Integer     | No       | N/A           | N/A |
+| results_id    | String      | No       | N/A           | N/A |
+| format        | String      | No       | N/A           | "object" |
+| limit         | Integer     | No       | 100           | N/A |
+| delete        | Boolean     | No       | False         | <ul><li>True</li><li>False</li></ul> |
+
 ## get_data_partitions
 
 Graph data represents a set of nodes and relationships that are associated to the given node.
@@ -375,7 +405,22 @@ Imports data. Returns the import UUID.
 Syntax:
 
 ```
+
 .post_data_import(__json__)
+```
+
+| Parameters    | Type        | Required | Default Value | Options  |
+| ------------- | ----------- | :------: | ------------- | -------- |
+| json          | JSON Object | Yes      | N/A           | N/A      |
+
+## post_data_import_graph()
+
+Import graph data. Returns the import UUID.
+
+Syntax:
+
+```
+.post_data_import_graph(__json__)
 ```
 
 | Parameters    | Type        | Required | Default Value | Options  |
@@ -395,6 +440,68 @@ Syntax:
 | Parameters    | Type        | Required | Default Value | Options  |
 | ------------- | ----------- | :------: | ------------- | -------- |
 | json          | JSON Object | Yes      | N/A           | N/A      |
+
+## get_data_external_consumer()
+
+Retrieve external consumer information. With no arguments all consumers are returned.
+
+Syntax:
+
+```
+.get_data_external_consumer([ _consumer_name_ ] [, _path_ ])
+```
+
+| Parameters    | Type   | Required | Default Value | Options |
+| ------------- | ------ | :------: | ------------- | ------- |
+| consumer_name | String | No       | N/A           | N/A     |
+| path          | String | No       | N/A           | N/A     |
+
+## post_data_external_consumer()
+
+Create or interact with an external consumer resource.
+
+Syntax:
+
+```
+.post_data_external_consumer(__json__ [, _consumer_name_ ] [, _path_ ])
+```
+
+| Parameters    | Type        | Required | Default Value | Options |
+| ------------- | ----------- | :------: | ------------- | ------- |
+| json          | JSON Object | Yes      | N/A           | N/A     |
+| consumer_name | String      | No       | N/A           | N/A     |
+| path          | String      | No       | N/A           | N/A     |
+
+## patch_data_external_consumer()
+
+Update an external consumer resource.
+
+Syntax:
+
+```
+.patch_data_external_consumer(__consumer_name__, __json__ [, _path_ ])
+```
+
+| Parameters    | Type        | Required | Default Value | Options |
+| ------------- | ----------- | :------: | ------------- | ------- |
+| consumer_name | String      | Yes      | N/A           | N/A     |
+| json          | JSON Object | Yes      | N/A           | N/A     |
+| path          | String      | No       | N/A           | N/A     |
+
+## delete_data_external_consumer()
+
+Delete an external consumer resource.
+
+Syntax:
+
+```
+.delete_data_external_consumer(__consumer_name__ [, _path_ ])
+```
+
+| Parameters    | Type   | Required | Default Value | Options |
+| ------------- | ------ | :------: | ------------- | ------- |
+| consumer_name | String | Yes      | N/A           | N/A     |
+| path          | String | No       | N/A           | N/A     |
 
 ## best_candidate()
 

@@ -228,3 +228,61 @@ class Data(appliance):
         '''
         response = dr.discoPost(self, "/data/write", body)
         return response
+
+    def get_data_condition_params(self):
+        '''Retrieve the list of available condition parameters.'''
+        response = dr.discoRequest(self, "/data/condition/params")
+        return response
+
+    def post_data_import_graph(self, body):
+        '''Import graph data and return the import UUID.'''
+        response = dr.discoPost(self, "/data/import/graph", body)
+        return response
+
+    def get_data_external_consumer(self, consumer_name=None, path=None):
+        '''Retrieve external consumer information.'''
+        endpoint = "/data/external_consumers"
+        if consumer_name:
+            endpoint += f"/{consumer_name}"
+            if path:
+                endpoint += f"/{path}"
+        response = dr.discoRequest(self, endpoint)
+        return response
+    get_data_external_consumers = property(get_data_external_consumer)
+
+    def post_data_external_consumer(self, body, consumer_name=None, path=None):
+        '''Create or interact with an external consumer resource.'''
+        endpoint = "/data/external_consumers"
+        if consumer_name:
+            endpoint += f"/{consumer_name}"
+            if path:
+                endpoint += f"/{path}"
+        response = dr.discoPost(self, endpoint, body)
+        return response
+
+    def patch_data_external_consumer(self, consumer_name, body, path=None):
+        '''Update an external consumer resource.'''
+        endpoint = f"/data/external_consumers/{consumer_name}"
+        if path:
+            endpoint += f"/{path}"
+        response = dr.discoPatch(self, endpoint, body)
+        return response
+
+    def delete_data_external_consumer(self, consumer_name, path=None):
+        '''Delete an external consumer resource.'''
+        endpoint = f"/data/external_consumers/{consumer_name}"
+        if path:
+            endpoint += f"/{path}"
+        response = dr.discoDelete(self, endpoint)
+        return response
+
+    def get_data_kinds_values(self, kind, attribute, offset=None, results_id=None, format=None, limit=100, delete=False):
+        '''Retrieve values for an attribute of a node kind.'''
+        self.params['offset'] = offset
+        self.params['results_id'] = results_id
+        self.params['format'] = format
+        self.params['limit'] = limit
+        self.params['delete'] = delete
+        endpoint = f"/data/kinds/{kind}/values/{attribute}"
+        response = dr.discoRequest(self, endpoint)
+        return response
