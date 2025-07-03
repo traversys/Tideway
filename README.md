@@ -13,16 +13,12 @@ Simplified Python library for BMC Discovery API Interface that makes use of the 
 >>> tw.about().text
 {
     "api_versions": [
-        "1.0",
-        "1.1",
-        "1.2",
-        "1.3",
-        "1.4",
-        "1.14"
+        "1.0","1.1","1.2","1.3","1.4","1.5","1.6","1.7","1.8","1.9","1.10","1.11","1.12","1.13","1.14"
     ],
     "component": "REST API",
-    "product": "BMC Discovery",
-    "version": "12.5"
+    "version":"DaaS",
+    "product": "BMC Helix Discovery",
+    "version": "25.2.00"
 }
 ```
 
@@ -33,6 +29,10 @@ Tideway removes the extra layer of manually constructing a URL and parameters fo
 ## Documentation
 
 Documentation can be found at [https://traversys.github.io/Tideway/](https://traversys.github.io/Tideway/).
+
+## Installation
+
+- Tideway can be installed via PyPI:
 
 ## Releases
 
