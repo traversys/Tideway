@@ -92,3 +92,129 @@ Report start time: 2021-01-18 23:00:00.409987+00:00
 Report end time  : 2021-01-21 23:00:00.410085+00:00
 ...
 ```
+
+## get_admin_instance
+
+Get details about the appliance instance.
+
+Syntax:
+
+```
+.get_admin_instance
+```
+
+Example:
+```python
+>>> tw.get_admin_instance.json()
+{
+    ...
+}
+```
+
+## get_admin_cluster
+
+Get cluster configuration and status.
+
+Syntax:
+
+```
+.get_admin_cluster
+```
+
+Example:
+```python
+>>> tw.get_admin_cluster.json()
+{
+    ...
+}
+```
+
+## get_admin_organizations
+
+Get configured organizations.
+
+Syntax:
+
+```
+.get_admin_organizations
+```
+
+Example:
+```python
+>>> tw.get_admin_organizations.json()
+[
+    ...
+]
+```
+
+## get_admin_preferences
+
+Get global appliance preferences.
+
+Syntax:
+
+```
+.get_admin_preferences
+```
+
+Example:
+```python
+>>> tw.get_admin_preferences.json()
+{
+    ...
+}
+```
+
+## get_admin_builtin_reports
+
+Get built-in report definitions.
+
+Syntax:
+
+```
+.get_admin_builtin_reports
+```
+
+Example:
+```python
+>>> tw.get_admin_builtin_reports.json()
+[
+    ...
+]
+```
+
+## get_admin_custom_reports
+
+Get custom report definitions.
+
+Syntax:
+
+```
+.get_admin_custom_reports
+```
+
+Example:
+```python
+>>> tw.get_admin_custom_reports.json()
+[
+    ...
+]
+```
+
+## get_admin_smtp
+
+Get SMTP configuration.
+
+Syntax:
+
+```
+.get_admin_smtp
+```
+
+Example:
+```python
+>>> tw.get_admin_smtp.json()
+{
+    ...
+}
+```

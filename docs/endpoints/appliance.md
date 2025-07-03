@@ -161,6 +161,76 @@ Example:
 
 ```
 
+## get_admin_instance
+
+Get details about the appliance instance.
+
+Syntax:
+
+```
+.get_admin_instance
+```
+
+## get_admin_cluster
+
+Get cluster configuration and status.
+
+Syntax:
+
+```
+.get_admin_cluster
+```
+
+## get_admin_organizations
+
+Get configured organizations.
+
+Syntax:
+
+```
+.get_admin_organizations
+```
+
+## get_admin_preferences
+
+Get global appliance preferences.
+
+Syntax:
+
+```
+.get_admin_preferences
+```
+
+## get_admin_builtin_reports
+
+Get built-in report definitions.
+
+Syntax:
+
+```
+.get_admin_builtin_reports
+```
+
+## get_admin_custom_reports
+
+Get custom report definitions.
+
+Syntax:
+
+```
+.get_admin_custom_reports
+```
+
+## get_admin_smtp
+
+Get SMTP configuration.
+
+Syntax:
+
+```
+.get_admin_smtp
+```
+
 ## get()
 
 Run a direct endpoint query using GET request.
