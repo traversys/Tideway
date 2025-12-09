@@ -30,6 +30,8 @@ Tideway removes the extra layer of manually constructing a URL and parameters fo
 
 Documentation can be found at [https://traversys.github.io/Tideway/](https://traversys.github.io/Tideway/).
 
+- Example notebook: [`notebooks/admin_api_examples.ipynb`](https://github.com/traversys/Tideway/blob/main/notebooks/admin_api_examples.ipynb) (download via `curl -O https://raw.githubusercontent.com/traversys/Tideway/main/notebooks/admin_api_examples.ipynb`)
+
 ## Installation
 
 - Tideway can be installed via PyPI:
