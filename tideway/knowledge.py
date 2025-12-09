@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 import tideway
-import warnings
 
 appliance = tideway.main.Appliance
 
@@ -11,23 +10,7 @@ class Knowledge(appliance):
     def get_knowledge(self):
         '''Get the current state of the appliance's knowledge, including TKU versions.'''
         return self.get("/knowledge")
-
-    def getKnowledgeManagement(self):
-        '''Get the current state of the appliance's knowledge, including TKU versions.'''
-        warnings.warn(
-            "getKnowledgeManagement() is deprecated; use get_knowledge() instead.",
-            DeprecationWarning,
-        )
-        return self.get_knowledge()
     get_knowledge_property = property(get_knowledge)
-
-    def getUploadStatus(self):
-        '''Get the current state of a knowledge upload.'''
-        warnings.warn(
-            "getUploadStatus() is deprecated; use get_knowledge_status() instead.",
-            DeprecationWarning,
-        )
-        return self.get_knowledge_status()
 
     def get_knowledge_status(self):
         '''Get the current state of a knowledge upload.'''
@@ -46,14 +29,6 @@ class Knowledge(appliance):
                 files=files,
                 response="text/html",
             )
-
-    def uploadKnowledge(self, filename, file, activate=True, allow_restart=False):
-        '''Upload a TKU or pattern module to the appliance.'''
-        warnings.warn(
-            "uploadKnowledge() is deprecated; use post_knowledge() instead.",
-            DeprecationWarning,
-        )
-        return self.post_knowledge(filename, file, activate, allow_restart)
 
     def getKnowledgeTriggerPatterns(self, lookup_data_sources=None):
         '''Get a list of all knowledge trigger patterns.'''

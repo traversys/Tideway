@@ -52,45 +52,34 @@ Example:
 {'api_versions': ['1.0', '1.1', '1.2'], 'component': 'REST API', 'product': 'BMC Discovery', 'version': '12.2'}
 ```
 
-## baseline()
+## get_admin_licensing
 
-[Deprecated] See [get_admin_baseline](#get_admin_baseline) for usage.
-
-Syntax: `.baseline()`
-
-## about()
-
-[Deprecated] See [get_admin_about](#get_admin_about) for usage.
-
-Syntax: `.about()`
-
-## licensing()
-
-Get the latest signed licensing report.
-
-- CSV option returns raw license data in CSV format as a zip file for offline analysis.
-- RAW option return an encrypted raw license object for import to another appliance.
+Get the latest signed licensing report (plain text by default).
 
 Syntax:
 
 ```
-.licensing([ _content_type_ ])
+.get_admin_licensing
 ```
 
-| Parameters   | Type   | Required | Default Value | Options |
-| ------------ | ------ | :------: | ------------- | ------- | 
-| content_type | String | No       | "text/plain"  | <ul><li>"text/plain"</li><li>"csv"</li><li>"raw"</li></ul>
+## get_admin_licensing_csv
 
-Example:
-```python
->>> tw.licensing()
------BEGIN LICENSE REPORT-----
-License report
-==============
+Get the latest raw license data in CSV format as a zip file for offline analysis.
 
-Report start time: 2021-01-18 23:00:00.409987+00:00
-Report end time  : 2021-01-21 23:00:00.410085+00:00
-...
+Syntax:
+
+```
+.get_admin_licensing_csv
+```
+
+## get_admin_licensing_raw
+
+Get the latest license data as an encrypted raw license object for import to another appliance.
+
+Syntax:
+
+```
+.get_admin_licensing_raw
 ```
 
 ## get_admin_instance

@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 import tideway
-import warnings
 import json
 appliance = tideway.main.Appliance
 
@@ -95,14 +94,6 @@ class Data(appliance):
             return response
         return self._search_all(query, format, limit, delete, record_limit, call_limit)
 
-    def searchQuery(self, body, offset=None, results_id=None, format=None, limit = 100, delete = False):
-        '''An alternative to GET /data/search, for search queries which are too long for urls.'''
-        warnings.warn(
-            "searchQuery() is deprecated; use search() instead.",
-            DeprecationWarning,
-        )
-        return Data.search(self, body, offset, results_id, format, limit, delete)
-
     def search_bulk(self, query, format=None, limit=100, delete=False, record_limit=None, call_limit=None):
         '''Performs a bulk search, looping through paginated results.'''
         return self._search_all(query, format, limit, delete, record_limit, call_limit)
@@ -136,31 +127,10 @@ class Data(appliance):
         response = self.post("/data/candidate", body)
         return response
 
-    def best_candidate(self, body):
-        '''
-            The node object of the best candidate based on the provided parameters.
-        '''
-        warnings.warn(
-            "best_candidate() is deprecated; use post_data_candidate() instead.",
-            DeprecationWarning,
-        )
-        return self.post_data_candidate(body)
-
     def post_data_candidates(self, body):
         '''Alternate API call for POST /data/candidates.'''
         response = self.post("/data/candidates", body)
         return response
-
-    def top_candidates(self, body):
-        '''
-            Enter parameters to identify a device, the response is a list of
-            candidate nodes ordered by descending score.
-        '''
-        warnings.warn(
-            "top_candidates() is deprecated; use post_data_candidates() instead.",
-            DeprecationWarning,
-        )
-        return self.post_data_candidates(body)
 
     def get_data_nodes(self, node_id, relationships=False, traverse=None, flags=None, attributes=None):
         '''Alternate API call for /data/nodes/node_id'''
@@ -173,20 +143,6 @@ class Data(appliance):
             response = self.get("/data/nodes/{}".format(node_id))
         return response
 
-    def nodeLookup(self, node_id, relationships=False, traverse=None, flags=None, attributes=None):
-        '''Get the state of a node with specified id.'''
-        warnings.warn(
-            "nodeLookup() is deprecated; use get_data_nodes() instead.",
-            DeprecationWarning,
-        )
-        return self.get_data_nodes(
-            node_id,
-            relationships=relationships,
-            traverse=traverse,
-            flags=flags,
-            attributes=attributes,
-        )
-
     def get_data_nodes_graph(self, node_id, focus="software-connected", apply_rules=True, complete=False):
         '''Alternate API call for /data/nodes/node_id/graph'''
         self.params['focus'] = focus
@@ -194,19 +150,6 @@ class Data(appliance):
         self.params['complete'] = complete
         response = self.get("/data/nodes/{}/graph".format(node_id))
         return response
-
-    def graphNode(self, node_id, focus="software-connected", apply_rules=True):
-        '''Graph data represents a set of nodes and relationships that are associated to the given node.'''
-        warnings.warn(
-            "graphNode() is deprecated; use get_data_nodes_graph() instead.",
-            DeprecationWarning,
-        )
-        return self.get_data_nodes_graph(
-            node_id,
-            focus=focus,
-            apply_rules=apply_rules,
-            complete=False,
-        )
 
     def get_data_kinds(self, kind, offset=None, results_id=None, format=None, limit = 100, delete = False):
         '''Alternate API call for /data/kinds.'''
@@ -217,21 +160,6 @@ class Data(appliance):
         self.params['delete'] = delete
         response = self.get("/data/kinds/{}".format(kind))
         return response
-
-    def lookupNodeKind(self, kind, offset=None, results_id=None, format=None, limit = 100, delete = False):
-        '''Finds all nodes of a specified node kind.'''
-        warnings.warn(
-            "lookupNodeKind() is deprecated; use get_data_kinds() instead.",
-            DeprecationWarning,
-        )
-        return self.get_data_kinds(
-            kind,
-            offset=offset,
-            results_id=results_id,
-            format=format,
-            limit=limit,
-            delete=delete,
-        )
 
     def partitions(self):
         '''Get names and ids of partitions.'''
@@ -249,30 +177,10 @@ class Data(appliance):
         response = self.post("/data/import", body)
         return response
 
-    def twImport(self, body):
-        '''
-            Imports data. Returns the import UUID.
-        '''
-        warnings.warn(
-            "twImport() is deprecated; use post_data_import() instead.",
-            DeprecationWarning,
-        )
-        return self.post_data_import(body)
-
     def post_data_write(self, body):
         '''Alternate API call for /data/write.'''
         response = self.post("/data/write", body)
         return response
-
-    def twWrite(self, body):
-        '''
-            Perform arbitrary write operations.
-        '''
-        warnings.warn(
-            "twWrite() is deprecated; use post_data_write() instead.",
-            DeprecationWarning,
-        )
-        return self.post_data_write(body)
 
     def get_data_condition_params(self):
         '''Retrieve the list of available condition parameters.'''

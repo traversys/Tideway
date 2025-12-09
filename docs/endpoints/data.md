@@ -334,7 +334,7 @@ Syntax:
 
 ## get_data_partitions
 
-Graph data represents a set of nodes and relationships that are associated to the given node.
+Get names and IDs of partitions available on the appliance.
 
 Syntax:
 
@@ -358,36 +358,6 @@ Example:
   "_System": "fb30ac60bb23b9047191a1fb"
 }
 ```
-
-## searchQuery()
-
-[Deprecated] See [search](#search) for usage.
-
-Syntax: `.searchQuery(__json__ [, _offset_ ] [, _results_id_ ] [, _format_ ] [, _limit_ ] [, _delete_ ])`
-
-## nodeLookup()
-
-[Deprecated] See [get_data_nodes](#get_data_nodes) for usage.
-
-Syntax: `.nodeLookup(__node_id__ [, _relationships_ ] [, _traverse_ ] [, _flags_ ])`
-
-## lookupNodeKind()
-
-[Deprecated] See [get_data_kinds](#get_data_kinds) for usage.
-
-Syntax: `.lookupNodeKind(__kind__ [, _offset_ ] [, _results_id_ ] [, _format_ ] [, _limit_ ] [, _delete_ ])`
-
-## graphNode()
-
-[Deprecated] See [get_data_nodes_graph](#get_data_nodes_graph) for usage.
-
-Syntax: `.graphNode(__node_id__ [, _focus_ ] [, _apply_rules_ ]))`
-
-## partitions()
-
-[Deprecated] See [get_data_nodes_graph](#get_data_nodes_graph) for usage.
-
-Syntax: `.partitions()`
 
 ## post_data_partitions()
 
@@ -507,27 +477,3 @@ Syntax:
 | ------------- | ------ | :------: | ------------- | ------- |
 | consumer_name | String | Yes      | N/A           | N/A     |
 | path          | String | No       | N/A           | N/A     |
-
-## best_candidate()
-
-[Deprecated] See [post_data_candidate](#post_data_candidate) for usage.
-
-Syntax: `.post_data_candidate(__JSON__)`
-
-## top_candidates()
-
-[Deprecated] See [post_data_candidates](#post_data_candidates) for usage.
-
-Syntax: `.post_data_candidates(__json__)`
-
-## twImport()
-
-[Deprecated] See [post_data_import](#post_data_import) for usage.
-
-Syntax: `.twImport(__json__)`
-
-## twWrite()
-
-[Deprecated] See [post_data_write](#post_data_write) for usage.
-
-Syntax: `.twWrite(__json__)`

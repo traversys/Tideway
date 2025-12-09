@@ -5,7 +5,6 @@ import requests
 from . import discoRequests as dr
 from . import endpoints
 import tideway
-import warnings
 
 class Appliance:
     '''An appliance instance.'''
@@ -120,14 +119,6 @@ class Appliance:
         req = requests.get(url, verify=self.verify)
         return req
 
-    def about(self):
-        '''Return about data.'''
-        warnings.warn(
-            "about() is deprecated; use api_about instead.",
-            DeprecationWarning,
-        )
-        return self.api_about
-
     def _get_api_schema(self):
         '''Helper to fetch API schema, trying /swagger.json first, then /openapi.json.'''
         for path in ["/swagger.json", "/openapi.json"]:
@@ -141,14 +132,6 @@ class Appliance:
     def api_swagger(self):
         '''Alternate API call for swagger.'''
         return self._get_api_schema()
-
-    def swagger(self):
-        '''Fetch API schema, trying /swagger.json first, then /openapi.json.'''
-        warnings.warn(
-            "swagger() is deprecated; use api_swagger instead.",
-            DeprecationWarning,
-        )
-        return self.api_swagger
 
     def _load_schema(self):
         '''Return cached API schema as dict, fetching it if necessary.'''
@@ -173,14 +156,6 @@ class Appliance:
         '''Alternate API call for baseline.'''
         return self.get("/admin/baseline")
 
-    def baseline(self):
-        '''Get a summary of the appliance status, and details of which baseline checks have passed or failed.'''
-        warnings.warn(
-            "baseline() is deprecated; use get_admin_baseline instead.",
-            DeprecationWarning,
-        )
-        return self.get_admin_baseline
-
     @property
     def get_admin_about(self):
         '''Alternate API call for /admin/about.'''
@@ -200,20 +175,6 @@ class Appliance:
     def get_admin_licensing_raw(self):
         '''Alternate API call for licensing report raw.'''
         return self.get("/admin/licensing/raw", response="application/zip")
-
-    def licensing(self,content_type="text/plain"):
-        '''Get the latest signed licensing report.'''
-        warnings.warn(
-            "licensing() is deprecated; use get_admin_licensing or the CSV/RAW helpers instead.",
-            DeprecationWarning,
-        )
-        if content_type == "csv":
-            response = self.get("/admin/licensing/csv", response="application/zip")
-        elif content_type == "raw":
-            response = self.get("/admin/licensing/raw", response="application/zip")
-        else:
-            response = self.get("/admin/licensing", response=content_type)
-        return response
 
     @property
     def api_help(self):

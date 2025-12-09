@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 import tideway
-import warnings
 appliance = tideway.main.Appliance
 
 class Events(appliance):
@@ -11,14 +10,3 @@ class Events(appliance):
         '''An alternate API call for POST /events'''
         response = self.post("/events", body)
         return response
-
-    def status(self, body):
-        '''
-            Returns a unique ID if the event has been recorded, otherwise an
-            empty string is returned e.g. if the event source has been disabled.
-        '''
-        warnings.warn(
-            "status() is deprecated; use post_events() instead.",
-            DeprecationWarning,
-        )
-        return self.post_events(body)
