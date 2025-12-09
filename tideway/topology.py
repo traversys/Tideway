@@ -3,7 +3,6 @@
 import tideway
 import warnings
 
-dr = tideway.discoRequests
 appliance = tideway.main.Appliance
 
 class Topology(appliance):
@@ -14,7 +13,7 @@ class Topology(appliance):
         self.params['focus'] = focus
         self.params['apply_rules'] = apply_rules
         self.params['complete'] = complete
-        response = dr.discoRequest(self, "/data/nodes/{}/graph".format(node_id))
+        response = self.get("/data/nodes/{}/graph".format(node_id))
         return response
 
     def graphNode(self, node_id, focus="software-connected", apply_rules=True):
@@ -35,7 +34,7 @@ class Topology(appliance):
 
     def post_topology_nodes(self, body):
         '''Alternate API call for POST /topology/nodes.'''
-        response = dr.discoPost(self, "/topology/nodes", body)
+        response = self.post("/topology/nodes", body)
         return response
 
     def getNodes(self, body):
@@ -48,7 +47,7 @@ class Topology(appliance):
 
     def post_topology_nodes_kinds(self, body):
         '''Alternate API call for POST /topology/nodes/kinds.'''
-        response = dr.discoPost(self, "/topology/nodes/kinds", body)
+        response = self.post("/topology/nodes/kinds", body)
         return response
 
     def getNodeKinds(self, body):
@@ -71,12 +70,12 @@ class Topology(appliance):
             "visualizationState() is deprecated; use get_topology_viz_state instead.",
             DeprecationWarning,
         )
-        return dr.discoRequest(self, "/topology/visualization_state")
+        return self.get("/topology/visualization_state")
     get_topology_viz_state = property(visualizationState)
 
     def patch_topology_viz_state(self, body):
         '''Alternate API call for PATCH /topology/visualization_state'''
-        response = dr.discoPatch(self, "/topology/visualization_state", body)
+        response = self.patch("/topology/visualization_state", body)
         return response
 
     def updateVizState(self, body):
@@ -92,7 +91,7 @@ class Topology(appliance):
 
     def put_topology_viz_state(self, body):
         '''Alternate API call for PUT /topology/visualization_state'''
-        response = dr.discoPut(self, "/topology/visualization_state", body)
+        response = self.put("/topology/visualization_state", body)
         return response
 
     def replaceVizState(self, body):

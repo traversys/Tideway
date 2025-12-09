@@ -3,8 +3,6 @@
 import tideway
 import warnings
 import json
-
-dr = tideway.discoRequests
 appliance = tideway.main.Appliance
 
 class Data(appliance):
@@ -44,10 +42,10 @@ class Data(appliance):
         try:
             body = query
             _ = query["query"]
-            response = dr.discoPost(self, "/data/search", body)
+            response = self.post("/data/search", body)
         except Exception:
             self.params['query'] = query
-            response = dr.discoRequest(self, "/data/search")
+            response = self.get("/data/search")
         return response
 
     def _search_all(self, query, format=None, limit=100, delete=False, record_limit=None, call_limit=None):
@@ -116,26 +114,26 @@ class Data(appliance):
         self.params['format'] = format
         self.params['delete'] = delete
         self.params['limit'] = limit
-        response = dr.discoPost(self, "/data/condition", body)
+        response = self.post("/data/condition", body)
         return response
 
     def post_data_condition_param_values(self, body):
         '''Get possible parameter values for a condition'''
-        response = dr.discoPost(self, "/data/condition/param_values", body)
+        response = self.post("/data/condition/param_values", body)
         return response
 
     def get_data_condition_template(self, template_id=None):
         '''Get a template or a list of all templates.'''
         if template_id:
-            req = dr.discoRequest(self, "/data/condition/templates/{}".format(template_id))
+            req = self.get("/data/condition/templates/{}".format(template_id))
         else:
-            req = dr.discoRequest(self, "/data/condition/templates")
+            req = self.get("/data/condition/templates")
         return req
     get_data_condition_templates = property(get_data_condition_template)
 
     def post_data_candidate(self, body):
         '''Alternate API call for POST /data/candidate.'''
-        response = dr.discoPost(self, "/data/candidate", body)
+        response = self.post("/data/candidate", body)
         return response
 
     def best_candidate(self, body):
@@ -150,7 +148,7 @@ class Data(appliance):
 
     def post_data_candidates(self, body):
         '''Alternate API call for POST /data/candidates.'''
-        response = dr.discoPost(self, "/data/candidates", body)
+        response = self.post("/data/candidates", body)
         return response
 
     def top_candidates(self, body):
@@ -170,9 +168,9 @@ class Data(appliance):
         self.params['flags'] = flags
         self.params['attributes'] = attributes
         if relationships:
-            response = dr.discoRequest(self, "/data/nodes/{}?relationships=true".format(node_id))
+            response = self.get("/data/nodes/{}?relationships=true".format(node_id))
         else:
-            response = dr.discoRequest(self, "/data/nodes/{}".format(node_id))
+            response = self.get("/data/nodes/{}".format(node_id))
         return response
 
     def nodeLookup(self, node_id, relationships=False, traverse=None, flags=None, attributes=None):
@@ -194,7 +192,7 @@ class Data(appliance):
         self.params['focus'] = focus
         self.params['apply_rules'] = apply_rules
         self.params['complete'] = complete
-        response = dr.discoRequest(self, "/data/nodes/{}/graph".format(node_id))
+        response = self.get("/data/nodes/{}/graph".format(node_id))
         return response
 
     def graphNode(self, node_id, focus="software-connected", apply_rules=True):
@@ -217,7 +215,7 @@ class Data(appliance):
         self.params['format'] = format
         self.params['limit'] = limit
         self.params['delete'] = delete
-        response = dr.discoRequest(self, "/data/kinds/{}".format(kind))
+        response = self.get("/data/kinds/{}".format(kind))
         return response
 
     def lookupNodeKind(self, kind, offset=None, results_id=None, format=None, limit = 100, delete = False):
@@ -237,18 +235,18 @@ class Data(appliance):
 
     def partitions(self):
         '''Get names and ids of partitions.'''
-        response = dr.discoRequest(self, "/data/partitions")
+        response = self.get("/data/partitions")
         return response
     get_data_partitions = property(partitions)
 
     def post_data_partitions(self, body):
         '''Create a partition.'''
-        response = dr.discoPost(self, "/data/partitions", body)
+        response = self.post("/data/partitions", body)
         return response
 
     def post_data_import(self, body):
         '''Alternate API call for /data/import.'''
-        response = dr.discoPost(self, "/data/import", body)
+        response = self.post("/data/import", body)
         return response
 
     def twImport(self, body):
@@ -263,7 +261,7 @@ class Data(appliance):
 
     def post_data_write(self, body):
         '''Alternate API call for /data/write.'''
-        response = dr.discoPost(self, "/data/write", body)
+        response = self.post("/data/write", body)
         return response
 
     def twWrite(self, body):
@@ -278,12 +276,12 @@ class Data(appliance):
 
     def get_data_condition_params(self):
         '''Retrieve the list of available condition parameters.'''
-        response = dr.discoRequest(self, "/data/condition/params")
+        response = self.get("/data/condition/params")
         return response
 
     def post_data_import_graph(self, body):
         '''Import graph data and return the import UUID.'''
-        response = dr.discoPost(self, "/data/import/graph", body)
+        response = self.post("/data/import/graph", body)
         return response
 
     def get_data_external_consumer(self, consumer_name=None, path=None):
@@ -293,7 +291,7 @@ class Data(appliance):
             endpoint += f"/{consumer_name}"
             if path:
                 endpoint += f"/{path}"
-        response = dr.discoRequest(self, endpoint)
+        response = self.get( endpoint)
         return response
     get_data_external_consumers = property(get_data_external_consumer)
 
@@ -304,7 +302,7 @@ class Data(appliance):
             endpoint += f"/{consumer_name}"
             if path:
                 endpoint += f"/{path}"
-        response = dr.discoPost(self, endpoint, body)
+        response = self.post( endpoint, body)
         return response
 
     def patch_data_external_consumer(self, consumer_name, body, path=None):
@@ -312,7 +310,7 @@ class Data(appliance):
         endpoint = f"/data/external_consumers/{consumer_name}"
         if path:
             endpoint += f"/{path}"
-        response = dr.discoPatch(self, endpoint, body)
+        response = self.patch( endpoint, body)
         return response
 
     def delete_data_external_consumer(self, consumer_name, path=None):
@@ -320,7 +318,7 @@ class Data(appliance):
         endpoint = f"/data/external_consumers/{consumer_name}"
         if path:
             endpoint += f"/{path}"
-        response = dr.discoDelete(self, endpoint)
+        response = self.delete( endpoint)
         return response
 
     def get_data_kinds_values(self, kind, attribute, offset=None, results_id=None, format=None, limit=100, delete=False):
@@ -331,5 +329,5 @@ class Data(appliance):
         self.params['limit'] = limit
         self.params['delete'] = delete
         endpoint = f"/data/kinds/{kind}/values/{attribute}"
-        response = dr.discoRequest(self, endpoint)
+        response = self.get( endpoint)
         return response

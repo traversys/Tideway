@@ -29,33 +29,41 @@ class Appliance:
         self.params['limit'] = self.default_limit
         self.params['delete'] = self.default_delete
 
-    def get(self,endpoint):
+    def get(self, endpoint, response="application/json"):
         '''Request any endpoint.'''
-        req = dr.discoRequest(self,endpoint)
+        req = dr.discoRequest(self, endpoint, response=response)
         self.reset_params()
         return req
 
-    def post(self,endpoint,body):
+    def post(self, endpoint, body=None, response="application/json", files=None, data=None, content_type=None):
         '''Post any endpoint.'''
-        req = dr.discoPost(self, endpoint, body)
+        req = dr.discoPost(
+            self,
+            endpoint,
+            body,
+            response=response,
+            files=files,
+            data=data,
+            content_type=content_type,
+        )
         self.reset_params()
         return req
 
-    def delete(self,endpoint):
+    def delete(self, endpoint, response="application/json"):
         '''Delete any endpoint.'''
-        req = dr.discoDelete(self, endpoint)
+        req = dr.discoDelete(self, endpoint, response=response)
         self.reset_params()
         return req
 
-    def patch(self,endpoint,body):
+    def patch(self, endpoint, body, response="application/json"):
         '''Patch any endpoint.'''
-        req = dr.discoPatch(self, endpoint, body)
+        req = dr.discoPatch(self, endpoint, body, response=response)
         self.reset_params()
         return req
 
-    def put(self,endpoint,body):
+    def put(self, endpoint, body, response="application/json"):
         '''Update any endpoint.'''
-        req = dr.discoPut(self, endpoint, body)
+        req = dr.discoPut(self, endpoint, body, response=response)
         self.reset_params()
         return req
 
@@ -163,8 +171,7 @@ class Appliance:
     @property
     def get_admin_baseline(self):
         '''Alternate API call for baseline.'''
-        response = dr.discoRequest(self, "/admin/baseline")
-        return response
+        return self.get("/admin/baseline")
 
     def baseline(self):
         '''Get a summary of the appliance status, and details of which baseline checks have passed or failed.'''
@@ -177,35 +184,35 @@ class Appliance:
     @property
     def get_admin_about(self):
         '''Alternate API call for /admin/about.'''
-        response = dr.discoRequest(self, "/admin/about")
-        return response
+        return self.get("/admin/about")
 
     @property
     def get_admin_licensing(self):
         '''Alternate API call for licensing report.'''
-        response = dr.discoRequest(self, "/admin/licensing",response="text/plain")
-        return response
+        return self.get("/admin/licensing", response="text/plain")
 
     @property
     def get_admin_licensing_csv(self):
         '''Alternate API call for licensing report CSV.'''
-        response = dr.discoRequest(self, "/admin/licensing/csv",response="application/zip")
-        return response
+        return self.get("/admin/licensing/csv", response="application/zip")
     
     @property
     def get_admin_licensing_raw(self):
         '''Alternate API call for licensing report raw.'''
-        response = dr.discoRequest(self, "/admin/licensing/raw",response="application/zip")
-        return response
+        return self.get("/admin/licensing/raw", response="application/zip")
 
     def licensing(self,content_type="text/plain"):
         '''Get the latest signed licensing report.'''
+        warnings.warn(
+            "licensing() is deprecated; use get_admin_licensing or the CSV/RAW helpers instead.",
+            DeprecationWarning,
+        )
         if content_type == "csv":
-            response = dr.discoRequest(self, "/admin/licensing/csv",response="application/zip")
+            response = self.get("/admin/licensing/csv", response="application/zip")
         elif content_type == "raw":
-            response = dr.discoRequest(self, "/admin/licensing/raw",response="application/zip")
+            response = self.get("/admin/licensing/raw", response="application/zip")
         else:
-            response = dr.discoRequest(self, "/admin/licensing",response=content_type)
+            response = self.get("/admin/licensing", response=content_type)
         return response
 
     @property

@@ -2,8 +2,6 @@
 
 import tideway
 import warnings
-
-dr = tideway.discoRequests
 appliance = tideway.main.Appliance
 
 class Events(appliance):
@@ -11,7 +9,7 @@ class Events(appliance):
 
     def post_events(self, body):
         '''An alternate API call for POST /events'''
-        response = dr.discoPost(self, "/events", body)
+        response = self.post("/events", body)
         return response
 
     def status(self, body):
