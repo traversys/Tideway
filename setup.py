@@ -15,6 +15,7 @@ setuptools.setup(
     packages=setuptools.find_packages(exclude=["tests*"]),
     install_requires=[
         "requests",
+        "tabulate",
     ],
     classifiers=[
         "Programming Language :: Python :: 3",
