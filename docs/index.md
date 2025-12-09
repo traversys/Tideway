@@ -13,7 +13,7 @@ Simplified Python library for BMC Discovery API Interface that makes use of the 
 >>> tw.api_about.text
 {
     "api_versions": [
-        "1.0","1.1","1.2","1.3","1.4","1.5","1.6","1.7","1.8","1.9","1.10","1.11","1.12","1.13","1.14"
+        "1.0","1.1","1.2","1.3","1.4","1.5","1.6","1.7","1.8","1.9","1.10","1.11","1.12","1.13","1.14","1.15","1.16"
     ],
     "component": "REST API",
     "version":"DaaS",
@@ -34,7 +34,7 @@ Tideway removes the extra layer of manually constructing a URL and parameters fo
 $ python -m pip install tideway
 ```
 
-- Tideway supports BMC Discovery 11.3+, API v1.0-1.14 using Python 3.
+- Tideway supports BMC Discovery 11.3+, API v1.0-1.16 using Python 3.
 
 ## Contents
 

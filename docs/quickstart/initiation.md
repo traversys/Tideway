@@ -32,5 +32,5 @@ Upon initiation the following parameters can be used:
 | - | - | - | - | -
 | target | Required | String | | The Hostname, FQDN or IP Address of the Discovery instance.
 | token | Required | String | | The authentication token of the API user. It is not necessary to include the "bearer" pre-text.
-| api_version | | String | "1.5" | This should be the supported version of the API. Discovery 22.2 supports API versions up to 1.5 (outpost 1.0).
+| api_version | | String | "1.16" | This should be the supported version of the API. Discovery 25.x supports API versions up to 1.16 (outpost 1.0).
 | ssl_verify | | Boolean | False | Choose whether to query the API using a valid SSL certificate. If you are using self-signed HTTPS then you should leave this with the default value.

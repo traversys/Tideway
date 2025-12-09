@@ -9,7 +9,7 @@ import tideway
 class Appliance:
     '''An appliance instance.'''
 
-    def __init__(self, target, token, limit = 100, delete = False, api_version = "1.14", ssl_verify = False):
+    def __init__(self, target, token, limit = 100, delete = False, api_version = "1.16", ssl_verify = False):
         self.target = target
         self.token = token
         self.default_limit = limit
@@ -110,7 +110,7 @@ class Appliance:
         v = tideway.vault(self.target, self.token, api_version=self.api_version, ssl_verify=self.verify)
         return v
 
-    ### Admin ###
+    ### API Admin ###
 
     @property
     def api_about(self):
@@ -152,6 +152,22 @@ class Appliance:
         return paths
 
     @property
+    def api_help(self):
+        '''Help on endpoints.'''
+        endpoints.docs()
+        #print("")
+
+    def help(*args):
+        '''Help on endpoints.'''
+        if len(args) > 1:
+            endpoints.docs(args[1])
+        else:
+            endpoints.docs()
+        #print("\n")
+
+### Discovery Admin ###
+
+    @property
     def get_admin_baseline(self):
         '''Alternate API call for baseline.'''
         return self.get("/admin/baseline")
@@ -176,16 +192,3 @@ class Appliance:
         '''Alternate API call for licensing report raw.'''
         return self.get("/admin/licensing/raw", response="application/zip")
 
-    @property
-    def api_help(self):
-        '''Help on endpoints.'''
-        endpoints.docs()
-        #print("")
-
-    def help(*args):
-        '''Help on endpoints.'''
-        if len(args) > 1:
-            endpoints.docs(args[1])
-        else:
-            endpoints.docs()
-        #print("\n")
