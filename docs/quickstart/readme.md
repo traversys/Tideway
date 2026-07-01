@@ -6,3 +6,4 @@ sort: 1
 
 - [Object Initiation](initiation.md)
 - [Responses](responses.md)
+- [Prism Mock API](mock_api.md)

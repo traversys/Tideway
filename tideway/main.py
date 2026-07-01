@@ -17,10 +17,17 @@ class Appliance:
         self.params = {}
         self.reset_params()
         self.api_version = api_version
-        self.target_url = "https://" + str(target)
+        self.target_url = self._target_url(target)
         self.api = self.target_url + "/api"
         self.url = self.api + "/v" + self.api_version
         self.verify = ssl_verify
+
+    @staticmethod
+    def _target_url(target):
+        target = str(target).rstrip("/")
+        if target.startswith(("http://", "https://")):
+            return target
+        return "https://" + target
 
     def reset_params(self):
         '''Reset request parameters back to default.'''

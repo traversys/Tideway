@@ -9,3 +9,5 @@ examples.py
 *.pyc
 *.txt
 .env
+/customer
+/mock/generated/
