@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="{{ site.lang | default: "en-US" }}">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    {% seo %}
+    <link rel="stylesheet" href="{{ "/assets/css/style.css?v=" | append: site.github.build_revision | relative_url }}">
+    <style>
+      :root {
+        --tideway-sidebar-width: 280px;
+        --tideway-border: #d8dee4;
+        --tideway-muted: #57606a;
+        --tideway-bg: #f6f8fa;
+      }
+
+      body {
+        background: #ffffff;
+      }
+
+      .docs-shell {
+        display: grid;
+        grid-template-columns: var(--tideway-sidebar-width) minmax(0, 1fr);
+        min-height: 100vh;
+      }
+
+      .docs-sidebar {
+        background: var(--tideway-bg);
+        border-right: 1px solid var(--tideway-border);
+        padding: 24px 20px;
+      }
+
+      .docs-sidebar-inner {
+        position: sticky;
+        top: 24px;
+      }
+
+      .docs-brand {
+        display: block;
+        color: #24292f;
+        font-size: 22px;
+        font-weight: 600;
+        line-height: 1.2;
+        margin-bottom: 4px;
+        text-decoration: none;
+      }
+
+      .docs-description {
+        color: var(--tideway-muted);
+        font-size: 13px;
+        line-height: 1.4;
+        margin: 0 0 20px;
+      }
+
+      .docs-nav-section {
+        margin-top: 18px;
+      }
+
+      .docs-nav-title {
+        color: var(--tideway-muted);
+        display: block;
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: .04em;
+        margin-bottom: 8px;
+        text-transform: uppercase;
+      }
+
+      .docs-nav-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .docs-nav-list li {
+        margin: 0;
+      }
+
+      .docs-nav-list a {
+        border-radius: 6px;
+        color: #24292f;
+        display: block;
+        font-size: 14px;
+        line-height: 1.3;
+        padding: 6px 8px;
+        text-decoration: none;
+      }
+
+      .docs-nav-list a:hover {
+        background: #eaeef2;
+        text-decoration: none;
+      }
+
+      .docs-content {
+        min-width: 0;
+        padding: 40px 32px;
+      }
+
+      .docs-content .markdown-body {
+        max-width: 980px;
+      }
+
+      @media (max-width: 900px) {
+        .docs-shell {
+          display: block;
+        }
+
+        .docs-sidebar {
+          border-bottom: 1px solid var(--tideway-border);
+          border-right: 0;
+          padding: 18px 16px;
+        }
+
+        .docs-sidebar-inner {
+          position: static;
+        }
+
+        .docs-nav-list {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+          gap: 2px 8px;
+        }
+
+        .docs-content {
+          padding: 28px 16px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="docs-shell">
+      <aside class="docs-sidebar" aria-label="Documentation navigation">
+        <div class="docs-sidebar-inner">
+          <a class="docs-brand" href="{{ "/" | relative_url }}">Tideway</a>
+          <p class="docs-description">Python library for the BMC Discovery API.</p>
+
+          <nav>
+            <div class="docs-nav-section">
+              <span class="docs-nav-title">Quickstart</span>
+              <ul class="docs-nav-list">
+                <li><a href="{{ "/quickstart/readme.html" | relative_url }}">Overview</a></li>
+                <li><a href="{{ "/quickstart/initiation.html" | relative_url }}">Object Initiation</a></li>
+                <li><a href="{{ "/quickstart/responses.html" | relative_url }}">Responses</a></li>
+              </ul>
+            </div>
+
+            <div class="docs-nav-section">
+              <span class="docs-nav-title">API Endpoints</span>
+              <ul class="docs-nav-list">
+                <li><a href="{{ "/endpoints/readme.html" | relative_url }}">Overview</a></li>
+                <li><a href="{{ "/endpoints/admin.html" | relative_url }}">Admin</a></li>
+                <li><a href="{{ "/endpoints/appliance.html" | relative_url }}">Appliance or Outpost</a></li>
+                <li><a href="{{ "/endpoints/credentials.html" | relative_url }}">Credentials</a></li>
+                <li><a href="{{ "/endpoints/data.html" | relative_url }}">Data</a></li>
+                <li><a href="{{ "/endpoints/discovery.html" | relative_url }}">Discovery</a></li>
+                <li><a href="{{ "/endpoints/events.html" | relative_url }}">Events</a></li>
+                <li><a href="{{ "/endpoints/kerberos.html" | relative_url }}">Kerberos</a></li>
+                <li><a href="{{ "/endpoints/knowledge.html" | relative_url }}">Knowledge</a></li>
+                <li><a href="{{ "/endpoints/models.html" | relative_url }}">Models</a></li>
+                <li><a href="{{ "/endpoints/taxonomy.html" | relative_url }}">Taxonomy</a></li>
+                <li><a href="{{ "/endpoints/topology.html" | relative_url }}">Topology</a></li>
+                <li><a href="{{ "/endpoints/vault.html" | relative_url }}">Vault</a></li>
+                <li><a href="{{ "/endpoints/security.html" | relative_url }}">Security</a></li>
+              </ul>
+            </div>
+          </nav>
+        </div>
+      </aside>
+
+      <main class="docs-content">
+        <article class="markdown-body">
+          {{ content }}
+        </article>
+      </main>
+    </div>
+  </body>
+</html>
