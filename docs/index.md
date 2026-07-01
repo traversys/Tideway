@@ -79,7 +79,23 @@ For schema discovery and endpoint help:
 
 ## Contents
 
-{% include list.liquid all=true %}
+- [Quickstart Guide](quickstart/readme.md)
+  - [Object Initiation](quickstart/initiation.md)
+  - [Responses](quickstart/responses.md)
+- [API Endpoints](endpoints/readme.md)
+  - [Admin](endpoints/admin.md)
+  - [Appliance or Outpost](endpoints/appliance.md)
+  - [Credentials](endpoints/credentials.md)
+  - [Data](endpoints/data.md)
+  - [Discovery](endpoints/discovery.md)
+  - [Events](endpoints/events.md)
+  - [Kerberos](endpoints/kerberos.md)
+  - [Knowledge](endpoints/knowledge.md)
+  - [Models](endpoints/models.md)
+  - [Taxonomy](endpoints/taxonomy.md)
+  - [Topology](endpoints/topology.md)
+  - [Vault](endpoints/vault.md)
+  - [Security](endpoints/security.md)
 
 ## Releases
 

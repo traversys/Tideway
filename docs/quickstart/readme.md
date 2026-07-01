@@ -4,4 +4,5 @@ sort: 1
 
 # Quickstart Guide
 
-{% include list.liquid %}
+- [Object Initiation](initiation.md)
+- [Responses](responses.md)
