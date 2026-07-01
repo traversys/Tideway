@@ -8,3 +8,4 @@ examples.py
 .DS_Store
 *.pyc
 *.txt
+.env
