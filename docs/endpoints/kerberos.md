@@ -47,13 +47,14 @@ Create a realm and Test user credentials by attempting to acquire a new Kerberos
 Syntax:
 
 ```
-.post_vault_kerberos_realm(__realm_name__, __json__)
+.post_vault_kerberos_realm(__realm_name__, __json__ [, _test_ ])
 ```
 
 | Parameters    | Type        | Required | Default Value | Options  |
 | ------------- | ----------- | :------: | ------------- | -------- |
 | realm_name    | String      | Yes      | N/A           | N/A      |
 | json          | JSON Object | Yes      | N/A           | N/A      |
+| test          | Boolean     | No       | False         | <ul><li>True</li><li>False</li></ul> |
 
 ## delete_vault_kerberos_realm()
 
@@ -89,13 +90,12 @@ List users with a Kerberos keytab file.
 Syntax:
 
 ```
-.get_vault_kerberos_keytabs(__realm_name__, __username__)
+.get_vault_kerberos_keytabs(__realm_name__)
 ```
 
 | Parameters    | Type        | Required | Default Value | Options  |
 | ------------- | ----------- | :------: | ------------- | -------- |
 | realm_name    | String      | Yes      | N/A           | N/A      |
-| username      | String      | Yes      | N/A           | N/A      |
 
 ## post_vault_kerberos_keytab()
 
@@ -162,6 +162,7 @@ Syntax:
 Delete a cedential cache file.
 
 Syntax:
+
 ```
 .delete_vault_kerberos_ccache(__realm_name__, __username__)
 ```

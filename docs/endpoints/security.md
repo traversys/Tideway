@@ -30,6 +30,12 @@ Syntax:
 .get_security_ldap
 ```
 
+## get_security_ldaps
+
+Property alias for retrieving the current LDAP configuration. See [get_security_ldap](#get_security_ldap).
+
+Syntax: `.get_security_ldaps`
+
 ## put_security_ldap()
 
 Replace the LDAP configuration.
@@ -71,6 +77,12 @@ Syntax:
 | Parameters | Type | Required | Default Value | Options |
 | ---------- | ---- | :------: | ------------- | ------- |
 | group_name | String | No | N/A | N/A |
+
+## get_security_groups
+
+Property alias for retrieving all groups. See [get_security_group](#get_security_group).
+
+Syntax: `.get_security_groups`
 
 ## post_security_group()
 
@@ -129,6 +141,12 @@ Syntax:
 | ---------- | ---- | :------: | ------------- | ------- |
 | permission | String | No | N/A | N/A |
 
+## get_security_permissions
+
+Property alias for retrieving all permissions. See [get_security_permission](#get_security_permission).
+
+Syntax: `.get_security_permissions`
+
 ## get_security_user()
 
 Retrieve a list of users or a specific user.
@@ -142,6 +160,12 @@ Syntax:
 | Parameters | Type | Required | Default Value | Options |
 | ---------- | ---- | :------: | ------------- | ------- |
 | username | String | No | N/A | N/A |
+
+## get_security_users
+
+Property alias for retrieving all users. See [get_security_user](#get_security_user).
+
+Syntax: `.get_security_users`
 
 ## post_security_user()
 
@@ -199,4 +223,3 @@ Syntax:
 | Parameters | Type | Required | Default Value | Options |
 | ---------- | ---- | :------: | ------------- | ------- |
 | json | JSON Object | Yes | N/A | N/A |
-

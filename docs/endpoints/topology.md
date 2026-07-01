@@ -33,8 +33,8 @@ Syntax:
 | Parameters    | Type        | Required | Default Value | Options  |
 | ------------- | ----------- | :------: | ------------- | -------- |
 | node_id       | JSON Object | Yes      | N/A           | N/A      |
-| focus         | String      | No       | N/A           | <ul><li>"software-connected"</li><li>"software"</li><li>"infrastructure"</li></ul> |
-| apply_rules   | Boolean     | No       | False         | <ul><li>True</li><li>False</li></ul> |
+| focus         | String      | No       | "software-connected" | <ul><li>"software-connected"</li><li>"software"</li><li>"infrastructure"</li></ul> |
+| apply_rules   | Boolean     | No       | True          | <ul><li>True</li><li>False</li></ul> |
 | complete      | Boolean     | No       | False         | <ul><li>True</li><li>False</li></ul> |
 
 ## post_topology_nodes()

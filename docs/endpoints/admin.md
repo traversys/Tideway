@@ -52,157 +52,141 @@ Example:
 {'api_versions': ['1.0', '1.1', '1.2'], 'component': 'REST API', 'product': 'BMC Discovery', 'version': '12.2'}
 ```
 
-## get_admin_licensing
+## get_admin_licensing()
 
 Get the latest signed licensing report (plain text by default).
 
 Syntax:
 
 ```
-.get_admin_licensing
+.get_admin_licensing([ _content_type_ ])
 ```
 
-## get_admin_licensing_csv
+| Parameters   | Type   | Required | Default Value | Options |
+| ------------ | ------ | :------: | ------------- | ------- |
+| content_type | String | No       | "text/plain"  | <ul><li>"text/plain"</li><li>"csv"</li><li>"raw"</li></ul> |
 
-Get the latest raw license data in CSV format as a zip file for offline analysis.
-
-Syntax:
-
-```
-.get_admin_licensing_csv
-```
-
-## get_admin_licensing_raw
-
-Get the latest license data as an encrypted raw license object for import to another appliance.
-
-Syntax:
-
-```
-.get_admin_licensing_raw
-```
-
-## get_admin_instance
+## instance()
 
 Get details about the appliance instance.
 
 Syntax:
 
 ```
-.get_admin_instance
+.instance()
 ```
 
 Example:
 ```python
->>> tw.get_admin_instance.json()
+>>> tw.instance().json()
 {
     ...
 }
 ```
 
-## get_admin_cluster
+## cluster()
 
 Get cluster configuration and status.
 
 Syntax:
 
 ```
-.get_admin_cluster
+.cluster()
 ```
 
 Example:
 ```python
->>> tw.get_admin_cluster.json()
+>>> tw.cluster().json()
 {
     ...
 }
 ```
 
-## get_admin_organizations
+## organizations()
 
 Get configured organizations.
 
 Syntax:
 
 ```
-.get_admin_organizations
+.organizations()
 ```
 
 Example:
 ```python
->>> tw.get_admin_organizations.json()
+>>> tw.organizations().json()
 [
     ...
 ]
 ```
 
-## get_admin_preferences
+## preferences()
 
 Get global appliance preferences.
 
 Syntax:
 
 ```
-.get_admin_preferences
+.preferences()
 ```
 
 Example:
 ```python
->>> tw.get_admin_preferences.json()
+>>> tw.preferences().json()
 {
     ...
 }
 ```
 
-## get_admin_builtin_reports
+## builtin_reports()
 
 Get built-in report definitions.
 
 Syntax:
 
 ```
-.get_admin_builtin_reports
+.builtin_reports()
 ```
 
 Example:
 ```python
->>> tw.get_admin_builtin_reports.json()
+>>> tw.builtin_reports().json()
 [
     ...
 ]
 ```
 
-## get_admin_custom_reports
+## custom_reports()
 
 Get custom report definitions.
 
 Syntax:
 
 ```
-.get_admin_custom_reports
+.custom_reports()
 ```
 
 Example:
 ```python
->>> tw.get_admin_custom_reports.json()
+>>> tw.custom_reports().json()
 [
     ...
 ]
 ```
 
-## get_admin_smtp
+## smtp()
 
 Get SMTP configuration.
 
 Syntax:
 
 ```
-.get_admin_smtp
+.smtp()
 ```
 
 Example:
 ```python
->>> tw.get_admin_smtp.json()
+>>> tw.smtp().json()
 {
     ...
 }

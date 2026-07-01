@@ -53,6 +53,7 @@ Syntax:
 | ------------- | ----------- | :------: | ------------- | -------- |
 | format        | String      | No       | N/A           | N/A      |
 | section       | String      | No       | N/A           | N/A      |
+| locale        | String      | No       | N/A           | N/A      |
 | kind          | String      | No       | N/A           | N/A      |
 | fieldlists    | Boolean     | No       | False         | <ul><li>True</li><li>False</li></ul> |
 
@@ -68,13 +69,13 @@ Get list of fields for a node kind field list.
 
 Syntax:
 ```
-.get_taxonomy_nodekind_fieldlist(__kind__, __fieldlists__)
+.get_taxonomy_nodekind_fieldlist(__kind__, __fieldlist__)
 ```
 
 | Parameters    | Type        | Required | Default Value | Options  |
 | ------------- | ----------- | :------: | ------------- | -------- |
 | kind          | String      | Yes      | N/A           | N/A      |
-| fieldlists    | String      | Yes      | N/A           | N/A      |
+| fieldlist     | String      | Yes      | N/A           | N/A      |
 
 ## get_taxonomy_relkind()
 
@@ -93,6 +94,6 @@ Syntax:
 
 ## get_taxonomy_relkinds
 
-Get list of all node kinds with kind info. See [get_taxonomy_relkinds](#get_taxonomy_relkinds).
+Get list of all relationship kinds with kind info. See [get_taxonomy_relkind](#get_taxonomy_relkind).
 
 Syntax: `.get_taxonomy_relkinds`

@@ -1,6 +1,6 @@
 # Tideway
 
-Simplified Python library for BMC Discovery API Interface that makes use of the Python Requests module [https://github.com/psf/requests](https://github.com/psf/requests) and uses the same response handler.
+Tideway is a simplified Python library for the BMC Discovery REST API. It uses the Python Requests module [https://github.com/psf/requests](https://github.com/psf/requests) and returns standard `requests.Response` objects for direct API calls.
 
 
 ```python
@@ -30,13 +30,54 @@ Example notebook: [`notebooks/admin_api.ipynb`](https://github.com/traversys/Tid
 
 ## Installation
 
-- Tideway can be installed via PyPI:
+Tideway can be installed via PyPI:
 
 ```console
 $ python -m pip install tideway
 ```
 
-- Tideway supports BMC Discovery 11.3+, API v1.0-1.16 using Python 3.
+Tideway supports BMC Discovery 11.3+ and API versions 1.0-1.16 using Python 3.
+
+## Quick Start
+
+Create an appliance or outpost client, then use either direct REST wrappers or endpoint-specific clients.
+
+```python
+>>> import tideway
+>>> tw = tideway.appliance('appliance-hostname', 'auth-token')
+>>> tw.get('/admin/about').json()
+{
+    ...
+}
+>>> data = tw.data()
+>>> hosts = data.search('search Host show name', limit=100)
+>>> len(hosts)
+100
+```
+
+Endpoint-specific clients are available from the appliance object:
+
+```python
+>>> tw.admin()
+>>> tw.credentials()
+>>> tw.data()
+>>> tw.discovery()
+>>> tw.events()
+>>> tw.kerberos()
+>>> tw.knowledge()
+>>> tw.models()
+>>> tw.taxonomy()
+>>> tw.topology()
+>>> tw.vault()
+```
+
+For schema discovery and endpoint help:
+
+```python
+>>> tw.api_schema()
+>>> tw.api_paths('/data/search')
+>>> tw.help('/data/search')
+```
 
 ## Contents
 
@@ -53,4 +94,4 @@ $ python -m pip install tideway
 | 0.1.5   | Updated to support Discovery 12.3 (API version 1.3) | - Missing 'complete' parameter option on graphNode() function. | - Fixed issue with Bearer capitalisation.<br>- Search Bulk will now return the full response on failure |
 | 0.2.0   | Updated to include Kerberos, Models and Taxonomy endpoints.<br><br>Added new high level generic endpoint function calls<br><br>Refactored function names/decorators to match API endpoints as close as possible.<br><br>Supports Discovery 22.2 (12.5) (API version 1.5) and Outpost API version 1.0 | Project missing tkinter module: https://github.com/traversys/Tideway/issues/15 | Added 'complete' parameter to `get_data_nodes_graph()` (replaces `graphNode()`) |
 | 0.2.1   | Added `complete` flag for graph calls, bug fixes to pagination and default focus.<br><br>Can retrieve condition templates without an ID.<br><br>Kerberos realm detection fixed and parameters are reset after each request.<br><br>Removed unused Tkinter library.<br><br>Updated to support API version 1.14 | May not work with all new endpoints. | | Issue: https://github.com/traversys/Tideway/issues/15 |
-| 0.3.0   | Removed deprecated helper aliases and routed all modules through the top-level REST wrappers.<br><br>Documentation refreshed to reflect the lean API surface. | | Deprecated helper functions removed; docs and examples updated. |
+| 0.3.0   | Refreshed package metadata and documentation for the current API surface.<br><br>Added schema helpers, updated endpoint docs, and fixed the appliance `taxonomy()` shortcut. | | Docs and runtime help table updated; PyPI build artifacts refreshed. |
