@@ -99,7 +99,7 @@ class Appliance:
         return m
 
     def taxonomy(self):
-        tx = tideway.topology(self.target, self.token, api_version=self.api_version, ssl_verify=self.verify)
+        tx = tideway.taxonomy(self.target, self.token, api_version=self.api_version, ssl_verify=self.verify)
         return tx
 
     def topology(self):

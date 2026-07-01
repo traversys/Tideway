@@ -5,87 +5,87 @@ from tabulate import tabulate
 
 docTable = [
                 [
-                    "GET", "/swagger.json", "- swagger()\n- api_swagger", "Get swagger file."
+                    "GET", "/swagger.json", "- api_swagger", "Get swagger file."
                     ],
                 [
-                    "GET", "/about", "- about()\n- api_about", "Return about info for API."
+                    "GET", "/about", "- api_about", "Return about info for API."
                     ],
                 [
                     "GET",
                     "/admin/baseline",
-                    "- baseline()\n- get_admin_baseline",
+                    "- get_admin_baseline",
                     "Get a summary of the appliance status, and details of which baseline checks have passed or failed."
                     ],
                 [
                     "GET",
                     "/admin/about",
-                    "- admin()\n- get_admin_about",
+                    "- get_admin_about",
                     "Get information about the appliance, like its version and versions of the installed packages."
                     ],
                 [
                     "GET",
                     "/admin/licensing",
-                    "- licensing()\n- get_admin_licensing",
+                    "- get_admin_licensing",
                     "Get the latest signed licensing report."
                     ],
                 [
                     "GET",
                     "/admin/licensing/raw",
-                    "- licensing(content_type='raw')\n- get_admin_licensing_raw",
+                    "- get_admin_licensing(content_type='raw')\n- get_admin_licensing_raw",
                     "Download the encrypted raw license data on this appliance for import on another appliance."
                     ],
                 [
                     "GET",
                     "/admin/licensing/csv",
-                    "- licensing(content_type='csv')\n- get_admin_licensing_csv",
+                    "- get_admin_licensing(content_type='csv')\n- get_admin_licensing_csv",
                     "Download raw license data in CSV format as a zip file for offline analysis."
                     ],
                 [
                     "GET",
                     "/admin/instance",
-                    "- instance()\n- get_admin_instance",
+                    "- instance()",
                     "Get details about the appliance instance."
                     ],
                 [
                     "GET",
                     "/admin/cluster",
-                    "- cluster()\n- get_admin_cluster",
+                    "- cluster()",
                     "Get cluster configuration and status."
                     ],
                 [
                     "GET",
                     "/admin/organizations",
-                    "- organizations()\n- get_admin_organizations",
+                    "- organizations()",
                     "Get configured organizations."
                     ],
                 [
                     "GET",
                     "/admin/preferences",
-                    "- preferences()\n- get_admin_preferences",
+                    "- preferences()",
                     "Get global appliance preferences."
                     ],
                 [
                     "GET",
                     "/admin/builtin_reports",
-                    "- builtin_reports()\n- get_admin_builtin_reports",
+                    "- builtin_reports()",
                     "Get built-in report definitions."
                     ],
                 [
                     "GET",
                     "/admin/custom_reports",
-                    "- custom_reports()\n- get_admin_custom_reports",
+                    "- custom_reports()",
                     "Get custom report definitions."
                     ],
                 [
                     "GET",
                     "/admin/smtp",
-                    "- smtp()\n- get_admin_smtp",
+                    "- smtp()",
                     "Get SMTP configuration."
                     ],
                 [
                     "GET",
                     "/vault/credential_types",
-                    "- listCredentialTypes()\n- get_vault_credential_type(group, cagetory)\n- get_vault_credential_types",
+                    "- listCredentialTypes()\n- get_vault_credential_type(group, category)\n- get_vault_credential_types",
                     "Get a list of all credential types and filter by group and/or category."
                     ],
                 [
@@ -229,43 +229,43 @@ docTable = [
                 [
                     "GET",
                     "/data/nodes/{node_id}",
-                    "- nodeLookup(node_id)\n- get_data_nodes(node_id)",
+                    "- get_data_nodes(node_id)",
                     "Get the state of a node with specified id"
                     ],
                 [
                     "GET",
                     "/data/nodes/{node_id}?relationships=true",
-                    "- nodeLookup(node_id,relationships=True)\n- get_data_nodes(node_id,relationships=True)",
+                    "- get_data_nodes(node_id, relationships=True)",
                     "Get the state of a node with specified id, along with the traversal specs of all current relationships it has."
                     ],
                 [
                     "GET",
                     "/data/nodes/{node_id}?traverse={traverse_spec}",
-                    "- nodeLookup(node_id,traverse='traverse_spec')\n- get_data_nodes(node_id,traverse='traverse_spec')",
+                    "- get_data_nodes(node_id, traverse='traverse_spec')",
                     "Get the state of a node with specified id, along with the IDs of all nodes reached by following a traversal spec."
                     ],
                 [
                     "GET",
                     "/data/nodes/{node_id}?traverse={attributes}",
-                    "- nodeLookup(node_id,attributes='attributes')\n- get_data_nodes(node_id,attributes='attributes')",
+                    "- get_data_nodes(node_id, attributes='attributes')",
                     "Get the state of a node with specified id, with only the attributes specified."
                     ],
                 [
                     "GET",
                     "/data/nodes/{node_id}/graph",
-                    "- graphNode(node_id)\n- get_data_nodes_graph(node_id)",
+                    "- get_data_nodes_graph(node_id)",
                     "Graph data represents a set of nodes and relationships that are associated to the given node."
                     ],
                 [
                     "GET",
                     "/data/kinds/{kind}",
-                    "- lookupNodeKind(kind)\n- get_data_kinds(kind)",
+                    "- get_data_kinds(kind)",
                     "Finds all nodes of a specified node kind."
                     ],
                 [
                     "GET",
                     "/data/kinds/{kind}?format=object",
-                    "- lookupNodeKind(kind,format='object')\n- get_data_kinds(kind,format='object')",
+                    "- get_data_kinds(kind, format='object')",
                     "As /data/kinds/{kind} but returns found nodes as objects instead of rows of attribute values."
                     ],
                 [
@@ -289,7 +289,7 @@ docTable = [
                 [
                     "POST",
                     "/data/import",
-                    "- twImport(body)\n- post_data_import(body)",
+                    "- post_data_import(body)",
                     "Imports data. Returns the import UUID."
                     ],
                 [
@@ -301,7 +301,7 @@ docTable = [
                 [
                     "POST",
                     "/data/write",
-                    "- twWrite(body)\n- post_data_write(body)",
+                    "- post_data_write(body)",
                     "Perform arbitrary write operations."
                     ],
                 [
@@ -457,7 +457,7 @@ docTable = [
                 [
                     "GET",
                     "/discovery/runs/{run_id}/inferred",
-                    "- getDiscoveryRunInferred(run_id)\n- get_discovery_run_inferred(run_id)",
+                    "- getDiscoveryRunInferred(run_id)",
                     """Get a summary of all inferred devices from a discovery run, partitioned by device type."""
                     ],
                 [
@@ -505,7 +505,7 @@ docTable = [
                 [
                     "POST",
                     "/events",
-                    "- status(body)\n- post_events(body)",
+                    "- post_events(body)",
                     """Returns a unique ID if the event has been recorded, otherwise an empty string is returned e.g. if the event source has been disabled."""
                     ],
                 [
@@ -583,19 +583,19 @@ docTable = [
                 [
                     "GET",
                     "/knowledge",
-                    "- getKnowledgeManagement()\n- get_knowledge",
+                    "- get_knowledge",
                     """Get the current state of the appliance's knowledge, including TKU versions."""
                     ],
                 [
                     "POST",
                     "/knowledge/{filename}",
-                    "- uploadKnowledge(filename, file)\n- post_knowledge(filename, file)",
+                    "- post_knowledge(filename, file)",
                     """Upload a TKU or pattern module to the appliance."""
                     ],
                 [
                     "GET",
                     "/knowledge/status",
-                    "- getUploadStatus()\n- get_knowledge_status",
+                    "- get_knowledge_status",
                     """Get the current state of a knowledge upload."""
                     ],
                 [
@@ -763,49 +763,49 @@ docTable = [
                 [
                     "GET",
                     "/data/nodes/{node_id}/graph",
-                    "- graphNode(node_id)\n- get_data_nodes_graph(node_id)",
+                    "- get_data_nodes_graph(node_id)",
                     """Graph data represents a set of nodes and relationships that are associated to the given node."""
                     ],
                 [
                     "POST",
                     "/topology/nodes",
-                    "- getNodes(body)\n- post_topology_nodes",
+                    "- post_topology_nodes(body)",
                     """Get topology data from one or more starting nodes."""
                     ],
                 [
                     "POST",
                     "/topology/nodes/kinds",
-                    "- getNodeKinds(body)\n- post_topology_nodes_kinds",
+                    "- post_topology_nodes_kinds(body)",
                     """Get nodes of the specified kinds which are related to a given set of nodes."""
                     ],
                 [
                     "GET",
                     "/topology/visualization_state",
-                    "- visualizationState()\n- get_topology_viz_state",
+                    "- get_topology_viz_state",
                     """Get the current state of the visualization for the authenticated user."""
                     ],
                 [
                     "PATCH",
                     "/topology/visualization_state",
-                    "- updateVizState(body)\n- patch_topology_viz_state(body)",
+                    "- patch_topology_viz_state(body)",
                     """Update one or more attributes of the current state of the visualization for the authenticated user."""
                     ],
                 [
                     "PUT",
                     "/topology/visualization_state",
-                    "- replaceVizState(body)\n- put_topology_viz_state",
+                    "- put_topology_viz_state(body)",
                     """Update any or all of the attributes of the current state of the visualization for the authenticated user."""
                     ],
                 [
                     "GET",
                     "/vault",
-                    "- getVault()\n- get_vault",
+                    "- get_vault",
                     """Get details of the state of the vault."""
                     ],
                 [
                     "PATCH",
                     "/vault",
-                    "- updateVault(body)\n- patch_vault",
+                    "- patch_vault(body)",
                     """Change the state of the vault."""
                 ]
             ]

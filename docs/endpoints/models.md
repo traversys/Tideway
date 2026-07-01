@@ -45,7 +45,7 @@ Syntax:
 
 ## get_models
 
-Retrieve all models. See [get_model](#get_model).
+Property alias for retrieving all models. See [get_model](#get_model).
 
 Syntax: `.get_models`
 
@@ -154,12 +154,14 @@ Retrieve service and application models.
 Syntax:
 
 ```
-.get_model_nodes(__key__ [, results_id ] [, delete ] [, kind ])
+.get_model_nodes(__key__ [, format ] [, limit ] [, results_id ] [, delete ] [, kind ])
 ```
 
 | Parameters   | Type        | Required | Default Value | Options  |
 | ------------ | ----------- | :------: | ------------- | -------- |
 | key          | String      | Yes      | N/A           | N/A      |
+| format       | String      | No       | N/A           | N/A      |
+| limit        | Integer     | No       | 100           | N/A      |
 | results_id   | String      | No       | N/A           | N/A      |
 | delete       | Boolean     | No       | False         | <ul><li>True</li><li>False</li></ul> |
 | kind         | String      | No       | N/A           | N/A      |
@@ -176,7 +178,7 @@ Syntax:
 | Parameters    | Type        | Required | Default Value | Options  |
 | ------------- | ----------- | :------: | ------------- | -------- |
 | node_id       | String      | Yes      | N/A           | N/A      |
-| expand_related | Boolean    | Yes      | N/A           | <ul><li>True</li><li>False</li></ul> |
+| expand_related | Boolean    | No       | N/A           | <ul><li>True</li><li>False</li></ul> |
 
 ## delete_model_by_node_id()
 
@@ -193,7 +195,7 @@ Syntax:
 
 ## patch_model_by_node_id()
 
-Delete a model.
+Update a model by node id.
 
 Syntax:
 ```
@@ -207,7 +209,7 @@ Syntax:
 
 ## get_topology_by_node_id()
 
-Delete a model.
+Get topology for the model definition specified by node id.
 
 Syntax:
 ```
@@ -239,12 +241,14 @@ Get nodes for the model definition specified by node id.
 Syntax:
 
 ```
-.get_nodes_by_node_id(__node_id__ [, results_id ] [, delete ] [, kind ])
+.get_nodes_by_node_id(__node_id__ [, format ] [, limit ] [, results_id ] [, delete ] [, kind ])
 ```
 
 | Parameters   | Type        | Required | Default Value | Options  |
 | ------------ | ----------- | :------: | ------------- | -------- |
-| key          | String      | Yes      | N/A           | N/A      |
+| node_id      | String      | Yes      | N/A           | N/A      |
+| format       | String      | No       | N/A           | N/A      |
+| limit        | Integer     | No       | 100           | N/A      |
 | results_id   | String      | No       | N/A           | N/A      |
 | delete       | Boolean     | No       | False         | <ul><li>True</li><li>False</li></ul> |
 | kind         | String      | No       | N/A           | N/A      |

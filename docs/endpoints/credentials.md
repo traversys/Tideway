@@ -59,7 +59,9 @@ Example:
 
 ## get_vault_credential_types
 
-List all credential types. See [get_vault_credential_type](#get_vault_credential_type).
+Property alias for listing all credential types. See [get_vault_credential_type](#get_vault_credential_type).
+
+Syntax: `.get_vault_credential_types`
 
 ## get_vault_credential_type_name()
 
@@ -118,7 +120,9 @@ Example:
 
 ## get_vault_credentials
 
-List all vault credentials. See [get_vault_credential](#get_vault_credential).
+Property alias for listing all credentials. See [get_vault_credential](#get_vault_credential).
+
+Syntax: `.get_vault_credentials`
 
 ## post_vault_credential()
 
