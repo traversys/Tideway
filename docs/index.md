@@ -26,7 +26,7 @@ Tideway follows BMC Discovery's well-structured and documented REST API which ca
 
 Tideway removes the extra layer of manually constructing a URL and parameters for python requests allowing you to query API supported features of Discovery seamlessly and faster than if you were to navigate via the GUI.
 
-Example notebook: [`notebooks/admin_api_examples.ipynb`](https://github.com/traversys/Tideway/blob/main/notebooks/admin_api_examples.ipynb) (download via `curl -O https://raw.githubusercontent.com/traversys/Tideway/main/notebooks/admin_api_examples.ipynb`)
+Example notebook: [`notebooks/admin_api.ipynb`](https://github.com/traversys/Tideway/blob/main/notebooks/admin_api.ipynb) (download via `curl -O https://raw.githubusercontent.com/traversys/Tideway/main/notebooks/admin_api.ipynb`)
 
 ## Installation
 
