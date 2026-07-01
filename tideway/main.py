@@ -157,10 +157,10 @@ class Appliance:
         endpoints.docs()
         #print("")
 
-    def help(*args):
+    def help(self, endpoint=None):
         '''Help on endpoints.'''
-        if len(args) > 1:
-            endpoints.docs(args[1])
+        if endpoint:
+            endpoints.docs(endpoint)
         else:
             endpoints.docs()
         #print("\n")
@@ -191,4 +191,3 @@ class Appliance:
     def get_admin_licensing_raw(self):
         '''Alternate API call for licensing report raw.'''
         return self.get("/admin/licensing/raw", response="application/zip")
-

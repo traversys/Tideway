@@ -30,9 +30,12 @@ class Knowledge(appliance):
                 response="text/html",
             )
 
-    def getKnowledgeTriggerPatterns(self, lookup_data_sources=None):
+    def get_knowledge_trigger_patterns(self, lookup_data_sources=None):
         '''Get a list of all knowledge trigger patterns.'''
         self.params['lookup_data_sources'] = lookup_data_sources
         response = self.get("/knowledge/trigger_patterns")
         return response
-    get_knowledge_trigger_patterns = property(getKnowledgeTriggerPatterns)
+
+    def getKnowledgeTriggerPatterns(self, lookup_data_sources=None):
+        '''Get a list of all knowledge trigger patterns.'''
+        return self.get_knowledge_trigger_patterns(lookup_data_sources=lookup_data_sources)
