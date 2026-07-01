@@ -5,12 +5,11 @@ import requests
 from . import discoRequests as dr
 from . import endpoints
 import tideway
-import warnings
 
 class Appliance:
     '''An appliance instance.'''
 
-    def __init__(self, target, token, limit = 100, delete = False, api_version = "1.14", ssl_verify = False):
+    def __init__(self, target, token, limit = 100, delete = False, api_version = "1.16", ssl_verify = False):
         self.target = target
         self.token = token
         self.default_limit = limit
@@ -29,33 +28,41 @@ class Appliance:
         self.params['limit'] = self.default_limit
         self.params['delete'] = self.default_delete
 
-    def get(self,endpoint):
+    def get(self, endpoint, response="application/json"):
         '''Request any endpoint.'''
-        req = dr.discoRequest(self,endpoint)
+        req = dr.discoRequest(self, endpoint, response=response)
         self.reset_params()
         return req
 
-    def post(self,endpoint,body):
+    def post(self, endpoint, body=None, response="application/json", files=None, data=None, content_type=None):
         '''Post any endpoint.'''
-        req = dr.discoPost(self, endpoint, body)
+        req = dr.discoPost(
+            self,
+            endpoint,
+            body,
+            response=response,
+            files=files,
+            data=data,
+            content_type=content_type,
+        )
         self.reset_params()
         return req
 
-    def delete(self,endpoint):
+    def delete(self, endpoint, response="application/json"):
         '''Delete any endpoint.'''
-        req = dr.discoDelete(self, endpoint)
+        req = dr.discoDelete(self, endpoint, response=response)
         self.reset_params()
         return req
 
-    def patch(self,endpoint,body):
+    def patch(self, endpoint, body, response="application/json"):
         '''Patch any endpoint.'''
-        req = dr.discoPatch(self, endpoint, body)
+        req = dr.discoPatch(self, endpoint, body, response=response)
         self.reset_params()
         return req
 
-    def put(self,endpoint,body):
+    def put(self, endpoint, body, response="application/json"):
         '''Update any endpoint.'''
-        req = dr.discoPut(self, endpoint, body)
+        req = dr.discoPut(self, endpoint, body, response=response)
         self.reset_params()
         return req
 
@@ -103,7 +110,7 @@ class Appliance:
         v = tideway.vault(self.target, self.token, api_version=self.api_version, ssl_verify=self.verify)
         return v
 
-    ### Admin ###
+    ### API Admin ###
 
     @property
     def api_about(self):
@@ -111,14 +118,6 @@ class Appliance:
         url = self.api + "/about"
         req = requests.get(url, verify=self.verify)
         return req
-
-    def about(self):
-        '''Return about data.'''
-        warnings.warn(
-            "about() is deprecated; use api_about instead.",
-            DeprecationWarning,
-        )
-        return self.api_about
 
     def _get_api_schema(self):
         '''Helper to fetch API schema, trying /swagger.json first, then /openapi.json.'''
@@ -133,14 +132,6 @@ class Appliance:
     def api_swagger(self):
         '''Alternate API call for swagger.'''
         return self._get_api_schema()
-
-    def swagger(self):
-        '''Fetch API schema, trying /swagger.json first, then /openapi.json.'''
-        warnings.warn(
-            "swagger() is deprecated; use api_swagger instead.",
-            DeprecationWarning,
-        )
-        return self.api_swagger
 
     def _load_schema(self):
         '''Return cached API schema as dict, fetching it if necessary.'''
@@ -161,63 +152,42 @@ class Appliance:
         return paths
 
     @property
-    def get_admin_baseline(self):
-        '''Alternate API call for baseline.'''
-        response = dr.discoRequest(self, "/admin/baseline")
-        return response
-
-    def baseline(self):
-        '''Get a summary of the appliance status, and details of which baseline checks have passed or failed.'''
-        warnings.warn(
-            "baseline() is deprecated; use get_admin_baseline instead.",
-            DeprecationWarning,
-        )
-        return self.get_admin_baseline
-
-    @property
-    def get_admin_about(self):
-        '''Alternate API call for /admin/about.'''
-        response = dr.discoRequest(self, "/admin/about")
-        return response
-
-    @property
-    def get_admin_licensing(self):
-        '''Alternate API call for licensing report.'''
-        response = dr.discoRequest(self, "/admin/licensing",response="text/plain")
-        return response
-
-    @property
-    def get_admin_licensing_csv(self):
-        '''Alternate API call for licensing report CSV.'''
-        response = dr.discoRequest(self, "/admin/licensing/csv",response="application/zip")
-        return response
-    
-    @property
-    def get_admin_licensing_raw(self):
-        '''Alternate API call for licensing report raw.'''
-        response = dr.discoRequest(self, "/admin/licensing/raw",response="application/zip")
-        return response
-
-    def licensing(self,content_type="text/plain"):
-        '''Get the latest signed licensing report.'''
-        if content_type == "csv":
-            response = dr.discoRequest(self, "/admin/licensing/csv",response="application/zip")
-        elif content_type == "raw":
-            response = dr.discoRequest(self, "/admin/licensing/raw",response="application/zip")
-        else:
-            response = dr.discoRequest(self, "/admin/licensing",response=content_type)
-        return response
-
-    @property
     def api_help(self):
         '''Help on endpoints.'''
         endpoints.docs()
         #print("")
 
-    def help(*args):
+    def help(self, endpoint=None):
         '''Help on endpoints.'''
-        if len(args) > 1:
-            endpoints.docs(args[1])
+        if endpoint:
+            endpoints.docs(endpoint)
         else:
             endpoints.docs()
         #print("\n")
+
+### Discovery Admin ###
+
+    @property
+    def get_admin_baseline(self):
+        '''Alternate API call for baseline.'''
+        return self.get("/admin/baseline")
+
+    @property
+    def get_admin_about(self):
+        '''Alternate API call for /admin/about.'''
+        return self.get("/admin/about")
+
+    @property
+    def get_admin_licensing(self):
+        '''Alternate API call for licensing report.'''
+        return self.get("/admin/licensing", response="text/plain")
+
+    @property
+    def get_admin_licensing_csv(self):
+        '''Alternate API call for licensing report CSV.'''
+        return self.get("/admin/licensing/csv", response="application/zip")
+    
+    @property
+    def get_admin_licensing_raw(self):
+        '''Alternate API call for licensing report raw.'''
+        return self.get("/admin/licensing/raw", response="application/zip")

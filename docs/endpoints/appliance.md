@@ -355,59 +355,6 @@ Example:
 
 ```
 
-## about()
-
-[Deprecated] See [api_about](#api_about) for usage.
-
-Syntax: `.about()`
-
-## admin()
-
-[Deprecated] See [get_admin_about](#get_admin_about) for usage.
-
-Syntax: `.admin()`
-
-## swagger()
-
-[Deprecated] See [api_swagger](#api_swagger) for usage.
-
-Syntax: `.swagger()`
-
-## baseline()
-
-[Deprecated] See [get_admin_baseline](#get_admin_baseline) for usage.
-
-Syntax: `.baseline()`
-
-## licensing()
-
-Get the latest signed licensing report.
-
-- CSV option returns raw license data in CSV format as a zip file for offline analysis.
-- RAW option return an encrypted raw license object for import to another appliance.
-
-Syntax:
-
-```
-.licensing([ _content_type_ ])
-```
-
-| Parameters   | Type   | Required | Default Value | Options |
-| ------------ | ------ | :------: | ------------- | ------- | 
-| content_type | String | No       | "text/plain"  | <ul><li>"text/plain"</li><li>"csv"</li><li>"raw"</li></ul>
-
-Example:
-```python
->>> tw.licensing()
------BEGIN LICENSE REPORT-----
-License report
-==============
-
-Report start time: 2021-01-18 23:00:00.409987+00:00
-Report end time  : 2021-01-21 23:00:00.410085+00:00
-...
-```
-
 ## help()
 
 - Get help on specific Discovery API endpoint and function to use. Outputs full list by default.

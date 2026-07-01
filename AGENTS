@@ -1,0 +1,17 @@
+Repository: Tideway (BMC Discovery API client)
+
+Mission
+- Add or adjust API helpers using the top-level REST wrappers in `tideway/main.py` (`Appliance.get/post/patch/put/delete`). Do not call `requests` or `discoRequests` directly from feature modules, except the explicit non-standard schema endpoints (`/about`, swagger/openapi) which are intentionally direct in `main.py`.
+- Preserve parameter handling: set `self.params[...]` before calling a wrapper; the appliance layer resets params after each request.
+- Maintain existing deprecation warnings; when adding aliases, warn with `DeprecationWarning` and point to the preferred helper.
+
+Uploads and special payloads
+- Use `Appliance.post(..., files=..., content_type=...)` for multipart uploads (TKU/knowledge, Kerberos keytabs/ccaches). Do not reintroduce `discoRequests` helpers in new code.
+- When a response needs a specific MIME type (e.g., licensing CSV/raw), pass `response="application/zip"` or similar via the wrapper.
+
+Style and safety
+- Keep code ASCII-only unless the file already uses Unicode. Keep comments minimal and clarifying, not redundant.
+- Do not remove or overwrite user changes; avoid destructive git commands.
+
+Validation
+- Preferred quick check: `python3 -m compileall tideway`.

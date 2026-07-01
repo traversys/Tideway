@@ -6,7 +6,7 @@ class DummyResponse:
 
 def test_get_vault_kerberos_realm_calls_once(monkeypatch):
     calls = []
-    def fake_request(self, endpoint):
+    def fake_request(self, endpoint, **kwargs):
         calls.append(endpoint)
         return DummyResponse()
 

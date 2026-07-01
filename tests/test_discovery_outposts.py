@@ -10,7 +10,7 @@ class DummyResponse:
 
 def test_get_discovery_outpost_endpoint(monkeypatch):
     calls = []
-    def fake_request(self, endpoint):
+    def fake_request(self, endpoint, **kwargs):
         calls.append(endpoint)
         return DummyResponse({"id": "all"})
     monkeypatch.setattr(tideway.discoRequests, "discoRequest", fake_request)
@@ -27,7 +27,7 @@ def test_get_discovery_outpost_endpoint(monkeypatch):
 
 def test_post_discovery_outpost(monkeypatch):
     called = {}
-    def fake_post(self, endpoint, body):
+    def fake_post(self, endpoint, body, **kwargs):
         called["endpoint"] = endpoint
         called["body"] = body
         return DummyResponse({"created": True})
@@ -43,7 +43,7 @@ def test_post_discovery_outpost(monkeypatch):
 
 def test_delete_discovery_outpost(monkeypatch):
     calls = []
-    def fake_delete(self, endpoint):
+    def fake_delete(self, endpoint, **kwargs):
         calls.append(endpoint)
         return DummyResponse({"deleted": True})
     monkeypatch.setattr(tideway.discoRequests, "discoDelete", fake_delete)
