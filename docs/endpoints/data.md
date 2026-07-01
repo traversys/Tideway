@@ -362,12 +362,6 @@ Example:
 }
 ```
 
-## get_data_partitions
-
-Property alias for listing partition names and IDs. See [partitions](#partitions).
-
-Syntax: `.get_data_partitions`
-
 ## post_data_partitions()
 
 Create a Partition.

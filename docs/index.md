@@ -36,8 +36,6 @@ Tideway can be installed via PyPI:
 $ python -m pip install tideway
 ```
 
-Tideway supports BMC Discovery 11.3+ and API versions 1.0-1.16 using Python 3.
-
 ## Quick Start
 
 Create an appliance or outpost client, then use either direct REST wrappers or endpoint-specific clients.
