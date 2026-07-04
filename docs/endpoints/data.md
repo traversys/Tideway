@@ -70,7 +70,7 @@ Example:
 
 ```python
 >>> search = data.search("search Host show os_type process with unique()")
->>> print(search.json())
+>>> print(search)
 [
 	{
 		'count': 12,
@@ -193,7 +193,9 @@ Example:
 
 ## get_data_condition_templates
 
-Get a list of all available templates. See [get_data_condition_template](#get_data_condition_template).
+Property alias for listing all condition templates. See [get_data_condition_template](#get_data_condition_template).
+
+Syntax: `.get_data_condition_templates`
 
 ## post_data_candidate()
 
@@ -202,12 +204,12 @@ The node object of the best candidate based on the provided parameters.
 Syntax:
 
 ```
-.post_data_candidate(__json__)
+.post_data_candidate(__body__)
 ```
 
 | Parameters    | Type        | Required | Default Value | Options  |
 | ------------- | ----------- | :------: | ------------- | -------- |
-| json          | JSON Object | Yes      | N/A           | N/A      |
+| body          | JSON Object | Yes      | N/A           | N/A      |
 
 Example:
 
@@ -236,12 +238,12 @@ Enter parameters to identify a device, the response is a list of candidate nodes
 Syntax:
 
 ```
-.post_data_candidates(__json__)
+.post_data_candidates(__body__)
 ```
 
 | Parameters    | Type        | Required | Default Value | Options  |
 | ------------- | ----------- | :------: | ------------- | -------- |
-| json          | JSON Object | Yes      | N/A           | N/A      |
+| body          | JSON Object | Yes      | N/A           | N/A      |
 
 ## get_data_nodes()
 
@@ -250,7 +252,7 @@ Get the state of a node with specified id.
 Syntax:
 
 ```
-.get_data_nodes(__node_id__ [, _relationships_ ] [, _traverse_ ] [, _flags_ ])
+.get_data_nodes(__node_id__ [, _relationships_ ] [, _traverse_ ] [, _flags_ ] [, _attributes_ ])
 ```
 
 | Parameters    | Type        | Required | Default Value | Options  |
@@ -259,6 +261,7 @@ Syntax:
 | relationships | Boolean     | No       | False         | <ul><li>True</li><li>False</li></ul> |
 | traverse      | String      | No       | N/A           | "NodeKind:Relationship:NodeKind:Node" |
 | flags         | String      | No       | N/A           | <ul><li>"include_destroyed"</li><li>"exclude_current"</li></ul> |
+| attributes    | String      | No       | N/A           | Comma-separated attributes |
 
 Example:
 
@@ -281,8 +284,8 @@ Syntax:
 | Parameters    | Type        | Required | Default Value | Options  |
 | ------------- | ----------- | :------: | ------------- | -------- |
 | node_id       | JSON Object | Yes      | N/A           | N/A      |
-| focus         | String      | No       | N/A           | <ul><li>"software-connected"</li><li>"software"</li><li>"infrastructure"</li></ul> |
-| apply_rules   | Boolean     | No       | False         | <ul><li>True</li><li>False</li></ul> |
+| focus         | String      | No       | "software-connected" | <ul><li>"software-connected"</li><li>"software"</li><li>"infrastructure"</li></ul> |
+| apply_rules   | Boolean     | No       | True          | <ul><li>True</li><li>False</li></ul> |
 | complete      | Boolean     | No       | False         | <ul><li>True</li><li>False</li></ul> |
 
 ## get_data_kinds()
@@ -332,20 +335,20 @@ Syntax:
 | limit         | Integer     | No       | 100           | N/A |
 | delete        | Boolean     | No       | False         | <ul><li>True</li><li>False</li></ul> |
 
-## get_data_partitions
+## partitions()
 
 Get names and IDs of partitions available on the appliance.
 
 Syntax:
 
 ```
-.get_data_partitions()
+.partitions()
 ```
 
 Example:
 
 ```python
->>> partitions = data.get_data_partitions()
+>>> partitions = data.partitions()
 >>> from pprint import pprint
 >>> pprint(partitions.json())
 {
@@ -430,6 +433,12 @@ Syntax:
 | ------------- | ------ | :------: | ------------- | ------- |
 | consumer_name | String | No       | N/A           | N/A     |
 | path          | String | No       | N/A           | N/A     |
+
+## get_data_external_consumers
+
+Property alias for listing all external consumers. See [get_data_external_consumer](#get_data_external_consumer).
+
+Syntax: `.get_data_external_consumers`
 
 ## post_data_external_consumer()
 

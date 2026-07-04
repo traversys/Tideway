@@ -33,9 +33,3 @@ Syntax:
 | Parameters    | Type        | Required | Default Value | Options  |
 | ------------- | ----------- | :------: | ------------- | -------- |
 | json          | JSON Object | Yes      | N/A           | N/A      |
-
-## status()
-
-[Deprecated] See [post_events](#post_events) for usage.
-
-Syntax: `.status(__json__)`

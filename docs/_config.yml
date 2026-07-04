@@ -1,3 +1,3 @@
-remote_theme: rundocs/jekyll-rtd-theme
-readme_index:
-  with_frontmatter: true
+title: Tideway
+description: Python library for the BMC Discovery API
+theme: jekyll-theme-primer

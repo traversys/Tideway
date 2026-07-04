@@ -38,7 +38,7 @@ Example:
 
 ## api_swagger
 
-Get JSON swagger file which contains the API schema.
+Get the JSON API schema. The client tries `/swagger.json` first and falls back to `/openapi.json`.
 
 Syntax:
 
@@ -65,6 +65,30 @@ Example:
 ## api_help
 
 Outputs full list of help methods see [help()](#help).
+
+## api_schema()
+
+Return the parsed API schema as a dictionary.
+
+Syntax:
+
+```
+.api_schema()
+```
+
+## api_paths()
+
+Return all available API paths, or details for a specific path.
+
+Syntax:
+
+```
+.api_paths([ _path_ ])
+```
+
+| Parameters | Type   | Required | Default Value | Options |
+| ---------- | ------ | :------: | ------------- | ------- |
+| path       | String | No       | N/A           | N/A     |
 
 ## get_admin_baseline
 
@@ -159,76 +183,6 @@ Example:
 ```python
 >>> tw.get_admin_licensing_raw
 
-```
-
-## get_admin_instance
-
-Get details about the appliance instance.
-
-Syntax:
-
-```
-.get_admin_instance
-```
-
-## get_admin_cluster
-
-Get cluster configuration and status.
-
-Syntax:
-
-```
-.get_admin_cluster
-```
-
-## get_admin_organizations
-
-Get configured organizations.
-
-Syntax:
-
-```
-.get_admin_organizations
-```
-
-## get_admin_preferences
-
-Get global appliance preferences.
-
-Syntax:
-
-```
-.get_admin_preferences
-```
-
-## get_admin_builtin_reports
-
-Get built-in report definitions.
-
-Syntax:
-
-```
-.get_admin_builtin_reports
-```
-
-## get_admin_custom_reports
-
-Get custom report definitions.
-
-Syntax:
-
-```
-.get_admin_custom_reports
-```
-
-## get_admin_smtp
-
-Get SMTP configuration.
-
-Syntax:
-
-```
-.get_admin_smtp
 ```
 
 ## get()

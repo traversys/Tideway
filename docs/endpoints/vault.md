@@ -57,15 +57,3 @@ Example:
 >>> vault.patch_vault({"open": True,"passphrase":"long pass phrase"}).ok
 True
 ```
-
-## getVault()
-
-[Deprecated] See [get_vault](#get_vault) for usage.
-
-Syntax: `.getVault()`
-
-## updateVault()
-
-[Deprecated] See [patch_vault](#patch_vault) for usage.
-
-Syntax: `.updateVault(__json__)`

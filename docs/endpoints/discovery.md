@@ -50,54 +50,6 @@ Syntax:
 | ------------ | ----------- | :------: | ------------- | --------|
 | json         | JSON Object | Yes      | N/A           | N/A     |
 
-## get_discovery_outpost()
-
-Get a list of all configured Outposts or details for a specific Outpost.
-
-Syntax:
-
-```
-.get_discovery_outpost([ _outpost_id_ ])
-```
-
-| Parameters   | Type   | Required | Default Value | Options |
-| ------------ | ------ | :------: | ------------- | --------|
-| outpost_id   | String | No       | N/A           | N/A     |
-
-## get_discovery_outposts
-
-Get a list of all configured Outposts. See [get_discovery_outpost](#get_discovery_outpost).
-
-Syntax: `.get_discovery_outposts`
-
-## post_discovery_outpost()
-
-Register a new Outpost with the appliance.
-
-Syntax:
-
-```
-.post_discovery_outpost(__json__)
-```
-
-| Parameters   | Type        | Required | Default Value | Options |
-| ------------ | ----------- | :------: | ------------- | --------|
-| json         | JSON Object | Yes      | N/A           | N/A     |
-
-## delete_discovery_outpost()
-
-Delete a configured Outpost.
-
-Syntax:
-
-```
-.delete_discovery_outpost(__outpost_id__)
-```
-
-| Parameters   | Type   | Required | Default Value | Options |
-| ------------ | ------ | :------: | ------------- | --------|
-| outpost_id   | String | Yes      | N/A           | N/A     |
-
 Example:
 
 ```python
@@ -218,7 +170,7 @@ Update an exclude list.
 Syntax:
 
 ```
-.patch_discovery_exclude(__json__, __exclude_id__)
+.patch_discovery_exclude(__exclude_id__, __json__)
 ```
 
 | Parameters   | Type        | Required | Default Value | Options |
@@ -233,12 +185,12 @@ Get details of specific currently processing discovery run.
 Syntax:
 
 ```
-.get_discovery_run(__run_id__)
+.get_discovery_run([ _run_id_ ])
 ```
 
 | Parameters   | Type   | Required | Default Value | Options |
 | ------------ | ------ | :------: | ------------- | --------|
-| run_id       | String | Yes      | N/A           | N/A     |
+| run_id       | String | No       | N/A           | N/A     |
 
 Example:
 ```python
@@ -379,22 +331,22 @@ Syntax: `.getDiscoveryRunResults(__run_id__)`
 
 [Deprecated] See [get_discovery_run_results](#get_discovery_run_results) for usage.
 
-Syntax: `.getDiscoveryRunResults(__run_id__, __result__ [, offset ] [, results_id ] [, format ] [, limit ] [, delete ])`
+Syntax: `.getDiscoveryRunResult(__run_id__, __result__ [, offset ] [, results_id ] [, format ] [, limit ] [, delete ])`
 
 ## get_discovery_run_inferred()
 
-Get a summary of all inferred devices from a discovery run, partitioned by device type and/or which have a specific inferred kind.
+Get a summary of inferred devices from a discovery run for a specific inferred kind.
 
 Syntax:
 
 ```
-.get_discovery_run_inferred(__run_id__ [, inferred_kind ] [, offset ] [, results_id ] [, format ] [, limit ] [, delete ])
+.get_discovery_run_inferred(__run_id__, __inferred_kind__ [, offset ] [, results_id ] [, format ] [, limit ] [, delete ])
 ```
 
 | Parameters    | Type        | Required | Default Value | Options  |
 | ------------- | ----------- | :------: | ------------- | -------- |
 | run_id        | String      | Yes      | N/A           | N/A      |
-| inferred_kind | String      | No       | N/A           | N/A      |
+| inferred_kind | String      | Yes      | N/A           | N/A      |
 | offset        | Integer     | No       | N/A           | N/A      |
 | results_id    | String      | No       | N/A           | N/A      |
 | format        | String      | No       | N/A           | <ul><li>"object"</li></ul> |
@@ -544,4 +496,3 @@ Syntax:
 | Parameters   | Type   | Required | Default Value | Options |
 | ------------ | ------ | :------: | ------------- | --------|
 | outpost_id   | String | Yes      | N/A           | N/A     |
-

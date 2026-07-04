@@ -106,20 +106,8 @@ Syntax:
 | ------------------- | ------- | :------: | ------------- | -------------------------------- |
 | lookup_data_sources | Boolean | No       | N/A           | <ul><li>True</li><li>False</li></ul> |
 
-## getKnowledgeManagement()
+## getKnowledgeTriggerPatterns()
 
-[Deprecated] See [get_knowledge](#get_knowledge) for usage.
+[Deprecated] See [get_knowledge_trigger_patterns](#get_knowledge_trigger_patterns) for usage.
 
-Syntax: `.getKnowledgeManagement()`
-
-## getUploadStatus()
-
-[Deprecated] See [get_knowledge_status](#get_knowledge_status) for usage.
-
-Syntax: `.getUploadStatus()`
-
-## uploadKnowledge()
-
-[Deprecated] See [post_knowledge](#post_knowledge) for usage.
-
-Syntax: `.uploadKnowledge(__filename__, __file__ [, _activate_ ] [, _allow_restart_ ])`
+Syntax: `.getKnowledgeTriggerPatterns([ _lookup_data_sources_ ])`
