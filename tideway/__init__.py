@@ -13,7 +13,11 @@ from tideway import main, \
                     security, \
                     models, \
                     taxonomy, \
-                    topology
+                    topology, \
+                    reports, \
+                    report_admin
+from tideway.appliance_cli import ApplianceCLI, appliance_cli
+from tideway.results import BatchReportResult, ReportResult, TextResult
 
 # Main declaration to create an appliance object
 appliance = main.Appliance
@@ -34,3 +38,5 @@ taxonomy = taxonomy.Taxonomy
 topology = topology.Topology
 vault = vault.Vault
 security = security.Security
+reports = reports.Reports
+report_admin = report_admin.ReportAdmin

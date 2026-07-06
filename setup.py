@@ -12,6 +12,10 @@ setuptools.setup(
     url="https://github.com/traversys/Tideway",
     packages=setuptools.find_packages(exclude=["tests*"]),
     install_requires=[
+        "cidrize",
+        "pandas",
+        "paramiko",
+        "PyYAML",
         "requests",
         "tabulate",
     ],

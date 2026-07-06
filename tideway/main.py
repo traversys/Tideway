@@ -117,6 +117,35 @@ class Appliance:
         v = tideway.vault(self.target, self.token, api_version=self.api_version, ssl_verify=self.verify)
         return v
 
+    def reports(self):
+        r = tideway.reports(self)
+        return r
+
+    def report_admin(self):
+        a = tideway.report_admin(self)
+        return a
+
+    def appliance_cli(
+        self,
+        password=None,
+        password_file=None,
+        username="tideway",
+        system_username=None,
+        system_password=None,
+        system_password_file=None,
+    ):
+        c = tideway.appliance_cli(
+            self.target,
+            password=password,
+            password_file=password_file,
+            username=username,
+            system_username=system_username,
+            system_password=system_password,
+            system_password_file=system_password_file,
+            ssl_verify=self.verify,
+        )
+        return c
+
     ### API Admin ###
 
     @property
