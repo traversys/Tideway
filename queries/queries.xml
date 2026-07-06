@@ -1,0 +1,859 @@
+<?xml version="1.0" ?>
+<queries>
+	<query title="Capture Candidates">
+		<description>Unsupported devices with SNMP metadata for capture preparation.</description>
+		<search>search DiscoveryAccess where end_state = 'UnsupportedDevice' and _last_marker
+traverse DiscoveryAccess:DiscoveryAccessResult:DiscoveryResult:DeviceInfo where sysobjectid
+show
+access_method as 'Access Method',
+request_time as 'Request Time',
+hostname as 'Hostname',
+os as 'OS',
+failure_reason as 'Failure Reason',
+syscontact as 'Syscontact',
+syslocation as 'Syslocation',
+sysdescr as 'Sysdescr',
+sysobjectid as 'Sysobject ID'</search>
+	</query>
+	<query title="Cloud Resource Units">
+		<description>Cloud-attributed SoftwareInstance/VirtualMachine nodes.</description>
+		<search>search SoftwareInstance,VirtualMachine where __resource_unit = 'cloud' process with unique(0)</search>
+	</query>
+	<query title="Count Cloud Resources">
+		<description>Total CloudResource nodes discovered.</description>
+		<search>search CloudResource process with unique(0)</search>
+	</query>
+	<query title="Count Cloud Services">
+		<description>Total CloudService nodes discovered.</description>
+		<search>search CloudService process with unique(0)</search>
+	</query>
+	<query title="Count Containers or Pods">
+		<description>Total container/pod software nodes discovered.</description>
+		<search>search SoftwarePod process with unique(0)</search>
+	</query>
+	<query title="Count Hosts (All)">
+		<description>Total Host nodes for KPI baselines.</description>
+		<search>search Host process with unique(0)</search>
+	</query>
+	<query title="Count Management Controllers">
+		<description>Total ManagementController nodes discovered.</description>
+		<search>search ManagementController process with unique(0)</search>
+	</query>
+	<query title="Count Network Devices">
+		<description>Total NetworkDevice nodes discovered.</description>
+		<search>search NetworkDevice process with unique(0)</search>
+	</query>
+	<query title="Count Printers">
+		<description>Total Printer nodes discovered.</description>
+		<search>search Printer process with unique(0)</search>
+	</query>
+	<query title="Count SNMP Managed Devices">
+		<description>Total SNMPManagedDevice nodes discovered.</description>
+		<search>search SNMPManagedDevice process with unique(0)</search>
+	</query>
+	<query title="Count Software Containers">
+		<description>Total SoftwareContainer nodes discovered.</description>
+		<search>search SoftwareContainer process with unique(0)</search>
+	</query>
+	<query title="Count Software Instances">
+		<description>Total SoftwareInstance nodes discovered.</description>
+		<search>search SoftwareInstance process with unique(0)</search>
+	</query>
+	<query title="Count Storage Devices">
+		<description>Total StorageDevice nodes discovered.</description>
+		<search>search StorageDevice process with unique(0)</search>
+	</query>
+	<query title="Count Storage Ports">
+		<description>Total StoragePort nodes discovered.</description>
+		<search>search StoragePort process with unique(0)</search>
+	</query>
+	<query title="Count Storage Systems">
+		<description>Total StorageSystem nodes discovered.</description>
+		<search>search StorageSystem process with unique(0)</search>
+	</query>
+	<query title="Count Virtual Machines">
+		<description>Total VirtualMachine nodes discovered.</description>
+		<search>search VirtualMachine process with unique(0)</search>
+	</query>
+	<query title="Credential Failure (7 Days)">
+		<description>Session failure counts per credential during the last seven days.</description>
+		<search>search SessionResult where not success and time_index &gt; (currentTime() - 7*24*3600*10000000)
+show (credential or slave) as 'SessionResult.credential_or_slave',
+     (credential or slave) as 'uuid',
+     session_type as 'SessionResult.session_type',
+     outpost as 'SessionResult.outpost'
+processwith countUnique(1,0)</search>
+	</query>
+	<query title="Credential Failure (All Time)">
+		<description>All-time session failure counts per credential.</description>
+		<search>search SessionResult where not success
+show (credential or slave) as 'SessionResult.credential_or_slave',
+     (credential or slave) as 'uuid',
+     session_type as 'SessionResult.session_type',
+     outpost as 'SessionResult.outpost'
+processwith countUnique(1,0)</search>
+	</query>
+	<query title="Credential Success (7 Days)">
+		<description>Session success counts per credential during the last seven days.</description>
+		<search>search SessionResult where success and time_index &gt; (currentTime() - 7*24*3600*10000000)
+show (credential or slave) as 'SessionResult.credential_or_slave',
+     (credential or slave) as 'uuid',
+     session_type as 'SessionResult.session_type',
+     outpost as 'SessionResult.outpost'
+processwith countUnique(1,0)</search>
+	</query>
+	<query title="Credential Success (All Time)">
+		<description>All-time session success counts per credential.</description>
+		<search>search SessionResult where success
+show (credential or slave) as 'SessionResult.credential_or_slave',
+     (credential or slave) as 'uuid',
+     session_type as 'SessionResult.session_type',
+     outpost as 'SessionResult.outpost'
+processwith countUnique(1,0)</search>
+	</query>
+	<query title="Database Lifecycle Report">
+		<description>Lifecycle dates and risk for database software instances inferred from patterns.</description>
+		<search>search Pattern
+where 'Relational Database Management Systems' in categories
+traverse Pattern:Maintainer:Element:SoftwareInstance
+    where #ElementWithDetail:SupportDetail:SoftwareDetail:SupportDetail.retirement_date
+       or #ElementWithDetail:SupportDetail:SoftwareDetail:SupportDetail.end_support_date
+       or #ElementWithDetail:SupportDetail:SoftwareDetail:SupportDetail.end_ext_support_date
+show
+    type as &quot;SoftwareInstance.type&quot;,
+    product_version as &quot;SoftwareInstance.product_version&quot;,
+    (#ElementWithDetail:SupportDetail:SoftwareDetail:SupportDetail.retirement_date
+        and formatTime(#ElementWithDetail:SupportDetail:SoftwareDetail:SupportDetail.retirement_date, '%Y-%m-%d')) as 'End of Life',
+    (#ElementWithDetail:SupportDetail:SoftwareDetail:SupportDetail.end_support_date
+        and formatTime(#ElementWithDetail:SupportDetail:SoftwareDetail:SupportDetail.end_support_date, '%Y-%m-%d')) as 'End of Support',
+    (#ElementWithDetail:SupportDetail:SoftwareDetail:SupportDetail.end_ext_support_date
+        and formatTime(#ElementWithDetail:SupportDetail:SoftwareDetail:SupportDetail.end_ext_support_date, '%Y-%m-%d')) as 'End of Ext Support',
+    (#ElementWithDetail:SupportDetail:SoftwareDetail:SupportDetail.end_ext_support_date
+        and (#ElementWithDetail:SupportDetail:SoftwareDetail:SupportDetail.end_ext_support_date &lt; currentTime() and 'EOES Exceeded')
+        or #ElementWithDetail:SupportDetail:SoftwareDetail:SupportDetail.end_support_date
+            and (#ElementWithDetail:SupportDetail:SoftwareDetail:SupportDetail.end_support_date &lt; currentTime() and 'EOS Exceeded')
+            or #ElementWithDetail:SupportDetail:SoftwareDetail:SupportDetail.retirement_date
+                and (#ElementWithDetail:SupportDetail:SoftwareDetail:SupportDetail.retirement_date &lt; currentTime() and 'EOL Exceeded')
+                or (#ElementWithDetail:SupportDetail:SoftwareDetail:SupportDetail.retirement_date and (#ElementWithDetail:SupportDetail:SoftwareDetail:SupportDetail.retirement_date &lt; currentTime() + 182 * 864000000000 and 'EOL less than 6 months away')
+                    or #ElementWithDetail:SupportDetail:SoftwareDetail:SupportDetail.end_support_date and (#ElementWithDetail:SupportDetail:SoftwareDetail:SupportDetail.end_support_date &lt; currentTime() + 182 * 864000000000 and 'EOS less than 6 months away')
+                    or #ElementWithDetail:SupportDetail:SoftwareDetail:SupportDetail.end_ext_support_date and (#ElementWithDetail:SupportDetail:SoftwareDetail:SupportDetail.end_ext_support_date &lt; currentTime() + 182 * 864000000000 and 'EOES less than 6 months away'))
+                or (#ElementWithDetail:SupportDetail:SoftwareDetail:SupportDetail.retirement_date and 'EOL more than 6 months away'
+                    or #ElementWithDetail:SupportDetail:SoftwareDetail:SupportDetail.end_support_date and 'EOS more than 6 months away'
+                    or #ElementWithDetail:SupportDetail:SoftwareDetail:SupportDetail.end_ext_support_date and 'EOES more than 6 months away')) as 'Lifecycle Risk'</search>
+	</query>
+	<query title="Device IDs">
+		<description>A list of DiscoveryAccess ids cross-referenced with various inferences, for export.</description>
+		<search>search DiscoveryAccess
+show
+#::InferredElement:.name as 'InferredElement.name',
+#::InferredElement:.hostname as 'InferredElement.hostname',
+#::InferredElement:.local_fqdn as 'InferredElement.local_fqdn',
+#::InferredElement:.sysname as 'InferredElement.sysname',
+endpoint as 'DiscoveryAccess.endpoint',
+#DiscoveryAccess:Endpoint:Endpoint:Endpoint.endpoint as 'Endpoint.endpoint',
+#DiscoveryAccess:DiscoveryAccessResult:DiscoveryResult:DiscoveredIPAddressList.#List:List:Member:DiscoveredIPAddress.ip_addr as 'DiscoveredIPAddress.ip_addr',
+#::InferredElement:.__all_ip_addrs as 'InferredElement.__all_ip_addrs',
+#::InferredElement:.#DeviceWithInterface:DeviceInterface:InterfaceOfDevice:NetworkInterface.ip_addr as 'NetworkInterface.ip_addr',
+#::InferredElement:.#DeviceWithInterface:DeviceInterface:InterfaceOfDevice:NetworkInterface.fqdns as 'NetworkInterface.fqdns'</search>
+	</query>
+	<query title="DeviceInfo Success (7 Days)">
+		<description>DeviceInfo successes within the last seven days.</description>
+		<search>search DeviceInfo where method_success
+  and nodecount(traverse DiscoveryResult:DiscoveryAccessResult:DiscoveryAccess:DiscoveryAccess
+                traverse DiscoveryAccess:Metadata:Detail:SessionResult) = 0
+  and time_index &gt; (currentTime() - 7*24*3600*10000000)
+show (last_credential or last_slave) as 'DeviceInfo.last_credential',
+     (last_credential or last_slave) as 'uuid',
+     access_method as 'DeviceInfo.access_method'
+process with countUnique(1,0)</search>
+	</query>
+	<query title="DeviceInfo Success (All Time)">
+		<description>DeviceInfo successes linked to credentials excluding session results.</description>
+		<search>search DeviceInfo where method_success
+  and nodecount(traverse DiscoveryResult:DiscoveryAccessResult:DiscoveryAccess:DiscoveryAccess
+                traverse DiscoveryAccess:Metadata:Detail:SessionResult) = 0
+show (last_credential or last_slave) as 'DeviceInfo.last_credential',
+     (last_credential or last_slave) as 'uuid',
+     access_method as 'DeviceInfo.access_method'
+process with countUnique(1,0)</search>
+	</query>
+	<query title="Devices Report - Identities">
+		<description>Collect identity-centric DiscoveryAccess fields for the devices deep dive.</description>
+		<search>search DiscoveryAccess
+show
+#::InferredElement:.name as 'InferredElement.name',
+#::InferredElement:.hostname as 'InferredElement.hostname',
+#::InferredElement:.local_fqdn as 'InferredElement.local_fqdn',
+#::InferredElement:.sysname as 'InferredElement.sysname',
+endpoint as 'DiscoveryAccess.endpoint',
+#DiscoveryAccess:Endpoint:Endpoint:Endpoint.endpoint as 'Endpoint.endpoint',
+#DiscoveryAccess:DiscoveryAccessResult:DiscoveryResult:DiscoveredIPAddressList.#List:List:Member:DiscoveredIPAddress.ip_addr as 'DiscoveredIPAddress.ip_addr',
+#::InferredElement:.__all_ip_addrs as 'InferredElement.__all_ip_addrs',
+#::InferredElement:.#DeviceWithInterface:DeviceInterface:InterfaceOfDevice:NetworkInterface.ip_addr as 'NetworkInterface.ip_addr',
+#::InferredElement:.#DeviceWithInterface:DeviceInterface:InterfaceOfDevice:NetworkInterface.fqdns as 'NetworkInterface.fqdns'</search>
+	</query>
+	<query title="Devices Report - Last Discovery">
+		<description>Latest DiscoveryAccess snapshot per endpoint for the devices deep dive.</description>
+		<search>search DiscoveryAccess where endtime
+ORDER BY discovery_endtime DESC
+show
+endpoint as 'DiscoveryAccess.endpoint',
+#DiscoveryAccess:DiscoveryAccessResult:DiscoveryResult:DeviceInfo.hostname as 'DeviceInfo.hostname',
+#Member:List:List:DiscoveryRun.label as 'DiscoveryRun.label',
+friendlyTime(discovery_starttime) as 'DiscoveryAccess.scan_starttime',
+friendlyTime(discovery_endtime) as 'DiscoveryAccess.scan_endtime',
+discovery_endtime as 'DiscoveryAccess.scan_endtime_raw',
+whenWasThat(discovery_endtime) as 'DiscoveryAccess.when_last_scan',
+(#DiscoveryAccess:DiscoveryAccessResult:DiscoveryResult:DeviceInfo.last_access_method in ['windows', 'rcmd']
+    and #DiscoveryAccess:DiscoveryAccessResult:DiscoveryResult:DeviceInfo.last_slave
+        or #DiscoveryAccess:DiscoveryAccessResult:DiscoveryResult:DeviceInfo.probed_os and 'Probe'
+            or #DiscoveryAccess:DiscoveryAccessResult:DiscoveryResult:DeviceInfo.last_access_method) as 'DiscoveryAccess.current_access',
+(kind(#Associate:Inference:InferredElement:)
+    or inferred_kind
+        or #DiscoveryAccess:DiscoveryAccessResult:DiscoveryResult:DeviceInfo.kind) as 'DiscoveryAccess.node_kind',
+(#DiscoveryAccess:Metadata:Detail:SessionResult.credential and success
+    or #DiscoveryAccess:DiscoveryAccessResult:DiscoveryResult:DeviceInfo.last_credential
+    or #DiscoveryAccess:DiscoveryAccessResult:DiscoveryResult:DeviceInfo.last_slave
+    or #DiscoveryAccess:DiscoveryAccessResult:DiscoveryResult:DeviceInfo.__preserved_last_credential) as 'DeviceInfo.last_credential',
+#DiscoveryAccess:DiscoveryAccessResult:DiscoveryResult:DeviceInfo.os_version as 'DeviceInfo.os_version',
+(nodecount(traverse DiscoveryAccess:DiscoveryAccessResult:DiscoveryResult:DeviceInfo
+  traverse flags(include_destroyed) Primary:Inference:InferredElement: where not destroyed(#)) &gt; 0) as 'DiscoveryAccess.host_node_updated',
+end_state as 'DiscoveryAccess.end_state',
+result as 'DiscoveryAccess.result'</search>
+	</query>
+	<query title="Devices to Model">
+		<description>SNMP managed devices require modelling.</description>
+		<search>search DiscoveryAccess where end_state = &quot;UnsupportedDevice&quot; and _last_marker traverse DiscoveryAccess:DiscoveryAccessResult:DiscoveryResult:DeviceInfo where sysobjectid show access_method, request_time, hostname, os, failure_reason, syscontact, syslocation , sysdescr, sysobjectid</search>
+	</query>
+	<query title="Discovery Analysis - Access Summary">
+		<description>DiscoveryAccess timeline and status metrics used in the discovery analysis deep dive.</description>
+		<search>search DiscoveryAccess where endtime
+ORDER BY discovery_endtime DESC
+show
+#id as &quot;DiscoveryAccess.id&quot;,
+#Next:Sequential:Previous:DiscoveryAccess.#id as &quot;DiscoveryAccess.previous_id&quot;,
+#Previous:Sequential:Next:DiscoveryAccess.#id as &quot;DiscoveryAccess.next_id&quot;,
+endpoint as 'DiscoveryAccess.endpoint',
+friendlyTime(discovery_starttime) as 'DiscoveryAccess.scan_starttime',
+friendlyTime(discovery_endtime) as 'DiscoveryAccess.scan_endtime',
+discovery_endtime as 'DiscoveryAccess.scan_endtime_raw',
+discovery_endtime as 'DiscoveryAccess.discovery_endtime',
+whenWasThat(discovery_endtime) as 'DiscoveryAccess.when_last_scan',
+end_state as 'DiscoveryAccess.end_state',
+reason as 'DiscoveryAccess.reason_not_updated',
+result as 'DiscoveryAccess.result',
+_last_marker as 'DiscoveryAccess._last_marker',
+_first_marker as 'DiscoveryAccess._first_marker',
+_last_interesting as 'DiscoveryAccess._last_interesting',
+__had_inference as 'DiscoveryAccess.__had_inference',
+best_ip_score as 'DiscoveryAccess.best_ip_score',
+(#DiscoveryAccess:Metadata:Detail:SessionResult.success or access_success) as 'DiscoveryAccess.access_success',
+access_failure as 'DiscoveryAccess.access_failure',
+message as 'DiscoveryAccess.message'</search>
+	</query>
+	<query title="Discovery Analysis - DeviceInfo">
+		<description>DeviceInfo attributes paired with discovery access for the analysis notebook.</description>
+		<search>search DeviceInfo
+show
+#id as &quot;DeviceInfo.id&quot;,
+hostname as 'DeviceInfo.hostname',
+os_type as 'DeviceInfo.os_type',
+os_class as 'DeviceInfo.os_class',
+os_version as 'DeviceInfo.os_version',
+kind as 'DeviceInfo.kind',
+inferred_kind as 'DeviceInfo.inferred_kind',
+last_access_method as 'DeviceInfo.last_access_method',
+probed_os as 'DeviceInfo.probed_os',
+last_credential as 'DeviceInfo.last_credential',
+last_slave as 'DeviceInfo.last_slave',
+__preserved_last_credential as 'DeviceInfo.__preserved_last_credential'</search>
+	</query>
+	<query title="Discovery Analysis - Discovery Runs">
+		<description>DiscoveryRun identifiers and timing fields used for analysis joins.</description>
+		<search>search DiscoveryRun
+show
+#id as &quot;DiscoveryRun.id&quot;,
+label as 'DiscoveryRun.label',
+friendlyTime(starttime) as 'DiscoveryRun.starttime',
+friendlyTime(endtime) as 'DiscoveryRun.endtime',
+outpost_id as 'DiscoveryRun.outpost_id',
+outpost_name as 'DiscoveryRun.outpost_name'</search>
+	</query>
+	<query title="DiscoveryRun Outpost Map">
+		<description>Optional fallback mapping of outpost IDs to outpost names for report enrichment.</description>
+		<search>search DiscoveryRun
+show
+outpost_id as 'outpost_id',
+outpost_name as 'outpost_name'
+process with unique(0)</search>
+	</query>
+	<query title="Discovery Analysis - Dropped Endpoints">
+		<description>DroppedEndpoints details highlighting endpoints removed from discovery runs.</description>
+		<search>search DroppedEndpoints
+show explode endpoints as 'Endpoint',
+reason as 'Reason_Not_Updated',
+__reason as 'End_State',
+friendlyTime(starttime) as 'Start',
+friendlyTime(endtime) as 'End',
+endtime as 'End_Raw',
+whenWasThat(endtime) as 'When_Last_Scan',
+#EndpointRange:EndpointRange:DiscoveryRun:DiscoveryRun.label as &quot;Run&quot;</search>
+	</query>
+	<query title="Discovery Analysis - Inferred Elements">
+		<description>InferredElement identifiers with their aggregated IP address list.</description>
+		<search>search InferredElement
+show
+#id as &quot;InferredElement.id&quot;,
+__all_ip_addrs as 'InferredElement.__all_ip_addrs'</search>
+	</query>
+	<query title="Discovery Analysis - Key Map">
+		<description>Link DiscoveryAccess records to related identifiers used for joins across datasets.</description>
+		<search>search DiscoveryAccess where endtime
+show
+#id as &quot;DiscoveryAccess.id&quot;,
+#Next:Sequential:Previous:DiscoveryAccess.#id as &quot;DiscoveryAccess.previous_id&quot;,
+#Previous:Sequential:Next:DiscoveryAccess.#id as &quot;DiscoveryAccess.next_id&quot;,
+#DiscoveryAccess:DiscoveryAccessResult:DiscoveryResult:DeviceInfo.#id as &quot;DeviceInfo.id&quot;,
+#Member:List:List:DiscoveryRun.#id as &quot;DiscoveryRun.id&quot;,
+#::InferredElement:.#id as &quot;InferredElement.id&quot;,
+#DiscoveryAccess:Metadata:Detail:SessionResult.#id as &quot;SessionResult.id&quot;,
+explode #::InferredElement:.#DeviceWithInterface:DeviceInterface:InterfaceOfDevice:NetworkInterface.#id as &quot;NetworkInterface.id&quot;</search>
+	</query>
+	<query title="Discovery Analysis - Network Interfaces">
+		<description>NetworkInterface identifiers and associated IP addresses.</description>
+		<search>search NetworkInterface
+show
+#id as &quot;NetworkInterface.id&quot;,
+ip_addr as 'NetworkInterface.ip_addr'</search>
+	</query>
+	<query title="Discovery Analysis - Session Results">
+		<description>SessionResult records summarising success, type, and provider.</description>
+		<search>search SessionResult
+show
+#id as &quot;SessionResult.id&quot;,
+success as &quot;SessionResult.success&quot;,
+session_type as &quot;SessionResult.session_type&quot;,
+provider as &quot;SessionResult.provider&quot;</search>
+	</query>
+	<query title="Discovery Run Analysis">
+		<description>Effective scan penetration</description>
+		<search>search DiscoveryRun as DiscoveryRun with (traverse :::ScanRange as ScanRange), (traverse :::DroppedEndpoints as DroppedEndpoints), (traverse :::DiscoveryAccess as DiscoveryAccess) show valid_ranges as 'Explicit Ranges', label as 'Scan Label', range_summary as 'Range Summary', outpost_name as 'Outpost Name', #ScanRange.label as 'Label', #ScanRange.scan_kind as 'Scan Kind', (#ScanRange.range_strings or #ScanRange.provider) as 'Range', recurrenceDescription(#ScanRange.schedule) as 'Schedule', total as 'Total Endpoints', (result_success or 0) + (result_skipped or 0) + (result_error or 0) + (result_no_access or 0) + (result_no_response or 0) as 'Active Endpoints', (result_dropped or 0) as 'Dropped', unique(#DiscoveryAccess.scan_kind) as 'Scan Kinds' processwith show valid_ranges, label, endtime as 'End Time', range_summary, outpost_name, @4, @5, @6, @7, total, @9, @10, @11 as 'Scan Kinds'</search>
+	</query>
+	<query title="Discovery Runs over 8 Hours">
+		<description>Discovery runs that take longer than 8 hours to run.</description>
+		<search>search DiscoveryRun
+where endtime defined
+  and (endtime - starttime) &gt; 8*3600*10000000
+order by starttime desc
+show
+  starttime as 'Start Time',
+  endtime as 'End Time',
+  duration(starttime, endtime) as 'Total Duration',
+  scan_level,
+  user,
+  label,
+  scope,
+  (cancelled or 'No') as 'Cancelled',
+nodecount(traverse List:List:Member:DiscoveryAccess where result = &quot;Success&quot;) as &quot;Inferrences&quot;</search>
+	</query>
+	<query title="DiscoveryAccess Schedule Counts">
+		<description>Endpoints and the number of scheduled discovery runs covering them.</description>
+		<search>search DiscoveryAccess
+show endpoint,
+nodecount(traverse Member:List:List:DiscoveryRun where scan_type = 'Scheduled') as 'schedules'
+process with unique()</search>
+	</query>
+	<query title="ECA Errors">
+		<description>Recent ECA errors including action, rule, and traceback details.</description>
+		<search>search ECAError
+show
+summary,
+action_name,
+rule_name,
+traceback</search>
+	</query>
+	<query title="End Time of Scans">
+		<description>Detailed look at number of inferences when they end.</description>
+		<search>search DiscoveryAccess where result = &quot;Success&quot;
+ORDER BY endtime
+show
+formatTime(endtime, &quot;%Y-%m-%d&quot;) as 'End Date',
+formatTime(endtime, &quot;%H&quot;) as 'End Hour'
+process with countUnique(0)</search>
+	</query>
+	<query title="Exclude Ranges">
+		<description>Exclude range definitions from the _System dataset.</description>
+		<search>search in '_System' ExcludeRange show exrange_id as 'ID', name as 'Label',
+        range_strings as 'Scan_Range',recurrenceDescription(schedule) as 'Date_Rules'</search>
+	</query>
+	<query title="Exclude Ranges Detail">
+		<description>Exclude range metadata with schedule, description, and creator.</description>
+		<search>search in '_System' ExcludeRange
+show
+name as 'Label',
+range_strings as 'Range',
+recurrenceDescription(schedule) as 'Date Rules',
+description as 'Description',
+fullFoundationName(created_by) as 'User'</search>
+	</query>
+	<query title="Hardware EOL Report">
+		<description>EOL for Hardware Devices</description>
+		<search>search SupportDetail
+with
+  value(182 * 864000000000) as six_months_ns,
+  value(
+    (
+      // Passed (highest → lowest precedence)
+      retirement_date           and (retirement_date           &lt; currentTime() and 'EOL Exceeded')  or
+      end_security_support_date and (end_security_support_date &lt; currentTime() and 'EOSS Exceeded') or
+      end_ext_support_date      and (end_ext_support_date      &lt; currentTime() and 'EOES Exceeded') or
+      end_support_date          and (end_support_date          &lt; currentTime() and 'EOS Exceeded')  or
+
+      // &lt; 6 months away
+      retirement_date           and (retirement_date           &lt; currentTime() + @six_months_ns and 'EOL less than 6 months away')  or
+      end_security_support_date and (end_security_support_date &lt; currentTime() + @six_months_ns and 'EOSS less than 6 months away') or
+      end_ext_support_date      and (end_ext_support_date      &lt; currentTime() + @six_months_ns and 'EOES less than 6 months away') or
+      end_support_date          and (end_support_date          &lt; currentTime() + @six_months_ns and 'EOS less than 6 months away')  or
+
+      // ≥ 6 months away
+      (retirement_date           and 'EOL more than 6 months away')  or
+      (end_security_support_date and 'EOSS more than 6 months away') or
+      (end_ext_support_date      and 'EOES more than 6 months away') or
+      (end_support_date          and 'EOS more than 6 months away')
+    )
+  ) as lifecycle_risk
+where
+  retirement_date or end_support_date or end_ext_support_date or end_security_support_date
+  and nodecount(traverse HardwareDetail:SupportDetail:ElementWithDetail:) &gt; 0
+show
+  explode(#HardwareDetail:SupportDetail:ElementWithDetail:.name) as &quot;Device Name&quot;,
+  name                                             as &quot;Model Name&quot;,
+  kind(#HardwareDetail:SupportDetail:ElementWithDetail:) as &quot;Node Kind&quot;,
+  (retirement_date            and formatTime(retirement_date,            '%Y-%m-%d')) as 'End of Life',
+  (end_support_date           and formatTime(end_support_date,           '%Y-%m-%d')) as 'End of Support',
+  (end_ext_support_date       and formatTime(end_ext_support_date,       '%Y-%m-%d')) as 'End of Ext Support',
+  (end_security_support_date  and formatTime(end_security_support_date,  '%Y-%m-%d')) as 'End of Security Support',
+  @lifecycle_risk             as 'Lifecycle Risk'</search>
+	</query>
+	<query title="Host Utilisation">
+		<description>Host inventory with software, process, and service counts (non-hypervisors).</description>
+		<search>search Host where type &lt;&gt; 'Hypervisor'
+show
+hostname as 'Host.hostname',
+hash(hostname) as 'Host.hostname_hash',
+os as 'Host.os',
+os_type as 'Host.os_type',
+virtual as 'Host.virtual',
+cloud as 'Host.cloud',
+#InferredElement:Inference:Associate:DiscoveryAccess.endpoint as 'DiscoveryAccess.endpoint',
+nodecount(traverse :::SoftwareInstance) as 'Host.running_software_instances',
+nodecount(traverse :::CandidateSoftwareInstance) as 'Host.candidate_software_instances',
+nodecount(traverse :::DiscoveryAccess where _last_marker traverse :::ProcessList traverse :::DiscoveredProcess) as 'Host.running_processes',
+nodecount(traverse :::DiscoveryAccess where _last_marker traverse :::ServiceList traverse :::DiscoveredService where state = 'RUNNING') as 'Host.running_services'</search>
+	</query>
+	<query title="Hosts with 0..1 SI">
+		<description>Supect Hosts where RemQuery failed.</description>
+		<search>search Host where nodecount(traverse Host:HostedSoftware:RunningSoftware:SoftwareInstance) &lt; 2 show name, os, vendor, virtual, partition, cloud, #InferredElement:Inference:Associate:DiscoveryAccess.endpoint as 'Scanned via', nodecount(traverse Host:HostedSoftware:RunningSoftware:SoftwareInstance) as 'Software Instance Count' processwith show name as 'Name', os as 'OS', vendor as 'Hardware Vendor', virtual as 'Virtual', #InferredElement:Inference:Associate:DiscoveryAccess.endpoint as 'Scanned via', nodecount(traverse InferredElement:Inference:Associate:DiscoveryAccess traverse DiscoveryAccess:DiscoveryAccessResult:DiscoveryResult:ProcessList traverse List:List:Member:DiscoveredProcess) as 'Discovered Process Count', @7 as 'Software Instance Count' processwith show name as 'Name', os_type as 'OS Type', os as 'OS', vendor as 'Hardware Vendor', virtual as 'Virtual', #InferredElement:Inference:Associate:DiscoveryAccess.endpoint as 'Scanned via', @5 as 'Discovered Process Count', @6 as 'Software Instance Count'</search>
+	</query>
+	<query title="Hypervisors with VMs and State">
+		<description>Hypervisors with VMs and State</description>
+		<search>search VirtualMachine show #RunningSoftware:HostedSoftware:Host:Host.name as 'Hypervisor', vm_type, short_name, name, count, product_version, #HostContainer:HostContainment:ContainedHost:.name as 'Contained Host', state as 'VM State'</search>
+	</query>
+	<query title="Installed Agents (Windows)">
+		<description>Windows hosts with presence of selected agent software and basic metadata.</description>
+		<search>search Host
+with
+nodecount(traverse Host:HostedSoftware::SoftwareInstance where type = 'Tenable Nessus Agent') as A1,
+nodecount(traverse Host:HostedSoftware::SoftwareInstance where type = 'Microsoft System Center Configuration Manager Client') as A2,
+nodecount(traverse Host:HostedSoftware::SoftwareInstance where type = 'CrowdStrike Falcon Sensor') as A3,
+nodecount(traverse Host:HostedSoftware::SoftwareInstance where type = 'Splunk Forwarder') as A4
+where os_type has subword 'Windows'
+show
+name as 'Host.name',
+hash(name) as 'Host.hashed_name',
+os_version as 'Host.os_version',
+serial as 'Host.serial',
+uuid as 'Host.uuid',
+((age_count &lt; 0) and 'Aging' or 'Alive') as 'Host.age_status',
+whenWasThat(last_update_success) as 'Host.last_successful_scan',
+last_update_success as 'Host.last_scan_date',
+(@A1 and 'Yes' or '-') as 'Host.tenable_nessus_agent',
+(@A2 and 'Yes' or '-') as 'Host.microsoft_system_center_configuration_manager_client',
+(@A3 and 'Yes' or '-') as 'Host.crowdstrike_falcon_sensor',
+(@A4 and 'Yes' or '-') as 'Host.splunk_forwarder'</search>
+	</query>
+	<query title="Knowledge Upload Modules">
+		<description>Non-TKU knowledge upload modules with raw content for export.</description>
+		<search>search KnowledgeUpload
+where not origin = 'TKU'
+traverse Upload:UploadContents:UploadItem:PatternModule
+show
+name,
+content</search>
+	</query>
+	<query title="Missing VMs">
+		<description>Virtual machines without a discovered host relationship.</description>
+		<search>search VirtualMachine
+where nodecount(traverse HostContainer:HostContainment:ContainedHost:) = 0
+show
+vm_type as 'VirtualMachine.vm_type',
+(product_version or cloud_class) as 'VirtualMachine.product_version',
+#RunningSoftware:HostedSoftware:Host:.name as 'Host.name',
+#RunningSoftware:HostedSoftware:Host:.type as 'Host.type',
+vm_name as 'VirtualMachine.vm_name',
+vm_guest_os as 'VirtualMachine.vm_guest_os',
+guest_full_name as 'VirtualMachine.guest_full_name',
+(vm_status or cloud and &quot;Cloud Hosted&quot;) as 'VirtualMachine.vm_status'</search>
+	</query>
+	<query title="ML Outposts">
+		<description>ML Outposts</description>
+		<search>search SoftwareInstance where type = &quot;BMC Discovery Outpost&quot;
+show
+&quot;prod&quot; as environment,
+outpost_id as ID,
+version,
+#RunningSoftware:HostedSoftware:Host:Host.hostname as Hostname</search>
+	</query>
+	<query title="ML Training">
+		<description>ML Training</description>
+		<search>SEARCH Host
+SHOW 
+  &quot;prod&quot; as environment,
+  local_fqdn,
+  hostname,
+  __all_ip_addrs AS __all_ip_addrs,
+  __all_dns_names AS __all_dns_names,
+  num_processors AS &quot;Number of Processors&quot;,
+  num_logical_processors AS &quot;Number of Logical Processors&quot;,
+  os,
+  os_class AS &quot;OS Class&quot;,
+  os_type AS &quot;OS Type&quot;,
+  os_version AS &quot;OS Version&quot;,
+  ram AS &quot;Physical RAM&quot;,
+  virtual AS Virtual,
+  dns_domain AS &quot;DNS Domain&quot;,
+  firmware_date AS &quot;Firmware Date&quot;,
+  firmware_version AS &quot;Firmware Version&quot;,
+  management_ip_addr,
+  logical_ram AS &quot;Logical RAM&quot;,
+  model,
+  name,
+  num_cores AS &quot;Num Cores&quot;,
+  processor_type AS &quot;Processor Type&quot;,
+  processor_speed AS &quot;Processor Speed&quot;,
+  threads_per_core AS &quot;Threads per Processor Core&quot;,
+nodecount(traverse Host:HostedSoftware:RunningSoftware:) as &quot;Running Count&quot;,
+ #InferredElement:Inference:Primary:DeviceInfo.last_outpost AS &quot;Last Outpost ID&quot;
+</search>
+	</query>
+	<query title="Near Removal Candidates">
+		<description>CI candidates approaching removal thresholds based on failed scans.</description>
+		<search>search flags(no_segment) Host, StorageSystem, Printer
+with value(getOption('MIN_FAILED_ACCESSES_BEFORE_DESTROY') + age_count) as scans,
+value(abs(last_update_success) / 10000000) as lus,
+value(currentTime() / 10000000 - getOption('MIN_SECONDS_SINCE_ACCESS_SUCCESS_BEFORE_DESTROY') + 2 * 24 * 3600) as time_threshold,
+value((getOption('MIN_SECONDS_SINCE_ACCESS_SUCCESS_BEFORE_DESTROY') + abs(last_update_success) / 10000000 - currentTime() / 10000000) / 3600) as time_to_doom
+where @scans &lt; 3
+show
+kind(#) as 'CI Type',
+type as 'Product/Class',
+name as 'Name',
+hash(name) as 'Hashed Name',
+(os_type or instance) as 'Instance',
+(#InferredElement:Inference:Associate:DiscoveryAccess.endpoint or 'DDD Aged Out') as 'Last Successful IP',
+whenWasThat(last_update_success) as 'Last Successful Scan',
+last_update_success as 'Last Successful Scan Date',
+value(age_count * -1) as 'Consecutive Scan Failures',
+(@scans &gt; 0 and @time_to_doom &gt; 0 and #'%d scans, %d hours'(@scans,@time_to_doom)
+or @scans &gt; 0 and #'%d scans'(@scans) or @time_to_doom &gt; 0 and #'%d hours'(@time_to_doom)
+or 'Next unsuccessful scan') as 'Removal Eligibility'</search>
+	</query>
+	<query title="Open Ports - Default Services">
+		<description>Discovered listening ports mapped to common default service names.</description>
+		<search>search DiscoveredListeningPort
+with
+((local_port  = 161) and 'SNMP'
+or (local_port  = 21) and 'FTP'
+or (local_port  = 22) and 'SSH'
+or (local_port  = 23) and 'Telnet'
+or (local_port  = 25) and 'SMTP'
+or (local_port  = 53) and 'DNS'
+or (local_port  = 69) and 'TFTP'
+or (local_port  = 110) and 'POP3'
+or (local_port  = 119) and 'NNTP'
+or (local_port  = 137) and 'NetBios'
+or (local_port  = 143) and 'IMAP'
+or (local_port  and 'other')) as openports
+where @openports not in 'other'
+show
+#Member:List:List:NetworkConnectionList.#DiscoveryResult:DiscoveryAccessResult:DiscoveryAccess:DiscoveryAccess.#DiscoveryAccess:DiscoveryAccessResult:DiscoveryResult:HostInfo.#Primary:Inference:InferredElement:Host.name as 'hostname',
+#Member:List:List:NetworkConnectionList.#DiscoveryResult:DiscoveryAccessResult:DiscoveryAccess:DiscoveryAccess.endpoint as 'endpoint',
+@openports as 'Default Service Port Open'</search>
+	</query>
+	<query title="Orphaned VMs">
+		<description>Virtual hosts without a discovered virtual machine container relationship.</description>
+		<search>search Host
+where virtual
+and nodecount(traverse ContainedHost:HostContainment:HostContainer:VirtualMachine) = 0
+order by name
+show
+hostname,
+hash(hostname) as 'hashed_hostname',
+os,
+#InferredElement:Inference:Primary:DeviceInfo.os_type as 'OS_Type',
+virtual,
+cloud,
+#InferredElement:Inference:Associate:DiscoveryAccess.endpoint as 'endpoint',
+vendor,
+vm_class</search>
+	</query>
+	<query title="OS EOL">
+		<description>Prettified.</description>
+		<search>search Host
+  with
+    value(#ElementWithDetail:SupportDetail:OSDetail:SupportDetail.retirement_date)           as retirement_date,
+    value(#ElementWithDetail:SupportDetail:OSDetail:SupportDetail.end_support_date)         as end_support_date,
+    value(#ElementWithDetail:SupportDetail:OSDetail:SupportDetail.end_ext_support_date)     as end_ext_support_date,
+    value(182 * 864000000000)                                                                as six_months_ns,
+    value(
+      (
+        @end_ext_support_date and (@end_ext_support_date &lt; currentTime()                      and 'EOES Exceeded')    or
+        @end_support_date     and (@end_support_date     &lt; currentTime()                      and 'EOS Exceeded')     or
+        @retirement_date      and (@retirement_date      &lt; currentTime()                      and 'EOL Exceeded')     or
+        @retirement_date      and (@retirement_date      &lt; currentTime() + @six_months_ns     and 'EOL less than 6 months away') or
+        @end_support_date     and (@end_support_date     &lt; currentTime() + @six_months_ns     and 'EOS less than 6 months away') or
+        @end_ext_support_date and (@end_ext_support_date &lt; currentTime() + @six_months_ns     and 'EOES less than 6 months away') or
+        (@retirement_date and 'EOL more than 6 months away')  or
+        (@end_support_date and 'EOS more than 6 months away')  or
+        (@end_ext_support_date and 'EOES more than 6 months away')
+      )
+    ) as lifecycle_risk
+  where
+    @retirement_date or @end_support_date or @end_ext_support_date
+  order by
+    @lifecycle_risk
+  show
+    name,
+    (@retirement_date      and formatTime(@retirement_date,      '%Y-%m-%d')) as 'End of Life',
+    (@end_support_date     and formatTime(@end_support_date,     '%Y-%m-%d')) as 'End of Support',
+    (@end_ext_support_date and formatTime(@end_ext_support_date, '%Y-%m-%d')) as 'End of Ext Support',
+    @lifecycle_risk        as 'Lifecycle Risk',
+  taxonomy 'summary_no_name'</search>
+	</query>
+	<query title="OS Lifecycle Report">
+		<description>Lifecycle dates and risk classifications for host operating systems.</description>
+		<search>search Host
+where #ElementWithDetail:SupportDetail:OSDetail:SupportDetail.retirement_date
+    or #ElementWithDetail:SupportDetail:OSDetail:SupportDetail.end_support_date
+        or #ElementWithDetail:SupportDetail:OSDetail:SupportDetail.end_ext_support_date
+show
+    name,
+    (#ElementWithDetail:SupportDetail:OSDetail:SupportDetail.retirement_date
+        and formatTime(#ElementWithDetail:SupportDetail:OSDetail:SupportDetail.retirement_date, '%Y-%m-%d')) as 'End of Life',
+    (#ElementWithDetail:SupportDetail:OSDetail:SupportDetail.end_support_date
+        and formatTime(#ElementWithDetail:SupportDetail:OSDetail:SupportDetail.end_support_date, '%Y-%m-%d')) as 'End of Support',
+    (#ElementWithDetail:SupportDetail:OSDetail:SupportDetail.end_ext_support_date
+        and formatTime(#ElementWithDetail:SupportDetail:OSDetail:SupportDetail.end_ext_support_date, '%Y-%m-%d')) as 'End of Ext Support',
+    (#ElementWithDetail:SupportDetail:OSDetail:SupportDetail.end_ext_support_date
+        and (#ElementWithDetail:SupportDetail:OSDetail:SupportDetail.end_ext_support_date &lt; currentTime()
+        and 'EOES Exceeded')
+        or #ElementWithDetail:SupportDetail:OSDetail:SupportDetail.end_support_date
+            and (#ElementWithDetail:SupportDetail:OSDetail:SupportDetail.end_support_date &lt; currentTime()
+            and 'EOS Exceeded') or #ElementWithDetail:SupportDetail:OSDetail:SupportDetail.retirement_date
+            and (#ElementWithDetail:SupportDetail:OSDetail:SupportDetail.retirement_date &lt; currentTime()
+            and 'EOL Exceeded')
+            or (#ElementWithDetail:SupportDetail:OSDetail:SupportDetail.retirement_date
+                and (#ElementWithDetail:SupportDetail:OSDetail:SupportDetail.retirement_date &lt; currentTime() + 182 * 864000000000
+                and 'EOL less than 6 months away')
+                or #ElementWithDetail:SupportDetail:OSDetail:SupportDetail.end_support_date
+                    and (#ElementWithDetail:SupportDetail:OSDetail:SupportDetail.end_support_date &lt; currentTime() + 182 * 864000000000
+                    and 'EOS less than 6 months away')
+                    or #ElementWithDetail:SupportDetail:OSDetail:SupportDetail.end_ext_support_date
+                        and (#ElementWithDetail:SupportDetail:OSDetail:SupportDetail.end_ext_support_date &lt; currentTime() + 182 * 864000000000
+                        and 'EOES less than 6 months away'))
+                        or (#ElementWithDetail:SupportDetail:OSDetail:SupportDetail.retirement_date
+                            and 'EOL more than 6 months away'
+                            or #ElementWithDetail:SupportDetail:OSDetail:SupportDetail.end_support_date
+                                and 'EOS more than 6 months away'
+                                or #ElementWithDetail:SupportDetail:OSDetail:SupportDetail.end_ext_support_date
+                                    and 'EOES more than 6 months away')) as 'Lifecycle Risk'</search>
+	</query>
+	<query title="Outpost Credentials">
+		<description>Discovery outposts mapped to credential UUIDs used via SessionResult records.</description>
+		<search>search SessionResult
+show credential, credential as 'uuid', outpost</search>
+	</query>
+	<query title="Outpost Runs">
+		<description>Details of scans per Outpost</description>
+		<search>search DiscoveryRun as DiscoveryRun show outpost_name as 'Outpost Name', valid_ranges as 'Explicit Ranges', label as 'Scan Label', range_summary as 'Range Summary', total as 'Total Endpoints', starttime as 'Start', endtime as 'End'</search>
+	</query>
+	<query title="Outposts with IPs">
+		<description>Outpost IP throughput</description>
+		<search>search DiscoveryRun
+show
+outpost_name as 'Outpost Name',
+total as 'Total Endpoints'
+processwith unique(0)</search>
+	</query>
+	<query title="Pattern Modules">
+		<description>Pattern modules with origin, tree path, submission metadata, and extra node/relationship kinds.</description>
+		<search>search PatternModule
+show origin as 'Origin',
+     tree_path as 'Tree_Path',
+     name,
+     submitting_user,
+     submission_date as 'Submission_Date',
+     active as 'Active',
+     description as 'Description',
+     extra_node_kinds as 'Extra_Node_Kinds',
+     extra_rel_kinds as 'Extra_Rel_Kinds'</search>
+	</query>
+	<query title="Recently Removed CIs">
+		<description>Hosts, printers, and storage systems destroyed in the last 7 days (excluding desktops).</description>
+		<search>search flags(include_destroyed, exclude_current, no_segment) Host, Printer, StorageSystem
+with kind(#Previous:::.#) as pk,
+value(#Previous:EndpointIdentity:Next:.name) as ph,
+kind(#Next:::.#) as nk,
+value(#Next:EndpointIdentity:Previous:.name) as nh
+	where not type matches 'Windows Desktop'
+	and destructionTime(#) &gt; (currentTime() - 7*24*3600*10000000)
+show
+kind(#) as 'kind',
+name as 'name',
+hash(name) as 'hashed_name',
+os as 'os',
+unique((#InferredElement:Inference:Associate:DiscoveryAccess.endpoint or 'DDD Aged Out')) as 'Last Successful IP',
+whenWasThat(last_update_success) as 'Last Successful Scan',
+fmt('%s (%s)', @ph, @pk) as 'Previous Found',
+fmt('%s (%s)', @nh, @nk) as 'Next Found',
+@nk as 'next kind', @pk as 'prv kind',
+time(destructionTime(#)) as 'Destroyed When'</search>
+	</query>
+	<query title="Scheduled Scan Ranges">
+		<description>Scheduled scan ranges with labels, ranges, and schedule details.</description>
+		<search>search ScanRange where scan_type = 'Scheduled' show range_id as 'ID', label as 'Label',
+            (range_strings or provider) as 'Scan_Range', scan_level as 'Level',
+            recurrenceDescription(schedule) as 'Date_Rules'</search>
+	</query>
+	<query title="Sensitive Data Processes">
+		<description>Processes with arguments that appear to embed usernames and passwords.</description>
+		<search>search DiscoveredProcess
+where ((args has subword 'user' or args has substring 'username')
+    and (args has subword 'pass' or args has substring 'password'))
+  or (args matches regex '(?i)\s-u(\s+|=)\S+'
+    and args matches regex '(?i)\s-p(\s+|=)\S+')
+show
+  #Member:List:List:ProcessList.#DiscoveryResult:DiscoveryAccessResult:DiscoveryAccess:DiscoveryAccess.#DiscoveryAccess:DiscoveryAccessResult:DiscoveryResult:DeviceInfo.hostname as 'Host',
+  #Member:List:List:ProcessList.#DiscoveryResult:DiscoveryAccessResult:DiscoveryAccess:DiscoveryAccess.endpoint as 'Endpoint',
+  username,
+  cmd,
+  args,
+  (extract(args, regex '(?i)(user(name)?.*?\S+)', raw '\1')
+      or extract(args, regex '(?i)(-u.*?\S+)', raw '\1')) as 'Matched Username String',
+  extract(args, regex '(?i)(password.*?\S+|\s-p.*?\S+)', raw '\1') as 'Matched Password String'</search>
+	</query>
+	<query title="ServiceNow Sync Nodes">
+		<description>Get the list of nodes (where key defined)</description>
+		<search>search in '_Sync_ServiceNow_Schema_Export' * where key defined</search>
+	</query>
+	<query title="Session Outpost Credentials">
+		<description>Credential to outpost mapping from session history without aggregation.</description>
+		<search>search SessionResult
+show credential, credential as 'uuid', outpost</search>
+	</query>
+	<query title="Software Instance User Accounts">
+		<description>Software instances with associated host, type, version, and discovered usernames.</description>
+		<search>search SoftwareInstance
+show
+name as &quot;Software_Instance&quot;,
+#RunningSoftware:HostedSoftware:Host:.name as 'Host',
+type as 'Type',
+product_version as 'Version',
+explode #InferredElement:Inference:Primary:DiscoveredProcess.username as 'User_Name'</search>
+	</query>
+	<query title="Software Lifecycle Report">
+		<description>Lifecycle dates and risk classifications for software instances.</description>
+		<search>search SoftwareInstance
+where
+#ElementWithDetail:SupportDetail:SoftwareDetail:SupportDetail.retirement_date
+    or #ElementWithDetail:SupportDetail:SoftwareDetail:SupportDetail.end_support_date
+        or #ElementWithDetail:SupportDetail:SoftwareDetail:SupportDetail.end_ext_support_date
+show
+type,
+product_version,
+(#ElementWithDetail:SupportDetail:SoftwareDetail:SupportDetail.retirement_date
+    and formatTime(#ElementWithDetail:SupportDetail:SoftwareDetail:SupportDetail.retirement_date, '%Y-%m-%d')) as 'End of Life',
+(#ElementWithDetail:SupportDetail:SoftwareDetail:SupportDetail.end_support_date
+    and formatTime(#ElementWithDetail:SupportDetail:SoftwareDetail:SupportDetail.end_support_date, '%Y-%m-%d')) as 'End of Support',
+(#ElementWithDetail:SupportDetail:SoftwareDetail:SupportDetail.end_ext_support_date
+    and formatTime(#ElementWithDetail:SupportDetail:SoftwareDetail:SupportDetail.end_ext_support_date, '%Y-%m-%d')) as 'End of Ext Support',
+(#ElementWithDetail:SupportDetail:SoftwareDetail:SupportDetail.end_ext_support_date
+    and (#ElementWithDetail:SupportDetail:SoftwareDetail:SupportDetail.end_ext_support_date &lt; currentTime()
+    and 'EOES Exceeded')
+    or #ElementWithDetail:SupportDetail:SoftwareDetail:SupportDetail.end_support_date
+        and (#ElementWithDetail:SupportDetail:SoftwareDetail:SupportDetail.end_support_date &lt; currentTime()
+        and 'EOS Exceeded')
+        or #ElementWithDetail:SupportDetail:SoftwareDetail:SupportDetail.retirement_date
+            and (#ElementWithDetail:SupportDetail:SoftwareDetail:SupportDetail.retirement_date &lt; currentTime()
+            and 'EOL Exceeded')
+            or (#ElementWithDetail:SupportDetail:SoftwareDetail:SupportDetail.retirement_date
+                and (#ElementWithDetail:SupportDetail:SoftwareDetail:SupportDetail.retirement_date &lt; currentTime() + 182 * 864000000000
+                and 'EOL less than 6 months away')
+                or #ElementWithDetail:SupportDetail:SoftwareDetail:SupportDetail.end_support_date
+                    and (#ElementWithDetail:SupportDetail:SoftwareDetail:SupportDetail.end_support_date &lt; currentTime() + 182 * 864000000000
+                    and 'EOS less than 6 months away')
+                    or #ElementWithDetail:SupportDetail:SoftwareDetail:SupportDetail.end_ext_support_date
+                        and (#ElementWithDetail:SupportDetail:SoftwareDetail:SupportDetail.end_ext_support_date &lt; currentTime() + 182 * 864000000000
+                        and 'EOES less than 6 months away'))
+                        or (#ElementWithDetail:SupportDetail:SoftwareDetail:SupportDetail.retirement_date
+                            and 'EOL more than 6 months away'
+                            or #ElementWithDetail:SupportDetail:SoftwareDetail:SupportDetail.end_support_date
+                                and 'EOS more than 6 months away'
+                                or #ElementWithDetail:SupportDetail:SoftwareDetail:SupportDetail.end_ext_support_date
+                                    and 'EOES more than 6 months away')) as 'Lifecycle Risk'</search>
+	</query>
+	<query title="Suggested Cred Opt - Session Results Map">
+		<description>SessionResult credential-to-outpost pairs for suggested credential optimisation.</description>
+		<search>search SessionResult show credential, credential as 'uuid', outpost process with unique(0)</search>
+	</query>
+	<query title="Tracked Hosts (Non-Desktop)">
+		<description>Hosts to count toward licensing, excluding desktops/clients and cloud-only nodes.</description>
+		<search>search Host where not (host_type has subword 'desktop' or host_type has subword 'client') and not (cloud and nodecount(traverse ContainedHost:HostContainment:HostContainer:VirtualMachine where cloud)) and (nodecount(traverse InferredElement:Inference::DiscoveryAccess)) process with unique(0)</search>
+	</query>
+	<query title="Unrecognised SNMP Devices">
+		<description>Unsupported discovery nodes with successful SNMP sessions but no inferred host.</description>
+		<search>search DiscoveryAccess where
+_last_marker defined
+and endtime defined
+	and end_state = 'UnsupportedDevice'
+	and nodecount(traverse flags(include_destroyed) ::InferredElement:Host) = 0
+	and #DiscoveryAccess:DiscoveryAccessResult:DiscoveryResult:DeviceInfo.kind &lt;&gt; 'Host'
+	and nodecount (traverse DiscoveryAccess:Metadata:Detail:SessionResult where session_type has subword &quot;SNMP&quot; and success) &gt; 0
+show
+#DiscoveryAccess:DiscoveryAccessResult:DiscoveryResult:DeviceInfo.os_class as 'OS_Class',
+#DiscoveryAccess:DiscoveryAccessResult:DiscoveryResult:DeviceInfo.sysobjectid as 'SNMP_sysObjectId',
+(#DiscoveryAccess:DiscoveryAccessResult:DiscoveryResult:DeviceInfo.probed_os and 'Probe' or #DiscoveryAccess:DiscoveryAccessResult:DiscoveryResult:DeviceInfo.access_method) as 'Current_Access',
+#DiscoveryAccess:DiscoveryAccessResult:DiscoveryResult:DeviceInfo.os as 'Discovered_OS',
+#DiscoveryAccess:DiscoveryAccessResult:DiscoveryResult:DeviceInfo.os_type as 'OS_Type',
+#DiscoveryAccess:DiscoveryAccessResult:DiscoveryResult:DeviceInfo.os_version as 'OS_Version'
+process with countUnique()</search>
+	</query>
+	<query title="Unscanned Connections">
+		<description>Endpoints observed via network connections but not currently scheduled.</description>
+		<search>search Host
+traverse InferredElement:Inference:Associate:DiscoveryAccess
+traverse DiscoveryAccess:DiscoveryAccessResult:DiscoveryResult:NetworkConnectionList
+traverse List:List:Member:DiscoveredNetworkConnection
+order by remote_ip_addr
+show remote_ip_addr as 'endpoint'
+processwith connectionsToUnseen</search>
+	</query>
+	<query title="Windows Desktops">
+		<description>Host endpoints classified as desktops or laptops.</description>
+		<search>search Host where host_type has subword 'desktop' or host_type has subword 'laptop' process with unique(0)</search>
+	</query>
+	<query title="Windows Hosts">
+		<description>Hosts where OS Class is Windows</description>
+		<search>search Host where os_class = 'Windows' show name, os, vendor, #InferredElement:Inference:Associate:DiscoveryAccess.endpoint as 'Scanned via', type as 'Type', os_type as 'OS Type', os_class as 'OS Class'</search>
+	</query>
+</queries>

@@ -1,0 +1,17 @@
+# DisMAL configuration template
+# Copy to config.yaml and replace placeholder values.
+appliances:
+  - name: instance-prod
+    target: prod-host
+    token: <token>            # Optional: direct API token
+    token_file: <path>        # Optional: path to file containing API token
+    username: <username>      # Optional: username for CLI access
+    password: <password>      # Optional: password for CLI access
+  - name: instance-dev
+    target: dev-host
+    token_file: <path>        # Optional: path to file containing API token
+access_method: <api_or_cli>
+noping: false
+debug: false
+cache_dir: <cache_directory>
+no_cache: false

@@ -11,3 +11,4 @@ examples.py
 .env
 /customer
 /mock/generated/
+config.yaml
