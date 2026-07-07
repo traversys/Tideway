@@ -8,7 +8,11 @@ examples.py
 .DS_Store
 *.pyc
 *.txt
+!requirements.txt
 .env
 /customer
 /mock/generated/
+/output_*/
 config.yaml
+config.yaml.geodis
+*.csv

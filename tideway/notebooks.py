@@ -80,6 +80,41 @@ def token_from_config(config: Dict[str, Any], repo_root: Optional[Path] = None) 
     return path.read_text(encoding="utf-8").strip()
 
 
+def _version_sort_key(value: Any):
+    parts = []
+    for part in str(value).lstrip("v").split("."):
+        try:
+            parts.append(int(part))
+        except ValueError:
+            parts.append(0)
+    return tuple(parts)
+
+
+def api_version_from_config(
+    config: Dict[str, Any],
+    target: str,
+    token: str,
+    verify_ssl: bool = False,
+    default: str = "1.16",
+) -> str:
+    """Return configured API version or detect the appliance's highest supported version."""
+
+    configured = config.get("api_version")
+    if configured:
+        return str(configured).lstrip("v")
+
+    try:
+        response = tideway.appliance(target, token, ssl_verify=verify_ssl).api_about
+        if not getattr(response, "ok", False):
+            return default
+        versions = response.json().get("api_versions") or []
+        if versions:
+            return str(sorted(versions, key=_version_sort_key)[-1]).lstrip("v")
+    except Exception:
+        return default
+    return default
+
+
 def appliance_from_config(
     config_path: Optional[str] = None,
     appliance_name: Optional[str] = None,
@@ -94,10 +129,9 @@ def appliance_from_config(
     if not target:
         raise ValueError("config.yaml missing target")
 
-    api_version = str(selected.get("api_version") or config.get("api_version") or "1.16")
-    api_version = api_version.lstrip("v")
     verify_ssl = bool(selected.get("verify_ssl", selected.get("ssl_verify", config.get("verify_ssl", False))))
     token = token_from_config(selected, repo_root)
+    api_version = api_version_from_config(selected, target, token, verify_ssl=verify_ssl)
     return tideway.appliance(target, token, api_version=api_version, ssl_verify=verify_ssl)
 
 

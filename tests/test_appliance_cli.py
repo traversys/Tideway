@@ -1,6 +1,7 @@
 import importlib
 
 import tideway
+from tideway.dismal import defaults
 from tideway.appliance_cli import ApplianceCLI
 from tideway.results import ReportResult, TextResult
 
@@ -20,6 +21,8 @@ class FakeClient:
 
     def exec_command(self, command):
         self.commands.append(command)
+        if command == defaults.disk_alerts_cmd:
+            return None, FakeStream("/,50%\n/usr,71%\n/data,90%\n"), FakeStream("")
         if command.startswith("df -h"):
             return None, FakeStream("fs,mount,size,used,available,Used %\n/dev/sda1,/,10G,5G,5G,50%\n"), FakeStream("")
         return None, FakeStream("ok\n"), FakeStream("")
@@ -67,6 +70,30 @@ def test_disk_info_returns_report_without_writing(tmp_path):
     assert list(tmp_path.iterdir()) == []
 
 
+def test_disk_usage_alerts_filters_by_threshold(tmp_path):
+    client = FakeClient()
+    cli = ApplianceCLI("app.example", client=client)
+
+    result = cli.disk_usage_alerts(threshold=70)
+
+    assert client.commands == [defaults.disk_alerts_cmd]
+    assert isinstance(result, ReportResult)
+    assert result.headers == ["mount", "Used %"]
+    assert result.rows == [["/usr", "71%"], ["/data", "90%"]]
+    assert result.files == []
+    assert list(tmp_path.iterdir()) == []
+
+
+def test_disk_usage_alerts_writes_when_requested(tmp_path):
+    outfile = tmp_path / "disk_check.csv"
+    cli = ApplianceCLI("app.example", client=FakeClient())
+
+    result = cli.disk_usage_alerts(output_file=str(outfile))
+
+    assert result.files == [str(outfile)]
+    assert outfile.read_text().splitlines() == ["mount,Used %", "/usr,71%", "/data,90%"]
+
+
 def test_text_command_writes_when_requested(tmp_path):
     outfile = tmp_path / "certs.txt"
     cli = ApplianceCLI("app.example", client=FakeClient())
@@ -76,6 +103,42 @@ def test_text_command_writes_when_requested(tmp_path):
     assert isinstance(result, TextResult)
     assert result.files == [str(outfile)]
     assert outfile.read_text() == "ok\n"
+
+
+def test_health_check_uses_default_system_user():
+    client = FakeClient()
+    cli = ApplianceCLI("app.example", client=client)
+
+    result = cli.health_check()
+
+    assert client.commands == [f"{defaults.health_check_cmd} -u system"]
+    assert isinstance(result, TextResult)
+    assert result.text == "ok\n"
+
+
+def test_health_check_uses_configured_system_credentials():
+    client = FakeClient()
+    cli = ApplianceCLI(
+        "app.example",
+        system_username="admin",
+        system_password="secret",
+        client=client,
+    )
+
+    cli.health_check()
+
+    assert client.commands == [f"{defaults.health_check_cmd} -u admin -p secret"]
+
+
+def test_playback_data_runs_no_expiry_count():
+    client = FakeClient()
+    cli = ApplianceCLI("app.example", client=client)
+
+    result = cli.playback_data()
+
+    assert client.commands == [defaults.playback_data_cmd]
+    assert isinstance(result, TextResult)
+    assert result.text == "ok\n"
 
 
 def test_context_manager_closes_client():

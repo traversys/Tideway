@@ -127,6 +127,13 @@ class ApplianceCLI:
         headers = rows[0] if rows else []
         return headers, rows[1:]
 
+    @staticmethod
+    def _percent(value):
+        try:
+            return int(str(value).strip().rstrip("%"))
+        except (TypeError, ValueError):
+            return 0
+
     def certificates(self, output_file=None, output_dir=None):
         command = f"{defaults.tls_certificates_cmd} {self.target}:443"
         result = TextResult("certificates", self.run_command(command))
@@ -143,6 +150,23 @@ class ApplianceCLI:
         headers, rows = self._csv_text_rows(text)
         result = ReportResult("disk_info", headers or defaults.df_h_header, rows, raw=text)
         return self._write_report(result, output_file, output_dir, defaults.disk_filename)
+
+    def disk_usage_alerts(self, threshold=70, output_file=None, output_dir=None):
+        text = self.run_command(defaults.disk_alerts_cmd)
+        rows = []
+        for row in csv.reader(text.replace("\r\n", "\n").splitlines()):
+            if len(row) < 2:
+                continue
+            mount, used = [part.strip() for part in row[:2]]
+            if self._percent(used) > int(threshold):
+                rows.append([mount, used])
+        result = ReportResult(
+            "disk_usage_alerts",
+            defaults.disk_alerts_header,
+            rows,
+            raw=text,
+        )
+        return self._write_report(result, output_file, output_dir, defaults.disk_alerts_filename)
 
     def clustering(self, output_file=None, output_dir=None):
         result = TextResult("clustering", self.run_command(defaults.cluster_cmd))
@@ -173,6 +197,14 @@ class ApplianceCLI:
         result = TextResult("host_info", text)
         return self._write_text(result, output_file, output_dir, defaults.hostname_filename)
 
+    def health_check(self, output_file=None, output_dir=None):
+        system_username = self.system_username or "system"
+        command = f"{defaults.health_check_cmd} -u {system_username}"
+        if self.system_password:
+            command = f"{command} -p {self.system_password}"
+        result = TextResult("health_check", self.run_command(command))
+        return self._write_text(result, output_file, output_dir, defaults.health_check_filename)
+
     def ldap(self, output_file=None, output_dir=None):
         result = TextResult("ldap", self.run_command(defaults.ldap_cmd))
         return self._write_text(result, output_file, output_dir, defaults.ldap_filename)
@@ -182,6 +214,11 @@ class ApplianceCLI:
         text += "\n" + self.run_command(defaults.tz_cmd)
         result = TextResult("ntp", text)
         return self._write_text(result, output_file, output_dir, defaults.ntp_filename)
+
+    def playback_data(self, output_file=None, output_dir=None):
+        text = self.run_command(defaults.playback_data_cmd)
+        result = TextResult("playback_data", text)
+        return self._write_text(result, output_file, output_dir, defaults.playback_data_filename)
 
     def tw_config_dump(self, output_file=None, output_dir=None):
         result = TextResult("tw_config_dump", self.run_command(defaults.tw_config_dump_cmd))
