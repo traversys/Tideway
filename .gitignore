@@ -16,3 +16,4 @@ examples.py
 config.yaml
 config.yaml.geodis
 *.csv
+*.pem
