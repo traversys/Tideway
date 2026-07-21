@@ -15,3 +15,4 @@ noping: false
 debug: false
 cache_dir: <cache_directory>
 no_cache: false
+verify_ssl: true

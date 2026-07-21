@@ -965,11 +965,16 @@ def tku(knowledge, args, dir):
     if k:
         result = json.loads(json.dumps(k))
         logger.debug('Knowledge:\n%s' % k)
-        # Safely extract the latest uploads for each module, falling back to
-        # "Not installed" when the key is missing.
-        latest_edp = result.get('latest_edp', {}).get('name', 'Not installed')
-        latest_storage = result.get('latest_storage', {}).get('name', 'Not installed')
-        latest_tku = result.get('latest_tku', {}).get('name', 'Not installed')
+        # Optional modules are returned as null when they are not installed.
+        def _module_name(key):
+            module = result.get(key) or {}
+            if not isinstance(module, dict):
+                return "Not installed"
+            return module.get("name") or "Not installed"
+
+        latest_edp = _module_name("latest_edp")
+        latest_storage = _module_name("latest_storage")
+        latest_tku = _module_name("latest_tku")
 
         # Build rows for CSV output. Each row is prefixed with the Discovery
         # target so consumers know which appliance provided the data.

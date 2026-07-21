@@ -482,6 +482,29 @@ last_update_success as 'Host.last_scan_date',
 (@A3 and 'Yes' or '-') as 'Host.crowdstrike_falcon_sensor',
 (@A4 and 'Yes' or '-') as 'Host.splunk_forwarder'</search>
 	</query>
+	<query title="Expected Agents Coverage">
+		<description>Windows hosts with numeric counts for the agents tracked by the expected-agents report.</description>
+		<search>search Host
+with
+nodecount(traverse Host:HostedSoftware::SoftwareInstance where type = 'Microsoft System Center Configuration Manager Client') as SCCM,
+nodecount(traverse Host:HostedSoftware::SoftwareInstance where type = 'Sophos Anti-Virus') as SophosAV,
+nodecount(traverse Host:HostedSoftware::SoftwareInstance where type = 'Qualys Cloud Agent') as QualysCloud,
+nodecount(traverse Host:HostedSoftware::SoftwareInstance where type = 'BMC Client Management Client') as BCM,
+nodecount(traverse Host:HostedSoftware::SoftwareInstance where type = 'McAfee Endpoint Security') as McAfee,
+nodecount(traverse Host:HostedSoftware::SoftwareInstance where type = 'BMC Patrol Agent') as Patrol,
+nodecount(traverse Host:HostedSoftware::SoftwareInstance where type = 'Symantec Endpoint Protection Client') as Symantec
+where os_type has subword 'Windows'
+show
+name as 'Hostname',
+1 as 'Windows Hosts',
+(@SCCM or 0) as 'SCCM',
+(@SophosAV or 0) as 'Sophos AV',
+(@QualysCloud or 0) as 'Qualys Cloud Agent',
+(@BCM or 0) as 'BMC Client Management',
+(@McAfee or 0) as 'McAfee Endpoint Security',
+(@Patrol or 0) as 'BMC Patrol Agent',
+(@Symantec or 0) as 'Symantec Endpoint Protection'</search>
+	</query>
 	<query title="Knowledge Upload Modules">
 		<description>Non-TKU knowledge upload modules with raw content for export.</description>
 		<search>search KnowledgeUpload

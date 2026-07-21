@@ -1285,36 +1285,6 @@ def chunked_last_disco(twsearch):
         ["NetworkInterface.id", "NetworkInterface.ip_addr"],
     )
 
-    def _safe_search(query):
-        try:
-            return pd.DataFrame(api.search_results(twsearch, query))
-        except api.APITimeoutError:
-            logger.warning("Discovery API timed out; discovery report incomplete")
-            return None
-
-    key_df = _safe_search(queries.last_disco_functional_key)
-    if key_df is None or key_df.empty:
-        return pd.DataFrame()
-
-    access_df = _safe_search(queries.last_disco_access)
-    if access_df is None:
-        return pd.DataFrame()
-    device_df = _safe_search(queries.last_disco_deviceinfo)
-    if device_df is None:
-        return pd.DataFrame()
-    run_df = _safe_search(queries.last_disco_run)
-    if run_df is None:
-        return pd.DataFrame()
-    session_df = _safe_search(queries.last_disco_session)
-    if session_df is None:
-        return pd.DataFrame()
-    inferred_df = _safe_search(queries.last_disco_inferred)
-    if inferred_df is None:
-        return pd.DataFrame()
-    interface_df = _safe_search(queries.last_disco_interface)
-    if interface_df is None:
-        return pd.DataFrame()
-
     merged = key_df.merge(access_df, how="left", on="DiscoveryAccess.id")
     merged = merged.merge(device_df, how="left", on="DeviceInfo.id")
     merged = merged.merge(run_df, how="left", on="DiscoveryRun.id")
