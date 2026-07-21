@@ -84,6 +84,12 @@ class ApplianceCLI:
         _, stdout, stderr = client.exec_command(command)
         out = "".join(stdout.readlines())
         err = "".join(stderr.readlines())
+        channel = getattr(stdout, "channel", None)
+        if channel is not None:
+            exit_status = channel.recv_exit_status()
+            if exit_status:
+                detail = err.strip() or out.strip() or "no command output"
+                raise RuntimeError(f"SSH command failed with exit status {exit_status}: {detail}")
         return out if out else err
 
     def _write_text(self, result, output_file=None, output_dir=None, filename=None):
@@ -148,7 +154,10 @@ class ApplianceCLI:
     def disk_info(self, output_file=None, output_dir=None):
         text = self.run_command(defaults.df_h_cmd)
         headers, rows = self._csv_text_rows(text)
-        result = ReportResult("disk_info", headers or defaults.df_h_header, rows, raw=text)
+        if headers != defaults.df_h_header:
+            rows = ([headers] if headers else []) + rows
+            headers = defaults.df_h_header
+        result = ReportResult("disk_info", headers, rows, raw=text)
         return self._write_report(result, output_file, output_dir, defaults.disk_filename)
 
     def disk_usage_alerts(self, threshold=70, output_file=None, output_dir=None):
@@ -236,10 +245,7 @@ class ApplianceCLI:
         return self._write_text(result, output_file, output_dir, defaults.tw_options_filename)
 
     def syslog(self, output_file=None, output_dir=None):
-        command = defaults.rsyslog_cmd
-        if self.password:
-            command = f"{defaults.rsyslog_cmd} || echo {self.password} | sudo -S /sbin/service rsyslog status"
-        text = self.run_command(command)
+        text = self.run_command(defaults.rsyslog_cmd)
         text += "\n" + self.run_command(defaults.rsyslog_conf_cmd)
         result = TextResult("syslog", text)
         return self._write_text(result, output_file, output_dir, defaults.syslog_filename)
@@ -250,10 +256,7 @@ class ApplianceCLI:
         return self._write_text(result, output_file, output_dir, defaults.baseline_filename)
 
     def vmware_tools(self, output_file=None, output_dir=None):
-        command = defaults.vmware_tools_cmd
-        if self.password:
-            command = f"{defaults.vmware_tools_cmd} || echo {self.password} | sudo -S /sbin/service vmware-tools status"
-        result = TextResult("vmware_tools", self.run_command(command))
+        result = TextResult("vmware_tools", self.run_command(defaults.vmware_tools_cmd))
         return self._write_text(result, output_file, output_dir, defaults.vmware_tools_filename)
 
     def clear_queue(self, confirm=False):

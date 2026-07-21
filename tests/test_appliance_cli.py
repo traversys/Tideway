@@ -14,6 +14,14 @@ class FakeStream:
         return self.text.splitlines(True)
 
 
+class FakeChannel:
+    def __init__(self, exit_status):
+        self.exit_status = exit_status
+
+    def recv_exit_status(self):
+        return self.exit_status
+
+
 class FakeClient:
     def __init__(self):
         self.commands = []
@@ -68,6 +76,36 @@ def test_disk_info_returns_report_without_writing(tmp_path):
     assert result.rows == [["/dev/sda1", "/", "10G", "5G", "5G", "50%"]]
     assert result.files == []
     assert list(tmp_path.iterdir()) == []
+
+
+def test_disk_info_uses_default_headers_when_command_has_no_header_row():
+    class HeaderlessDiskClient(FakeClient):
+        def exec_command(self, command):
+            if command.startswith("df -h"):
+                return None, FakeStream("/dev/sda1,/,10G,5G,5G,50%\n"), FakeStream("")
+            return super().exec_command(command)
+
+    result = ApplianceCLI("app.example", client=HeaderlessDiskClient()).disk_info()
+
+    assert result.headers == ["fs", "mount", "size", "used", "available", "Used %"]
+    assert result.rows == [["/dev/sda1", "/", "10G", "5G", "5G", "50%"]]
+
+
+def test_run_command_raises_when_ssh_command_fails():
+    class FailingClient(FakeClient):
+        def exec_command(self, command):
+            stdout = FakeStream("")
+            stdout.channel = FakeChannel(1)
+            return None, stdout, FakeStream("command failed\n")
+
+    cli = ApplianceCLI("app.example", client=FailingClient())
+
+    try:
+        cli.run_command("failing-command")
+    except RuntimeError as exc:
+        assert str(exc) == "SSH command failed with exit status 1: command failed"
+    else:
+        raise AssertionError("A failed SSH command should raise RuntimeError")
 
 
 def test_disk_usage_alerts_filters_by_threshold(tmp_path):
@@ -139,6 +177,20 @@ def test_playback_data_runs_no_expiry_count():
     assert client.commands == [defaults.playback_data_cmd]
     assert isinstance(result, TextResult)
     assert result.text == "ok\n"
+
+
+def test_service_checks_do_not_embed_ssh_password_in_commands():
+    client = FakeClient()
+    cli = ApplianceCLI("app.example", password="secret", client=client)
+
+    cli.syslog()
+    cli.vmware_tools()
+
+    assert client.commands == [
+        defaults.rsyslog_cmd,
+        defaults.rsyslog_conf_cmd,
+        defaults.vmware_tools_cmd,
+    ]
 
 
 def test_context_manager_closes_client():
