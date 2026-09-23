@@ -66,6 +66,49 @@ def test_appliance_cli_uses_tideway_user_by_default(monkeypatch):
     cli.close()
 
 
+def test_appliance_initialization_credentials_are_used_by_appliance_cli(monkeypatch):
+    calls = {}
+
+    class FakeSSHClient(FakeClient):
+        def set_missing_host_key_policy(self, policy):
+            pass
+
+        def connect(self, target, username=None, password=None):
+            calls.update(target=target, username=username, password=password)
+
+    cli_module = importlib.import_module("tideway.appliance_cli")
+    monkeypatch.setattr(cli_module.paramiko, "SSHClient", FakeSSHClient)
+    monkeypatch.setattr(cli_module.paramiko, "AutoAddPolicy", lambda: "policy")
+
+    appliance = tideway.appliance(
+        "app.example",
+        "token",
+        ssh_username="custom-user",
+        ssh_password="secret",
+    )
+    appliance.appliance_cli().connect()
+
+    assert calls == {
+        "target": "app.example",
+        "username": "custom-user",
+        "password": "secret",
+    }
+
+
+def test_appliance_initialization_accepts_cli_style_credential_aliases():
+    appliance = tideway.appliance(
+        "app.example",
+        "token",
+        username="custom-user",
+        password="secret",
+    )
+
+    cli = appliance.appliance_cli()
+
+    assert cli.username == "custom-user"
+    assert cli.password == "secret"
+
+
 def test_disk_info_returns_report_without_writing(tmp_path):
     cli = ApplianceCLI("app.example", client=FakeClient())
 

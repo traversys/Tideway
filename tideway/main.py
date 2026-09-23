@@ -9,9 +9,28 @@ import tideway
 class Appliance:
     '''An appliance instance.'''
 
-    def __init__(self, target, token, limit = 100, delete = False, api_version = "1.16", ssl_verify = False):
+    def __init__(
+        self,
+        target,
+        token,
+        limit=100,
+        delete=False,
+        api_version="1.16",
+        ssl_verify=False,
+        ssh_username=None,
+        ssh_password=None,
+        ssh_password_file=None,
+        username=None,
+        password=None,
+        password_file=None,
+    ):
         self.target = target
         self.token = token
+        self.ssh_username = ssh_username if ssh_username is not None else username
+        self.ssh_password = ssh_password if ssh_password is not None else password
+        self.ssh_password_file = (
+            ssh_password_file if ssh_password_file is not None else password_file
+        )
         self.default_limit = limit
         self.default_delete = delete
         self.params = {}
@@ -129,16 +148,18 @@ class Appliance:
         self,
         password=None,
         password_file=None,
-        username="tideway",
+        username=None,
         system_username=None,
         system_password=None,
         system_password_file=None,
     ):
         c = tideway.appliance_cli(
             self.target,
-            password=password,
-            password_file=password_file,
-            username=username,
+            password=self.ssh_password if password is None else password,
+            password_file=(
+                self.ssh_password_file if password is None and password_file is None else password_file
+            ),
+            username=self.ssh_username if username is None and self.ssh_username else (username or "tideway"),
             system_username=system_username,
             system_password=system_password,
             system_password_file=system_password_file,

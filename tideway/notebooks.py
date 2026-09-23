@@ -132,7 +132,15 @@ def appliance_from_config(
     verify_ssl = bool(selected.get("verify_ssl", selected.get("ssl_verify", config.get("verify_ssl", False))))
     token = token_from_config(selected, repo_root)
     api_version = api_version_from_config(selected, target, token, verify_ssl=verify_ssl)
-    return tideway.appliance(target, token, api_version=api_version, ssl_verify=verify_ssl)
+    return tideway.appliance(
+        target,
+        token,
+        api_version=api_version,
+        ssl_verify=verify_ssl,
+        ssh_username=selected.get("ssh_username", selected.get("username")),
+        ssh_password=selected.get("ssh_password", selected.get("password")),
+        ssh_password_file=selected.get("ssh_password_file", selected.get("password_file")),
+    )
 
 
 def output_dir_for(target: str, base_dir: Optional[str] = None) -> Path:
